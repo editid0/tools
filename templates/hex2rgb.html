@@ -56,7 +56,8 @@
     </style>
 	<script>
         function setPreview(hex, rgb) {
-            if (!hex || !rgb) {
+            console.log(hex, rgb);
+            if (!hex && !rgb) {
                 return;
             }
             // if hex is null, use rgb, if rgb is null, use hex
