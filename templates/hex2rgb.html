@@ -93,7 +93,16 @@
 
 			const [r, g, b, a] = values;
 
-			// Validate RGB values are within range 0–255
+			// Validate that r, g, b are integers and within range 0–255
+			if (
+				!Number.isInteger(r) ||
+				!Number.isInteger(g) ||
+				!Number.isInteger(b)
+			) {
+				throw new Error(
+					"RGB values must be integers in the range 0–255."
+				);
+			}
 			if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
 				throw new Error("RGB values must be in the range 0–255.");
 			}
