@@ -172,8 +172,11 @@
 			} catch (error) {
 				document.getElementById("rgb").classList.add("is-danger");
 			}
-            if (!hex === undefined) {
-                document.getElementById("hex").value = hex;
+            console.log(hex);
+            if (hex === undefined) {
+                void(0);
+            } else {
+                document.getElementById("hex").value = hex.toUpperCase();
                 // remove the is-danger class
                 document.getElementById("hex").classList.remove("is-danger");
             }
