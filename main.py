@@ -14,5 +14,9 @@ tools = [
 def index():
     return render_template('index.html', tools=tools)
 
+@app.route('/hex2rgb')
+def hex2rgb():
+    return render_template('hex2rgb.html')
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5738)
