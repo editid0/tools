@@ -16,25 +16,6 @@ tools = [
         'link': '/rgb2hex',
         'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg'
     },
-    {
-        'name': 'RGB to Hex',
-        'description': 'Converts RGB values to hex color codes.',
-        'link': '/rgb2hex',
-        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg'
-    },
-    {
-        'name': 'RGB to Hex',
-        'description': 'Converts RGB values to hex color codes.',
-        'link': '/rgb2hex',
-        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg'
-    },
-    {
-        'name': 'RGB to Hex',
-        'description': 'Converts RGB values to hex color codes.',
-        'link': '/rgb2hex',
-        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg'
-    },
-    
 ]
 
 @app.route('/')
