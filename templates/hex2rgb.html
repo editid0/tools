@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Hex to RGB and RGB to Hex</title>
+		<title>{% if path == '/hex2rgb' %}Hex to RGB{% else %}RGB to Hex{% endif %}</title>
 		<link
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
@@ -11,7 +11,7 @@
 	</head>
 	<body>
 		<div class="container has-text-centered">
-			<h1 class="title">Hex to RGB and RGB to Hex</h1>
+			<h1 class="title">{% if path == '/hex2rgb' %}Hex to RGB{% else %}RGB to Hex{% endif %}</h1>
 			<p>Hex:</p>
 			<div class="field has-addons has-addons-centered">
 				<p class="control">
@@ -261,9 +261,9 @@
         document.addEventListener('paste', (e) => {
             const clipboardData = e.clipboardData || window.clipboardData;
             const pastedData = clipboardData.getData('Text');
-            e.preventDefault();
             // check if pastedData meets regex rgb\((\d+)\s(\d+)\s(\d+)\) and if so then extract the rgb
             if (/rgb\((\d+)\s(\d+)\s(\d+)\)/.test(pastedData)) {
+                e.preventDefault();
                 const rgb = pastedData.match(/rgb\((\d+)\s(\d+)\s(\d+)\)/);
                 // set the value of rgb and start typing in it
                 document.getElementById("rgb").value = rgb[1] + "," + rgb[2] + "," + rgb[3];
@@ -275,6 +275,7 @@
                 // trigger input event
                 document.getElementById("rgb").dispatchEvent(new Event('input'));
             } else if (/rgba\((\d+)\s(\d+)\s(\d+)\s(\d|(\d\.\d+))\)/.test(pastedData)) {
+                e.preventDefault();
                 const rgba = pastedData.match(/rgba\((\d+)\s(\d+)\s(\d+)\s(\d|(\d\.\d+))\)/);
                 console.log(rgba);
                 // set the value of rgb and start typing in it
