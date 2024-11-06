@@ -41,7 +41,7 @@
 				</p>
 			</div>
             <div class="centered">
-                <canvas id="preview">
+                <canvas id="preview" width="200" height="200">
 
                 </canvas>
             </div>
@@ -59,17 +59,13 @@
             if (!hex || !rgb) {
                 return;
             }
-            const canvas = document.getElementById("preview");
-            const ctx = canvas.getContext("2d");
-            const width = 200;
-            const height = 200;
-            canvas.width = width;
-            canvas.height = height;
-            ctx.clearRect(0, 0, width, height);
-            ctx.fillStyle = `#${hex}`;
-            ctx.fillRect(0, 0, width, height);
-            ctx.fillStyle = `rgb(${rgb.r},${rgb.g},${rgb.b})`;
-            ctx.fillRect(0, 0, width, height);
+            // if hex is null, use rgb, if rgb is null, use hex
+            var color = hex ? hex : rgb;
+            console.log(color);
+            var canvas = document.getElementById("preview");
+            var ctx = canvas.getContext("2d");
+            ctx.fillStyle = color;
+            ctx.fillRect(0, 0, 200, 200);
         }
 		function hexToRGBA(hex) {
 			// Ensure hex is valid
@@ -89,6 +85,7 @@
 				hex.length === 8 ? parseInt(hex.slice(6, 8), 16) / 255 : NaN;
 			// round a to 2 decimal places
 			a = Math.round(a * 1000) / 1000;
+            setPreview(hex, null);
 			// if a is NaN, only return RGB values, in format r,g,b
 			if (isNaN(a)) {
 				return {
@@ -128,18 +125,18 @@
 				!Number.isInteger(b)
 			) {
 				throw new Error(
-					"RGB values must be integers in the range 0–255."
+					"RGB values must be integers in the range 0-255."
 				);
 			}
 			if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
-				throw new Error("RGB values must be in the range 0–255.");
+				throw new Error("RGB values must be in the range 0-255.");
 			}
 
 			// Convert each RGB component to a 2-digit hex string
 			const hexR = r.toString(16).padStart(2, "0");
 			const hexG = g.toString(16).padStart(2, "0");
 			const hexB = b.toString(16).padStart(2, "0");
-
+            setPreview(null, input);
 			// If alpha is provided, convert it to 2-digit hex; otherwise, return RGB hex
 			if (a !== undefined) {
 				// Validate alpha is within range 0–1
