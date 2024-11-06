@@ -47,6 +47,10 @@
         }
 
         document.getElementById("hex").addEventListener("input", function() {
+            // remove all non-hex characters, and any # at the start
+            var hex = document.getElementById("hex").value.replace(/[^a-f0-9]/gi, "").replace(/^#/, "").toUpperCase();
+            // set the value
+            document.getElementById("hex").value = hex;
             var hex = document.getElementById("hex").value;
             var rgb = hexToRgb(hex);
             document.getElementById("rgb").value = rgb.r + "," + rgb.g + "," + rgb.b;
