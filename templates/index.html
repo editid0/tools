@@ -1,12 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tools</title>
-</head>
-<body>
-    <h1>Tools</h1>
-
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Tools</title>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+		/>
+	</head>
+	<body>
+		<h1>Tools</h1>
+		<h2>Some of our favourites:</h2>
+		<div class="columns">
+            {% for tool in tools %}
+            <div class="column is-one-third has-text-centered">
+                <a href="{{ tool.url }}" target="_blank">
+                    <img src="{{ tool.image }}" alt="{{ tool.name }}" />
+                </a>
+                <h3>{{ tool.name }}</h3>
+                <p>{{ tool.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+	</body>
 </html>
