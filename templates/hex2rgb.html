@@ -74,7 +74,7 @@
 			}
 
 			// Convert hex color to RGBA
-			function hexToRGBA(hex) {
+			function h2rgb(hex) {
 				let r = 0,
 					g = 0,
 					b = 0,
@@ -97,7 +97,7 @@
 
 			// Draw background with color and transparency effect
 			function drawBackground(hex) {
-				const { r, g, b, a } = hexToRGBA(hex);
+				const { r, g, b, a } = h2rgb(hex);
 				if (a < 1) {
 					drawCheckerboard(); // Draw checkerboard only if transparency is present
 				}
