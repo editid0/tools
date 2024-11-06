@@ -109,7 +109,6 @@
 		}
 
 		function setPreview(hex, rgb) {
-			console.log(hex, rgb);
 			if (!hex && !rgb) {
 				return;
 			}
@@ -118,7 +117,6 @@
 				hex = rgbToHex(rgb);
 			}
 			var color = "#" + hex;
-			console.log(color);
 			var canvas = document.getElementById("preview");
             setCanvasBackground(canvas, color);
 		}
@@ -191,7 +189,6 @@
 			const hexR = r.toString(16).padStart(2, "0");
 			const hexG = g.toString(16).padStart(2, "0");
 			const hexB = b.toString(16).padStart(2, "0");
-			setPreview(null, input);
 			// If alpha is provided, convert it to 2-digit hex; otherwise, return RGB hex
 			if (a !== undefined) {
 				// Validate alpha is within range 0–1
@@ -248,11 +245,11 @@
 			rgb = rgb.replace(/,$/, "");
 			try {
 				var hex = rgbToHex(rgb);
+                setPreview(hex, null);
 				document.getElementById("rgb").classList.remove("is-danger");
 			} catch (error) {
 				document.getElementById("rgb").classList.add("is-danger");
 			}
-			console.log(hex);
 			if (hex === undefined) {
 				void 0;
 			} else {
@@ -261,5 +258,10 @@
 				document.getElementById("hex").classList.remove("is-danger");
 			}
 		});
+        addEventListener('paste', (e) => {
+            const clipboardData = e.clipboardData || window.clipboardData;
+            const pastedData = clipboardData.getData('Text');
+            console.log(pastedData);
+        });
 	</script>
 </html>
