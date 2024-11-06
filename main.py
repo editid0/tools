@@ -1,13 +1,22 @@
 from flask import Flask, render_template, request
 
+# SnipSpace?
+
 app = Flask(__name__)
 tools = [
     {
-        'name': 'Hex to RGB and RGB to Hex',
-        'description': 'Converts hex to rgb and rgb to hex',
+        'name': 'Hex to RGB',
+        'description': 'Converts hex color codes to RGB values.',
         'link': '/hex2rgb',
         'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg'
     },
+    {
+        'name': 'RGB to Hex',
+        'description': 'Converts RGB values to hex color codes.',
+        'link': '/rgb2hex',
+        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg'
+    }
+    
 ]
 
 @app.route('/')
