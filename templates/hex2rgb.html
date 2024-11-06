@@ -146,9 +146,13 @@
 			if (isNaN(rgb.a)) {
 				document.getElementById("rgb").value =
 					rgb.r + "," + rgb.g + "," + rgb.b;
+                // remove the is-danger class
+                document.getElementById("rgb").classList.remove("is-danger");
 			} else {
 				document.getElementById("rgb").value =
 					rgb.r + "," + rgb.g + "," + rgb.b + "," + rgb.a;
+                // remove the is-danger class
+                document.getElementById("rgb").classList.remove("is-danger");
 			}
 			// document.getElementById("rgb").value =
 			// 	rgb.r + "," + rgb.g + "," + rgb.b;
@@ -168,7 +172,11 @@
 			} catch (error) {
 				document.getElementById("rgb").classList.add("is-danger");
 			}
-			document.getElementById("hex").value = hex;
+            if (!hex === undefined) {
+                document.getElementById("hex").value = hex;
+                // remove the is-danger class
+                document.getElementById("hex").classList.remove("is-danger");
+            }
 		});
 	</script>
 </html>
