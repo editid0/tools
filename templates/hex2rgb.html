@@ -60,8 +60,11 @@
             if (!hex && !rgb) {
                 return;
             }
-            // if hex is null, use rgb, if rgb is null, use hex
-            var color = hex ? hex : rgb;
+            // if hex is null, use rgb, it is in the format r,g,b,a or r,g,b, if rgb is null use hex, it is in the format ffffff or ffffffff
+            if (!hex) {
+                hex = rgbToHex(rgb);
+            }
+            var color = "#" + hex;
             console.log(color);
             var canvas = document.getElementById("preview");
             var ctx = canvas.getContext("2d");
