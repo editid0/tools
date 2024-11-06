@@ -12,54 +12,83 @@
 	<body>
 		<div class="container has-text-centered">
 			<h1 class="title">Hex to RGB</h1>
-            <p>Hex:</p>
+			<p>Hex:</p>
 			<div class="field has-addons has-addons-centered">
-                <p class="control">
-                    <a class="button is-static">#</a>
-                </p>
 				<p class="control">
-					<input class="input" type="text" placeholder="FFFFFF" id="hex" />
+					<a class="button is-static">#</a>
+				</p>
+				<p class="control">
+					<input
+						class="input"
+						type="text"
+						placeholder="FFFFFF"
+						id="hex"
+					/>
 				</p>
 			</div>
-            <p>RGB:</p>
+			<p>RGB:</p>
 			<div class="field has-addons has-addons-centered">
-                <p class="control">
-                    <a class="button is-static">RGB</a>
-                </p>
 				<p class="control">
-					<input class="input" type="text" placeholder="255,255,255" id="rgb" />
+					<a class="button is-static">RGB</a>
+				</p>
+				<p class="control">
+					<input
+						class="input"
+						type="text"
+						placeholder="255,255,255"
+						id="rgb"
+					/>
 				</p>
 			</div>
 		</div>
 	</body>
-    <script>
-        function hexToRgb(hex) {
-            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? {
-                r: parseInt(result[1], 16),
-                g: parseInt(result[2], 16),
-                b: parseInt(result[3], 16)
-            } : null;
-        }
+	<script>
+		function hexToRGBA(hex) {
+			// Ensure hex is valid
+			if (!/^([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$/.test(hex)) {
+				throw new Error(
+					"Invalid hex format. Use 'ffffff' or 'ffffffff'."
+				);
+			}
 
-        function rgbToHex(r, g, b) {
-            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-        }
+			// Parse RGB values
+			const r = parseInt(hex.slice(0, 2), 16);
+			const g = parseInt(hex.slice(2, 4), 16);
+			const b = parseInt(hex.slice(4, 6), 16);
 
-        document.getElementById("hex").addEventListener("input", function() {
-            // remove all non-hex characters, and any # at the start
-            var hex = document.getElementById("hex").value.replace(/[^a-f0-9]/gi, "").replace(/^#/, "").toUpperCase();
-            // set the value
-            document.getElementById("hex").value = hex;
-            var hex = document.getElementById("hex").value;
-            var rgb = hexToRgb(hex);
-            document.getElementById("rgb").value = rgb.r + "," + rgb.g + "," + rgb.b;
-        });
+			// If hex includes alpha, parse it, otherwise assume fully opaque
+			const a =
+				hex.length === 8 ? parseInt(hex.slice(6, 8), 16) / 255 : 1;
 
-        document.getElementById("rgb").addEventListener("input", function() {
-            var rgb = document.getElementById("rgb").value;
-            var hex = rgbToHex(rgb);
-            document.getElementById("hex").value = hex;
-        });
-    </script>
+			return `rgba(${r}, ${g}, ${b}, ${a})`;
+		}
+
+		function rgbToHex(r, g, b) {
+			return (
+				"#" +
+				((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
+			);
+		}
+
+		document.getElementById("hex").addEventListener("input", function () {
+			// remove all non-hex characters, and any # at the start
+			var hex = document
+				.getElementById("hex")
+				.value.replace(/[^a-f0-9]/gi, "")
+				.replace(/^#/, "")
+				.toUpperCase();
+			// set the value
+			document.getElementById("hex").value = hex;
+			var hex = document.getElementById("hex").value;
+			var rgb = hexToRGBA(hex);
+			document.getElementById("rgb").value =
+				rgb.r + "," + rgb.g + "," + rgb.b;
+		});
+
+		document.getElementById("rgb").addEventListener("input", function () {
+			var rgb = document.getElementById("rgb").value;
+			var hex = rgbToHex(rgb);
+			document.getElementById("hex").value = hex;
+		});
+	</script>
 </html>
