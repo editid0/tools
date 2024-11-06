@@ -274,6 +274,18 @@
                 document.getElementById("rgb").select();
                 // trigger input event
                 document.getElementById("rgb").dispatchEvent(new Event('input'));
+            } else if (/rgba\((\d+)\s(\d+)\s(\d+)\s(\d|(\d\.\d+))\)/.test(pastedData)) {
+                const rgba = pastedData.match(/rgba\((\d+)\s(\d+)\s(\d+)\s(\d|(\d\.\d+))\)/);
+                console.log(rgba);
+                // set the value of rgb and start typing in it
+                document.getElementById("rgb").value = rgba[1] + "," + rgba[2] + "," + rgba[3] + "," + rgba[4];
+                // remove the is-danger class
+                document.getElementById("rgb").classList.remove("is-danger");
+                // start typing in the rgb input
+                document.getElementById("rgb").focus();
+                document.getElementById("rgb").select();
+                // trigger input event
+                document.getElementById("rgb").dispatchEvent(new Event('input'));
             }
         });
 	</script>
