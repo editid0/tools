@@ -59,23 +59,23 @@
 			// If hex includes alpha, parse it, otherwise assume fully opaque
 			var a =
 				hex.length === 8 ? parseInt(hex.slice(6, 8), 16) / 255 : NaN;
-            // round a to 2 decimal places
-            a = Math.round(a * 1000) / 1000
-            // if a is NaN, only return RGB values, in format r,g,b
-            if (isNaN(a)) {
-                return {
-                    r: r,
-                    g: g,
-                    b: b
-                }
-            } else {
-                return {
-                    r: r,
-                    g: g,
-                    b: b,
-                    a: a
-            }
-            }
+			// round a to 2 decimal places
+			a = Math.round(a * 1000) / 1000;
+			// if a is NaN, only return RGB values, in format r,g,b
+			if (isNaN(a)) {
+				return {
+					r: r,
+					g: g,
+					b: b,
+				};
+			} else {
+				return {
+					r: r,
+					g: g,
+					b: b,
+					a: a,
+				};
+			}
 		}
 
 		function rgbToHex(r, g, b) {
@@ -95,12 +95,24 @@
 			// set the value
 			document.getElementById("hex").value = hex;
 			var hex = document.getElementById("hex").value;
-			var rgb = hexToRGBA(hex);
-            if (isNaN(rgb.a)) {
-                document.getElementById("rgb").value = rgb.r + "," + rgb.g + "," + rgb.b;
-            } else {
-                document.getElementById("rgb").value = rgb.r + "," + rgb.g + "," + rgb.b + "," + rgb.a
-            }
+			try {
+				var rgb = hexToRGBA(hex);
+                document.getElementById("hex").classList.remove("is-danger");
+			} catch (error) {
+				document.getElementById("hex").classList.add("is-danger");
+				setTimeout(() => {
+					document
+						.getElementById("hex")
+						.classList.remove("is-danger");
+				}, 3000);
+			} 
+			if (isNaN(rgb.a)) {
+				document.getElementById("rgb").value =
+					rgb.r + "," + rgb.g + "," + rgb.b;
+			} else {
+				document.getElementById("rgb").value =
+					rgb.r + "," + rgb.g + "," + rgb.b + "," + rgb.a;
+			}
 			// document.getElementById("rgb").value =
 			// 	rgb.r + "," + rgb.g + "," + rgb.b;
 		});
