@@ -261,6 +261,7 @@
         document.addEventListener('paste', (e) => {
             const clipboardData = e.clipboardData || window.clipboardData;
             const pastedData = clipboardData.getData('Text');
+            e.preventDefault();
             // check if pastedData meets regex rgb\((\d+)\s(\d+)\s(\d+)\) and if so then extract the rgb
             if (/rgb\((\d+)\s(\d+)\s(\d+)\)/.test(pastedData)) {
                 const rgb = pastedData.match(/rgb\((\d+)\s(\d+)\s(\d+)\)/);
@@ -271,6 +272,8 @@
                 // start typing in the rgb input
                 document.getElementById("rgb").focus();
                 document.getElementById("rgb").select();
+                // trigger input event
+                document.getElementById("rgb").dispatchEvent(new Event('input'));
             }
         });
 	</script>
