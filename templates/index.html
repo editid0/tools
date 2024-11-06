@@ -10,18 +10,23 @@
 		/>
 	</head>
 	<body>
-		<h1>Tools</h1>
-		<h2>Some of our favourites:</h2>
-		<div class="columns">
-            {% for tool in tools %}
-            <div class="column is-one-third has-text-centered">
-                <a href="{{ tool.url }}" target="_blank">
-                    <img src="{{ tool.image }}" alt="{{ tool.name }}" />
-                </a>
-                <h3>{{ tool.name }}</h3>
-                <p>{{ tool.description }}</p>
-            </div>
-            {% endfor %}
-        </div>
+		<div class="container">
+			<h1 class="title">Tools</h1>
+			<h2 class="subtitle">Some of our favourites:</h2>
+			<div class="columns">
+				{% for tool in tools %}
+				<div class="column is-one-third has-text-centered border">
+					<a href="{{ tool['link'] }}" target="_blank">
+						<img
+							src="{{ tool['image'] }}"
+							alt="{{ tool['name'] }}"
+						/>
+					</a>
+					<h3>{{ tool['name'] }}</h3>
+					<p>{{ tool['description'] }}</p>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
 	</body>
 </html>
