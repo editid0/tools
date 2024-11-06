@@ -13,9 +13,9 @@
 		<div class="container has-text-centered">
 			<h1 class="title">Tools</h1>
 			<h2 class="subtitle">Some of our favourites:</h2>
-			<div class="columns is-2 is-multiline">
+			<div class="parent">
 				{% for tool in tools %}
-				<div class="column is-one-quarter has-text-centered">
+				<div class="item">
 					<a href="{{ tool['link'] }}" target="_blank">
 						<img
 							src="{{ tool['image'] }}"
@@ -34,9 +34,13 @@
 		</div>
 	</body>
     <style>
-        .column {
+        .item {
             border: 1px solid grey;
             border-radius: 5px;
+        }
+        .parent {
+            display: flex;
+            flex-wrap: wrap;
         }
         img {
             aspect-ratio: 1 / 1;
