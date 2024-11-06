@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Hex to RGB</title>
+		<title>Hex to RGB and RGB to Hex</title>
 		<link
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
@@ -11,7 +11,7 @@
 	</head>
 	<body>
 		<div class="container has-text-centered">
-			<h1 class="title">Hex to RGB</h1>
+			<h1 class="title">Hex to RGB and RGB to Hex</h1>
 			<p>Hex:</p>
 			<div class="field has-addons has-addons-centered">
 				<p class="control">
@@ -78,11 +78,30 @@
 			}
 		}
 
-		function rgbToHex(r, g, b) {
-			return (
-				"#" +
-				((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
-			);
+		function rgbToHex({ r, g, b, a }) {
+			// Ensure RGB values are within range
+			if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
+				throw new Error("RGB values must be in the range 0-255.");
+			}
+
+			// Convert each color component to a 2-digit hex string
+			const hexR = r.toString(16).padStart(2, "0");
+			const hexG = g.toString(16).padStart(2, "0");
+			const hexB = b.toString(16).padStart(2, "0");
+
+			// If alpha is provided, convert it to 2-digit hex; otherwise, return RGB hex
+			if (a !== undefined) {
+				// Ensure alpha is within range 0–1
+				if (a < 0 || a > 1) {
+					throw new Error("Alpha value must be in the range 0-1.");
+				}
+				const hexA = Math.round(a * 255)
+					.toString(16)
+					.padStart(2, "0");
+				return `${hexR}${hexG}${hexB}${hexA}`;
+			} else {
+				return `${hexR}${hexG}${hexB}`;
+			}
 		}
 
 		document.getElementById("hex").addEventListener("input", function () {
@@ -97,15 +116,10 @@
 			var hex = document.getElementById("hex").value;
 			try {
 				var rgb = hexToRGBA(hex);
-                document.getElementById("hex").classList.remove("is-danger");
+				document.getElementById("hex").classList.remove("is-danger");
 			} catch (error) {
 				document.getElementById("hex").classList.add("is-danger");
-				setTimeout(() => {
-					document
-						.getElementById("hex")
-						.classList.remove("is-danger");
-				}, 3000);
-			} 
+			}
 			if (isNaN(rgb.a)) {
 				document.getElementById("rgb").value =
 					rgb.r + "," + rgb.g + "," + rgb.b;
@@ -119,7 +133,21 @@
 
 		document.getElementById("rgb").addEventListener("input", function () {
 			var rgb = document.getElementById("rgb").value;
-			var hex = rgbToHex(rgb);
+            // remove all non-numeric characters, and any , at the end
+            rgb = rgb.replace(/[^0-9,]/gi, "");
+            // set the value
+            document.getElementById("rgb").value = rgb;
+            // remove trailing ,
+            rgb = rgb.replace(/,$/, "");
+			try {
+                console.log(rgb);
+                var hex = rgbToHex(rgb);
+                console.log(hex);
+                document.getElementById("rgb").classList.remove("is-danger");
+            } catch (error) {
+                console.log(error);
+                document.getElementById("rgb").classList.add("is-danger");
+            }
 			document.getElementById("hex").value = hex;
 		});
 	</script>
