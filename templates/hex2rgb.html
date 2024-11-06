@@ -78,22 +78,36 @@
 			}
 		}
 
-		function rgbToHex({ r, g, b, a }) {
-			// Ensure RGB values are within range
-			if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
-				throw new Error("RGB values must be in the range 0-255.");
+		function rgbToHex(input) {
+			// Split the input string by commas and map to numbers
+			const values = input
+				.split(",")
+				.map((val) => parseFloat(val.trim()));
+
+			// Ensure there are 3 or 4 values (RGB or RGBA)
+			if (values.length < 3 || values.length > 4) {
+				throw new Error(
+					"Invalid input format. Use 'r,g,b' or 'r,g,b,a'."
+				);
 			}
 
-			// Convert each color component to a 2-digit hex string
+			const [r, g, b, a] = values;
+
+			// Validate RGB values are within range 0–255
+			if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
+				throw new Error("RGB values must be in the range 0–255.");
+			}
+
+			// Convert each RGB component to a 2-digit hex string
 			const hexR = r.toString(16).padStart(2, "0");
 			const hexG = g.toString(16).padStart(2, "0");
 			const hexB = b.toString(16).padStart(2, "0");
 
 			// If alpha is provided, convert it to 2-digit hex; otherwise, return RGB hex
 			if (a !== undefined) {
-				// Ensure alpha is within range 0–1
+				// Validate alpha is within range 0–1
 				if (a < 0 || a > 1) {
-					throw new Error("Alpha value must be in the range 0-1.");
+					throw new Error("Alpha value must be in the range 0–1.");
 				}
 				const hexA = Math.round(a * 255)
 					.toString(16)
@@ -133,21 +147,18 @@
 
 		document.getElementById("rgb").addEventListener("input", function () {
 			var rgb = document.getElementById("rgb").value;
-            // remove all non-numeric characters, and any , at the end
-            rgb = rgb.replace(/[^0-9,]/gi, "");
-            // set the value
-            document.getElementById("rgb").value = rgb;
-            // remove trailing ,
-            rgb = rgb.replace(/,$/, "");
+			// remove all non-numeric characters, and any , at the end
+			rgb = rgb.replace(/[^0-9,\.]/gi, "");
+			// set the value
+			document.getElementById("rgb").value = rgb;
+			// remove trailing ,
+			rgb = rgb.replace(/,$/, "");
 			try {
-                console.log(rgb);
-                var hex = rgbToHex(rgb);
-                console.log(hex);
-                document.getElementById("rgb").classList.remove("is-danger");
-            } catch (error) {
-                console.log(error);
-                document.getElementById("rgb").classList.add("is-danger");
-            }
+				var hex = rgbToHex(rgb);
+				document.getElementById("rgb").classList.remove("is-danger");
+			} catch (error) {
+				document.getElementById("rgb").classList.add("is-danger");
+			}
 			document.getElementById("hex").value = hex;
 		});
 	</script>
