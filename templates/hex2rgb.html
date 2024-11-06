@@ -258,10 +258,11 @@
 				document.getElementById("hex").classList.remove("is-danger");
 			}
 		});
-        addEventListener('paste', (e) => {
+        document.addEventListener('paste', (e) => {
             const clipboardData = e.clipboardData || window.clipboardData;
             const pastedData = clipboardData.getData('Text');
             console.log(pastedData);
+            e.preventDefault();
         });
 	</script>
 </html>
