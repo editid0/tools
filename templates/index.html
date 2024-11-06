@@ -15,7 +15,7 @@
 			<h2 class="subtitle">Some of our favourites:</h2>
 			<div class="columns">
 				{% for tool in tools %}
-				<div class="column is-one-third has-text-centered border">
+				<div class="column is-one-third has-text-centered">
 					<a href="{{ tool['link'] }}" target="_blank">
 						<img
 							src="{{ tool['image'] }}"
@@ -24,9 +24,19 @@
 					</a>
 					<h3>{{ tool['name'] }}</h3>
 					<p>{{ tool['description'] }}</p>
+                    <hr>
+                    <div class="buttons is-centered">
+                        <a class="button is-primary" href="{{ tool['link'] }}" target="_blank">Visit</a>
+                    </div>
 				</div>
 				{% endfor %}
 			</div>
 		</div>
 	</body>
+    <style>
+        .column {
+            border: 1px solid red;
+            border-radius: 5px;
+        }
+    </style>
 </html>
