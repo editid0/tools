@@ -10,7 +10,7 @@ dotenv.load_dotenv()
 
 app = Flask(__name__)
 
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+OPENAI_API_KEY = 'null'#os.getenv('OPENAI_API_KEY')
 client = OpenAI(
     # This is the default and can be omitted
     api_key=OPENAI_API_KEY,
@@ -28,6 +28,18 @@ tools = [
         'description': 'Converts RGB values to hex color codes.',
         'link': '/rgb2hex',
         'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg'
+    },
+    {
+        'name': 'JSON Editor',
+        'description': 'Edit JSON data with a drag-and-drop interface.',
+        'link': '/jsoneditor',
+        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/json/json-original.svg'
+    },
+    {
+        'name': 'Markdown Editor',
+        'description': 'Edit and preview markdown content.',
+        'link': '/markdowneditor',
+        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/markdown/markdown-original.svg'
     },
 ]
 
@@ -86,6 +98,14 @@ def colorai():
 @app.route('/assets/<filename>')
 def serve_static(filename):
     return app.send_static_file(filename)
+
+@app.route('/jsoneditor')
+def jsoneditor():
+    return render_template('json_editor.html')
+
+@app.route('/markdowneditor')
+def markdowneditor():
+    return render_template('markdownEditor.html')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5738)
