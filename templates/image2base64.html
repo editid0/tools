@@ -1,18 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Image to Base64</title>
-		<link
-			rel="stylesheet"
-			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
-		/>
-	</head>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image to Base64</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
 <body>
     <div class="container">
         <h1 class="has-text-centered">Image to Base64</h1>
-        
+
+        <div class="centered">
+            <div class="file">
+                <label class="file-label">
+                    <input class="file-input" type="file" name="resume" />
+                    <span class="file-cta">
+                        <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                        </span>
+                        <span class="file-label"> Choose a file...</span>
+                    </span>
+                </label>
+            </div>
+        </div>
     </div>
 </body>
+<style>
+    .centered {
+        display: flex;
+        justify-content: center;
+    }
+</style>
 </html>
