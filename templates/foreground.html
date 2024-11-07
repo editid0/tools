@@ -58,6 +58,7 @@
     })
 
     document.getElementById("submit").addEventListener("click", function () {
+        this.classList.add("is-loading");
         var hex = document.getElementById("hex").value;
         var color = "#" + hex;
         var fgbg = `{% if path == '/foreground' %}foreground{% else %}background{% endif %}`;
@@ -70,15 +71,16 @@
                     // create a canvas which will be used to display the color, set the background to the color specified using hex, and add text with color from choice
                     var canvas = document.createElement("canvas");
                     canvas.width = 400;
-                    canvas.height = 400;
+                    canvas.height = 100;
                     var ctx = canvas.getContext("2d");
                     ctx.fillStyle = color;
-                    ctx.fillRect(0, 0, 400, 400);
+                    ctx.fillRect(0, 0, 400, 100);
                     ctx.font = "48px arial";
                     ctx.fillStyle = data.choices[i];
-                    ctx.fillText(data.choices[i], 50, 100);
+                    ctx.fillText(data.choices[i], 10, 58);
                     document.getElementById("options").appendChild(canvas);
                 }
+                this.classList.remove("is-loading");
             })
     })
 </script>
