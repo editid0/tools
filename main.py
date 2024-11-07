@@ -76,6 +76,7 @@ def colorai():
     )
     res = chat_completion.choices[0].message.content
     colors = extract_hex_codes(res)
+    colors = [c for c in colors if c.upper() != color.upper()]
     return {'reason': res, 'choices': colors}
 
 
