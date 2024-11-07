@@ -11,6 +11,10 @@ dotenv.load_dotenv()
 app = Flask(__name__)
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+client = OpenAI(
+    # This is the default and can be omitted
+    api_key=OPENAI_API_KEY,
+)
 
 tools = [
     {
