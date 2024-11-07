@@ -57,6 +57,10 @@ def hex2rgb():
 def foreground():
     return render_template('foreground.html', path=request.path)
 
+@app.route('/image2base64')
+def image2base64():
+    return render_template('image2base64.html')
+
 def extract_hex_codes(text):
     # Regular expression pattern for hex color codes
     pattern = r"#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b"
