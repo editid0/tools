@@ -31,7 +31,7 @@
             </p>
         </div>
         <div class="buttons is-centered">
-            <button id="submit">Submit</button>
+            <button id="submit" class="button is-primary">Submit</button>
         </div>
         <div class="options"></div>
     </div>
@@ -59,7 +59,12 @@
     document.getElementById("submit").addEventListener("click", function () {
         var hex = document.getElementById("hex").value;
         var color = "#" + hex;
-        var fgbg = `{% if path == '/foreground' %}fg{% else %}bg{% endif %}`;
+        var fgbg = `{% if path == '/foreground' %}foreground{% else %}background{% endif %}`;
+        fetch('/colorai?color=' + color + '&fgbg=' + fgbg)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
     })
 </script>
 <style>
