@@ -6,6 +6,3 @@
 2. Run:
    Windows: `py -3 main.py`
    Linux/Mac: `python3 main.py`
-   s
-   ok
-   okokok
