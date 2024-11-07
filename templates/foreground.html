@@ -97,7 +97,7 @@
 					document.getElementById("options").innerHTML = "";
 					for (var i = 0; i < data.choices.length; i++) {
 						// create a canvas which will be used to display the color, set the background to the color specified using hex, and add text with color from choice
-                        `{% if path == '/foreground' %}`
+                        "{% if path == '/foreground' %}"
 						var canvas = document.createElement("canvas");
 						canvas.width = 400;
 						canvas.height = 100;
@@ -108,7 +108,7 @@
 						ctx.fillStyle = data.choices[i];
 						ctx.fillText(data.choices[i], 10, 58);
 						document.getElementById("options").appendChild(canvas);
-                        '{% else %}'
+                        "{% else %}"
                         var canvas = document.createElement("canvas");
                         canvas.width = 400;
                         canvas.height = 100;
@@ -119,7 +119,7 @@
                         ctx.fillStyle = color;
                         ctx.fillText(data.choices[i], 10, 58);
                         document.getElementById("options").appendChild(canvas);
-                        '{% endif %}'
+                        "{% endif %}"
 					}
 					document.getElementById("submit").classList.remove("is-loading");
 				});
