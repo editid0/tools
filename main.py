@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-import requests
+import requests, re
 import dotenv
 import os
 from openai import OpenAI
@@ -45,6 +45,12 @@ def hex2rgb():
 def foreground():
     return render_template('foreground.html', path=request.path)
 
+def extract_hex_codes(text):
+    # Regular expression pattern for hex color codes
+    pattern = r"#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b"
+    # Find all matches in the text
+    return re.findall(pattern, text)
+
 @app.route('/colorai')
 def colorai():
     color = request.args.get('color')
@@ -67,6 +73,9 @@ def colorai():
     ],
     model="gpt-4o-mini",
     )
+    print(chat_completion)
+    return 'a'
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5738)
