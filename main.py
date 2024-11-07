@@ -55,10 +55,10 @@ def extract_hex_codes(text):
 def colorai():
     color = request.args.get('color')
     fgbg = request.args.get('fgbg')
+    print(f'color: {color}, fgbg: {fgbg}')
     # local AI
     # req = requests.get(f'http://192.168.7.254:57372?color={color}&fgbg={fgbg}')
     # return req.json()
-
     # openAI
     chat_completion = client.chat.completions.create(
     messages=[
@@ -68,7 +68,7 @@ def colorai():
         },
         {
             "role": "user",
-            "content": f"{color}, {fgbg}",
+            "content": f"{fgbg} {color}",
         }
     ],
     model="gpt-4o-mini",
