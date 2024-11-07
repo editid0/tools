@@ -2,6 +2,9 @@ from flask import Flask, render_template, request
 import requests
 import dotenv
 import os
+from openai import OpenAI
+
+dotenv.load_dotenv()
 
 # SnipSpace?
 
@@ -40,11 +43,15 @@ def foreground():
 
 @app.route('/colorai')
 def colorai():
-    # local AI
     color = request.args.get('color')
     fgbg = request.args.get('fgbg')
-    req = requests.get(f'http://192.168.7.254:57372?color={color}&fgbg={fgbg}')
-    return req.json()
+    # local AI
+    # req = requests.get(f'http://192.168.7.254:57372?color={color}&fgbg={fgbg}')
+    # return req.json()
+
+    # openAI
+    
+    
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5738)
