@@ -67,11 +67,15 @@
 		});
 
 		function tryGen(hex, color, fgbg, depth=0) {
+            var hex = hex
+            var color = color
+            var fgbg = fgbg
+            console.log(hex, color, fgbg, depth)
             if (depth > 5) {
                 document.getElementById("response").innerHTML = "Too many attempts. Please try again.";
                 return;
             }
-			fetch("/colorai?color=" + color + "&fgbg=" + fgbg)
+			fetch("/color?color=" + color + "&fgbg=" + fgbg)
 				.then((response) => response.json())
 				.then((data) => {
                     if (!data.reason) {
@@ -103,10 +107,10 @@
 			.getElementById("submit")
 			.addEventListener("click", function () {
 				this.classList.add("is-loading");
-				var hex = document.getElementById("hex").value;
-				var color = "#" + hex;
-				var fgbg = `{% if path == '/foreground' %}foreground{% else %}background{% endif %}`;
-                tryGen(hex, color, fgbg);
+				let hex = document.getElementById("hex").value;
+				let color = "#" + hex;
+				let fgbg = `{% if path == '/foreground' %}foreground{% else %}background{% endif %}`;
+                tryGen(hex, color, fgbg, 0);
 			});
 	</script>
 	<style>
