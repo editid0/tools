@@ -57,7 +57,7 @@ def colorai():
     color = request.args.get('color')
     fgbg = request.args.get('fgbg')
     print(f'color: {color}, fgbg: {fgbg}')
-    return {}
+    return {'reason': 'Color not found', 'choices': []}
     # local AI
     # req = requests.get(f'http://192.168.7.254:57372?color={color}&fgbg={fgbg}')
     # return req.json()
