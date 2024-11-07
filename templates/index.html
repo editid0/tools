@@ -18,7 +18,7 @@
       </div>
       <div class="parent">
         {% for tool in tools %}
-        <div class="item px-3">
+        <div class="item px-3 is-one-third">
           <a href="{{ tool['link'] }}" target="_blank">
             <img src="{{ tool['image'] }}" alt="{{ tool['name'] }}" />
           </a>
@@ -49,10 +49,6 @@
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
-      width: 0;
-      flex-grow: 0;
-      flex-shrink: 0;
-      flex-basis: 1;
     }
     img {
       aspect-ratio: 1 / 1;

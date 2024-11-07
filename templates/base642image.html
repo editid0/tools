@@ -34,8 +34,7 @@
 			}
 
 			// Create an image element
-			const img = document.createElement("img");
-			img.id = "b64im"; // Set the id as b64im
+			const img = document.getElementById('b64im');
 
 			// Set the source of the image to the base64 string
 			img.src = base64String;
@@ -43,5 +42,21 @@
 			// Append the image to the document body or any container you want
 			document.body.appendChild(img);
 		}
+        document.addEventListener('paste', (e) => {
+            const clipboardData = e.clipboardData || window.clipboardData;
+            const pastedData = clipboardData.getData('Text');
+            // check if pastedData meets regex data:image\/(png|jpeg|jpg|gif|bmp|webp);base64, and if so then extract the base64
+            createImageFromBase64(pastedData);
+        })
+        document.getElementById('base64').addEventListener('input', function () {
+            createImageFromBase64(this.value);
+        });
+        document.getElementById('copy').addEventListener('click', function () {
+            document.getElementById('b64im').click();
+        });
+        document.getElementById('save').addEventListener('click', function () {
+            document.getElementById('b64im').download = 'image.png';
+            document.getElementById('b64im').click();
+        }); 
 	</script>
 </html>
