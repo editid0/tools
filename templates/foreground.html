@@ -14,6 +14,9 @@
         <h1 class="title">{% if path == '/foreground' %}Foreground color selector{% else %}Background color selector{% endif %}</h1>
         {% if path == '/foreground' %}
         <p>Background color (hex):</p>
+        {% else %}
+        <p>Foreground color (hex):</p>
+        {% endif %}
         <div class="field has-addons has-addons-centered">
             <p class="control">
                 <a class="button is-static">#</a>
@@ -27,7 +30,16 @@
                 />
             </p>
         </div>
-        {% endif %}
     </div>
 </body>
+<script>
+    document.getElementById("hex").addEventListener("input", function () {
+        // remove all non hex characters, and any # at the start
+        var hex = document.getElementById("hex").value.replace(/[^a-f0-9]/gi, "").replace(/^#/, "").toUpperCase();
+        // set the value
+        document.getElementById("hex").value = hex;
+        // remove the is-danger class
+        document.getElementById("hex").classList.remove("is-danger");
+    })
+</script>
 </html>
