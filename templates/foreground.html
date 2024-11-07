@@ -118,7 +118,7 @@
 				this.classList.add("is-loading");
 				let hex = document.getElementById("hex").value;
 				let color = "#" + hex;
-				let fgbg = `{% if path == '/foreground' %}foreground{% else %}background{% endif %}`;
+				let fgbg = `{% if path == '/foreground' %}background{% else %}foreground{% endif %}`;
                 tryGen(hex, color, fgbg, 0);
 			});
 	</script>
