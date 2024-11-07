@@ -1,9 +1,14 @@
 from flask import Flask, render_template, request
 import requests
+import dotenv
+import os
 
 # SnipSpace?
 
 app = Flask(__name__)
+
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
 tools = [
     {
         'name': 'Hex to RGB',
