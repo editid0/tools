@@ -73,8 +73,9 @@ def colorai():
     ],
     model="gpt-4o-mini",
     )
-    print(chat_completion)
-    return 'a'
+    res = chat_completion.choices[0].message.content
+    colors = extract_hex_codes(res)
+    return {'reason': res, 'choices': colors}
 
 
 if __name__ == '__main__':
