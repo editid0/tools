@@ -30,6 +30,9 @@
                 />
             </p>
         </div>
+        <div class="buttons is-centered">
+            <button id="submit">Submit</button>
+        </div>
         <div class="options"></div>
     </div>
 </body>
@@ -51,6 +54,12 @@
         } else {
             document.getElementById("hex").classList.add("is-danger");
         }
+    })
+
+    document.getElementById("submit").addEventListener("click", function () {
+        var hex = document.getElementById("hex").value;
+        var color = "#" + hex;
+        var fgbg = `{% if path == '/foreground' %}fg{% else %}bg{% endif %}`;
     })
 </script>
 <style>
