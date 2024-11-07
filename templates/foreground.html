@@ -75,7 +75,16 @@
                 document.getElementById("response").innerHTML = "Too many attempts. Please try again.";
                 return;
             }
-			fetch("/color?color=" + color + "&fgbg=" + fgbg)
+            fetch("/color", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    color: color,
+                    fgbg: fgbg,
+                }),
+            })
 				.then((response) => response.json())
 				.then((data) => {
                     if (!data.reason) {

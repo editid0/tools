@@ -51,13 +51,12 @@ def extract_hex_codes(text):
     # Find all matches in the text
     return re.findall(pattern, text)
 
-@app.route('/color')
+@app.route('/color', methods=['POST', 'GET'])
 def colorai():
-    print(request.args)
-    color = request.args.get('color')
-    fgbg = request.args.get('fgbg')
+    color = request.json.get('color')
+    fgbg = request.json.get('fgbg')
     print(f'color: {color}, fgbg: {fgbg}')
-    return {'reason': 'Color not found', 'choices': []}
+    # return {'reason': 'Color not found', 'choices': []}
     # local AI
     # req = requests.get(f'http://192.168.7.254:57372?color={color}&fgbg={fgbg}')
     # return req.json()
