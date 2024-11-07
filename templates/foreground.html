@@ -64,7 +64,25 @@
         fetch('/colorai?color=' + color + '&fgbg=' + fgbg)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                document.getElementById("response").innerHTML = data.reason;
+                document.getElementsByName("options")[0].innerHTML = '';
+                for (var i = 0; i < data.choices.length; i++) {
+                    // create a canvas which will be used to display the color, set the background to the color specified using hex, and add text with color from choice
+                    var canvas = document.createElement("canvas");
+                    canvas.width = 100;
+                    canvas.height = 100;
+                    var ctx = canvas.getContext("2d");
+                    ctx.fillStyle = data.choices[i];
+                    ctx.fillRect(0, 0, 100, 100);
+                    ctx.fillStyle = "white";
+                    ctx.textAlign = "center";
+                    ctx.fillText(data.choices[i], 50, 50);
+                    // create an option element, set the text to the color and append it to the options div
+                    var option = document.createElement("div");
+                    option.innerHTML = data.choices[i];
+                    option.style.backgroundColor = data.choices[i];
+                    document.getElementsByName("options")[0].appendChild(option);
+                }
             })
     })
 </script>
