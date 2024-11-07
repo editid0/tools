@@ -107,5 +107,9 @@ def jsoneditor():
 def markdowneditor():
     return render_template('markdownEditor.html')
 
+@app.route('/base642image')
+def base642image():
+    return render_template('base642image.html')
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5738)

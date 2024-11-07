@@ -1,76 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tools</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
-    />
-  </head>
-  <body>
-    <div class="container has-text-centered">
-      <!-- This is Title and Subtitle -->
-      <div class="title-container">
-        <h1 class="title">Tools</h1>
-        <h2 class="subtitle">Some of our favourites:</h2>
-      </div>
-      <div class="parent">
-        {% for tool in tools %}
-        <div class="item">
-          <a href="{{ tool['link'] }}" target="_blank">
-            <img src="{{ tool['image'] }}" alt="{{ tool['name'] }}" />
-          </a>
-          <h3>{{ tool['name'] }}</h3>
-          <p>{{ tool['description'] }}</p>
-          <!-- This is buttons -->
-          <div class="buttons is-centered">
-            <a
-              class="button is-primary my-5"
-              href="{{ tool['link'] }}"
-              target="_blank"
-              >Visit</a
-            >
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-  </body>
-  <!-- This is the CSS -->
-  <style>
-    .item {
-      border-radius: 20px;
-      background-color: rgb(242, 241, 241);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-    .parent {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    img {
-      aspect-ratio: 1 / 1;
-      max-width: 10vw;
-    }
-    .title-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      margin-top: 20px;
-    }
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Tools</title>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+		/>
+	</head>
+	<body>
+		<div class="container has-text-centered">
+			<!-- This is Title and Subtitle -->
+			<div class="title-container">
+				<h1 class="title">Tools</h1>
+				<h2 class="subtitle">Some of our favourites:</h2>
+			</div>
+			<div class="parent">
+				{% for tool in tools %}
+				<div class="item">
+					<a href="{{ tool['link'] }}" target="_blank">
+						<img
+							src="{{ tool['image'] }}"
+							alt="{{ tool['name'] }}"
+						/>
+					</a>
+					<h3>{{ tool['name'] }}</h3>
+					<p>{{ tool['description'] }}</p>
+					<!-- This is buttons -->
+					<div class="buttons is-centered">
+						<a
+							class="button is-primary my-5"
+							href="{{ tool['link'] }}"
+							target="_blank"
+							>Visit</a
+						>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</body>
+	<!-- This is the CSS -->
+	<style>
+		.item {
+			border-radius: 20px;
+			background-color: rgb(242, 241, 241);
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+			width: 20vw; /* Set a fixed width */
+			max-width: 300px; /* Optional: limits the maximum width */
+			padding: 1rem;
+			text-align: center; /* Center-align text within each item */
+		}
+		.item h3,
+		.item p {
+			word-wrap: break-word; /* Ensures words wrap to the next line */
+		}
+		.parent {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1rem;
+			justify-content: center;
+		}
+		img {
+			aspect-ratio: 1 / 1;
+			max-width: 100%; /* Ensure image scales within the container */
+			height: auto;
+		}
+		.title-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			margin-top: 20px;
+		}
 
-    .title {
-      font-size: 2.5rem; /* Adjust as needed */
-      font-weight: bold;
-    }
+		.title {
+			font-size: 2.5rem; /* Adjust as needed */
+			font-weight: bold;
+		}
 
-    .subtitle {
-      font-size: 1.5rem; /* Adjust as needed */
-      color: #555; /* Optional: subtle color for subtitle */
-    }
-  </style>
+		.subtitle {
+			font-size: 1.5rem; /* Adjust as needed */
+			color: #555; /* Optional: subtle color for subtitle */
+		}
+	</style>
 </html>
