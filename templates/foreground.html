@@ -69,19 +69,15 @@
                 for (var i = 0; i < data.choices.length; i++) {
                     // create a canvas which will be used to display the color, set the background to the color specified using hex, and add text with color from choice
                     var canvas = document.createElement("canvas");
-                    canvas.width = 100;
-                    canvas.height = 100;
+                    canvas.width = 400;
+                    canvas.height = 400;
                     var ctx = canvas.getContext("2d");
+                    ctx.fillStyle = color;
+                    ctx.fillRect(0, 0, 400, 400);
+                    ctx.font = "48px arial";
                     ctx.fillStyle = data.choices[i];
-                    ctx.fillRect(0, 0, 100, 100);
-                    ctx.fillStyle = "white";
-                    ctx.textAlign = "center";
-                    ctx.fillText(data.choices[i], 50, 50);
-                    // create an option element, set the text to the color and append it to the options div
-                    var option = document.createElement("div");
-                    option.innerHTML = data.choices[i];
-                    option.style.backgroundColor = data.choices[i];
-                    document.getElementById("options").appendChild(option);
+                    ctx.fillText(data.choices[i], 50, 100);
+                    document.getElementById("options").appendChild(canvas);
                 }
             })
     })
