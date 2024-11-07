@@ -18,7 +18,8 @@
 				{% if path == '/foreground' %}Foreground color helper{% else
 				%}Background color helper{% endif %}
 			</h1>
-            <img src="/assets/main.png" alt="Foreground background demo">
+            <img src="/assets/fgbg.png" alt="Foreground background demo" id="demo">
+            <p class="has-text-centered">The foreground is black (#000000) and the background is white (#FFFFFF)</p>
 			{% if path == '/foreground' %}
 			<p class="has-text-centered">Background color (hex):</p>
 			{% else %}
@@ -147,6 +148,13 @@
             margin: 10px;
             max-width: 400px;
             max-height: 100px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #demo {
+            display: flex;
+            justify-content: center;
+            max-width: 400px;
             margin-left: auto;
             margin-right: auto;
         }
