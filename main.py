@@ -27,5 +27,10 @@ def index():
 def hex2rgb():
     return render_template('hex2rgb.html', path=request.path)
 
+@app.route('/foreground')
+@app.route('/background')
+def foreground():
+    return render_template('foreground.html', path=request.path)
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5738)

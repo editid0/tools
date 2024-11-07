@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{% if path == '/foreground' %}Foreground color selector{% else %}Background color selector{% endif %}</title>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+		/>
+	</head>
+<body>
+    <div class="container">
+        <h1 class="title">{% if path == '/foreground' %}Foreground color selector{% else %}Background color selector{% endif %}</h1>
+        {% if path == '/foreground' %}
+        <p>Background color (hex):</p>
+        <div class="field has-addons has-addons-centered">
+            <p class="control">
+                <a class="button is-static">#</a>
+            </p>
+            <p class="control">
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="FFFFFF"
+                    id="hex"
+                />
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
