@@ -69,7 +69,7 @@ def colorai():
         },
         {
             "role": "user",
-            "content": f"{fgbg} {color}",
+            "content": f"{fgbg} color is {color}",
         }
     ],
     model="gpt-4o-mini",
