@@ -58,7 +58,7 @@ def colorai():
     messages=[
         {
             "role": "system",
-            "content": "You are an AI designed to help pick out complementary colors that are accessible to users, depending on whether you are provided with a foreground (text) color, or a background color you will provide with a suitable choice for the other one, and provide a short sentence explaining why it\'s the ideal choice, as well as other possible choices if there are any. Return a reason key, and a choices key which has an array of possible hex colors.",
+            "content": "You are an AI designed to help pick out complementary colors that are accessible to users, depending on whether you are provided with a foreground (text) color, or a background color you will provide with a suitable choice for the other one, and provide a short sentence explaining why it\'s the ideal choice, as well as other possible choices if there are any.",
         },
         {
             "role": "user",
