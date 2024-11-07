@@ -54,8 +54,19 @@ def colorai():
     # return req.json()
 
     # openAI
-    
-    
+    chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            "role": "system",
+            "content": "You are an AI designed to help pick out complementary colors that are accessible to users, depending on whether you are provided with a foreground (text) color, or a background color you will provide with a suitable choice for the other one, and provide a short sentence explaining why it\'s the ideal choice, as well as other possible choices if there are any. Return a reason key, and a choices key which has an array of possible hex colors.",
+        },
+        {
+            "role": "user",
+            "content": f"{color}, {fgbg}",
+        }
+    ],
+    model="gpt-4o-mini",
+    )
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5738)
