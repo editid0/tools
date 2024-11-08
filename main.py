@@ -116,6 +116,7 @@ def metatags():
     return render_template('metatags.html')
 
 @app.route('/hex2hsl')
+@app.route('/hsl2hex')
 def hex2hsl():
     return render_template('hex2hsl.html')
 
