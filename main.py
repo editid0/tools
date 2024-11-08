@@ -10,7 +10,7 @@ dotenv.load_dotenv()
 
 app = Flask(__name__)
 
-OPENAI_API_KEY = 'null'#os.getenv('OPENAI_API_KEY')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY') # create a .env file and set OPENAI_API_KEY to '' if it's causing errors
 client = OpenAI(
     # This is the default and can be omitted
     api_key=OPENAI_API_KEY,
