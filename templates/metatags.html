@@ -12,75 +12,203 @@
 	<body>
 		<div class="container has-text-centered mt-2">
 			<h1 class="title is-1">Meta Tag Generator</h1>
-            <div class="box">
-                <h2 class="has-text-centered title is-2">
-                    Open Graph Generator
-                </h2>
-                <div class="field">
-                    <label class="label">Title</label>
-                    <div class="control">
-                        <input
-                            class="input"
-                            type="text"
-                            placeholder="Enter the title of your website here"
-                            id="title"
-                        />
-                    </div>
-                    <label class="label">Description</label>
-                    <div class="control">
-                        <input
-                            class="input"
-                            type="text"
-                            placeholder="Enter the description of your website here"
-                            id="description"
-                        />
-                    </div>
-                    <label class="label">Image</label>
-                    <div class="control">
-                        <input
-                            class="input"
-                            type="text"
-                            placeholder="Enter your image URL here"
-                            id="image"
-                        />
-                    </div>
-                    <label class="label">URL</label>
-                    <div class="control">
-                        <input
-                            class="input"
-                            type="text"
-                            placeholder="Enter your webpage's URL here"
-                            id="url"
-                        />
-                    </div>
-                    <label class="label">Type</label>
-                    <div class="select">
-                        <select id="type">
-                            <option value="website">website</option>
-                            <option value="book">book</option>
-                            <option value="profile">profile</option>
-                            <option value="article">article</option>
-                            <option value="product">product</option>
-                            <option value="music.song">music.song</option>
-                            <option value="music.album">music.album</option>
-                            <option value="music.playlist">music.playlist</option>
-                            <option value="music.radio_station">
-                                music.radio_station
-                            </option>
-                            <option value="video.movie">video.movie</option>
-                            <option value="video.episode">video.episode</option>
-                            <option value="video.tv_show">video.tv_show</option>
-                            <option value="video.other">video.other</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+			<div class="box">
+				<h2 class="has-text-centered title is-2">
+					Open Graph Generator
+				</h2>
+				<p id="errormsg" class="has-text-centered"></p>
+				<div class="field">
+					<label class="label">Title</label>
+					<div class="control">
+						<input
+							class="input"
+							type="text"
+							placeholder="Enter the title of your website here"
+							id="title"
+							maxlength="60"
+						/>
+					</div>
+					<label class="label">Description</label>
+					<div class="control">
+						<input
+							class="input"
+							type="text"
+							placeholder="Enter the description of your website here"
+							id="description"
+						/>
+					</div>
+					<label class="label">Image</label>
+					<div class="control">
+						<input
+							class="input"
+							type="text"
+							placeholder="Enter your image URL here"
+							id="image"
+						/>
+					</div>
+					<label class="label">URL</label>
+					<div class="control">
+						<input
+							class="input"
+							type="text"
+							placeholder="Enter your webpage's URL here"
+							id="url"
+						/>
+					</div>
+					<label class="label">Type</label>
+					<div class="select">
+						<select id="type">
+							<option value="website">website</option>
+							<option value="book">book</option>
+							<option value="profile">profile</option>
+							<option value="article">article</option>
+							<option value="product">product</option>
+							<option value="music.song">music.song</option>
+							<option value="music.album">music.album</option>
+							<option value="music.playlist">
+								music.playlist
+							</option>
+							<option value="music.radio_station">
+								music.radio_station
+							</option>
+							<option value="video.movie">video.movie</option>
+							<option value="video.episode">video.episode</option>
+							<option value="video.tv_show">video.tv_show</option>
+							<option value="video.other">video.other</option>
+						</select>
+					</div>
+				</div>
+				<p class="has-text-centered">HTML Code:</p>
+				<textarea
+					name="htmlcode"
+					id="htmlcode"
+					class="textarea"
+					rows="7"
+                    readonly
+				></textarea>
+			</div>
 		</div>
 	</body>
-    <style>
-        .field {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-    </style>
+	<style>
+		.field {
+			max-width: 500px;
+			margin: 0 auto;
+		}
+	</style>
+	<script>
+		function validateInputs() {
+			const title = document.getElementById("title").value;
+			const description = document.getElementById("description").value;
+			const image = document.getElementById("image").value;
+			const url = document.getElementById("url").value;
+			const type = document.getElementById("type").value;
+
+			if (
+				title === "" ||
+				description === "" ||
+				image === "" ||
+				url === "" ||
+				type === ""
+			) {
+				// add is-danger class
+				document.getElementById("title").classList.add("is-danger");
+				document
+					.getElementById("description")
+					.classList.add("is-danger");
+				document.getElementById("image").classList.add("is-danger");
+				document.getElementById("url").classList.add("is-danger");
+				document.getElementById("type").classList.add("is-danger");
+				document.getElementById("errormsg").innerHTML =
+					"All fields are required.";
+				return false;
+			} else if (title.length > 60) {
+				// add is-danger class
+				document.getElementById("title").classList.add("is-danger");
+				document.getElementById("errormsg").innerHTML =
+					"Title must be 60 characters or less.";
+				return false;
+			} else if (description.length > 300) {
+				// add is-danger class
+				document
+					.getElementById("description")
+					.classList.add("is-danger");
+				document.getElementById("errormsg").innerHTML =
+					"Description must be 300 characters or less.";
+				return false;
+            } else if (image.length > 300) {
+                // add is-danger class
+                document
+                    .getElementById("image")
+                    .classList.add("is-danger");
+                document.getElementById("errormsg").innerHTML =
+                    "Image URL must be 300 characters or less.";
+                return false;
+            } else if (/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/.test(url) === false) {
+                // add is-danger class
+                document
+                    .getElementById("url")
+                    .classList.add("is-danger");
+                document.getElementById("errormsg").innerHTML =
+                    "Please enter a valid URL.";
+                return false;
+            } else if (/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/.test(image) === false) {
+                // add is-danger class
+                document
+                    .getElementById("image")
+                    .classList.add("is-danger");
+                document.getElementById("errormsg").innerHTML =
+                    "Please enter a valid URL for the image.";
+                return false;
+            } else {
+                // remove is-danger class
+                document
+                    .getElementById("title")
+                    .classList.remove("is-danger");
+                document
+                    .getElementById("description")
+                    .classList.remove("is-danger");
+                document
+                    .getElementById("image")
+                    .classList.remove("is-danger");
+                document
+                    .getElementById("url")
+                    .classList.remove("is-danger");
+                document
+                    .getElementById("type")
+                    .classList.remove("is-danger");
+            }
+			// clear error message
+			document.getElementById("errormsg").innerHTML = "";
+			return true;
+		}
+		function generateOpenGraph() {
+			if (!validateInputs()) {
+				return;
+			}
+			const title = document.getElementById("title").value;
+			const description = document.getElementById("description").value;
+			const image = document.getElementById("image").value;
+			const url = document.getElementById("url").value;
+			const type = document.getElementById("type").value;
+
+			const htmlCode = `<!-- Begin Open Graph Code -->\n<meta property="og:title" content="${title}" />\n<meta property="og:description" content="${description}" />\n<meta property="og:image" content="${image}" />\n<meta property="og:url" content="${url}" />\n<meta property="og:type" content="${type}" />\n<!-- End Open Graph Code -->`;
+
+			document.getElementById("htmlcode").value = htmlCode;
+		}
+		document
+			.getElementById("title")
+			.addEventListener("input", generateOpenGraph);
+		document
+			.getElementById("description")
+			.addEventListener("input", generateOpenGraph);
+		document
+			.getElementById("image")
+			.addEventListener("input", generateOpenGraph);
+		document
+			.getElementById("url")
+			.addEventListener("input", generateOpenGraph);
+		document
+			.getElementById("type")
+			.addEventListener("input", generateOpenGraph);
+	</script>
 </html>
