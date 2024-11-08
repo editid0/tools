@@ -115,5 +115,9 @@ def base642image():
 def metatags():
     return render_template('metatags.html')
 
+@app.route('/hex2hsl')
+def hex2hsl():
+    return render_template('hex2hsl.html')
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5738)
