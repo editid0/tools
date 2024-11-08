@@ -120,5 +120,9 @@ def metatags():
 def hex2hsl():
     return render_template('hex2hsl.html')
 
+@app.route('/diffeditor')
+def diffeditor():
+    return render_template('diffeditor.html')
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5738)
