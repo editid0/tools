@@ -174,7 +174,11 @@ def colorai():
         resets = (datetime.now() + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0) - datetime.now()
         # convert to human readable format using humanize
         resets = humanize.naturaldelta(resets, minimum_unit="seconds")
-        return {"reason": "You have exceeded the maximum number of attempts for today, your limit resets in " + resets + ".", "choices": ['#000000'], "remaining": 0}
+        return {
+            "reason": f"You have exceeded the maximum number of attempts for today, your limit resets in {resets}.",
+            "choices": ['#000000'],
+            "remaining": 0,
+        }
     else:
         remaining = 10 - data[today_string][ip_hash]
     # return {'reason': 'Color not found', 'choices': []}
