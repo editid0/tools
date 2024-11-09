@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>JSON to YAML</title>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+		/>
+		<script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+	</head>
+	<body>
+		<div class="container mt-2">
+			<h1 class="title has-text-centered">JSON to YAML</h1>
+			<p class="has-text-centered">JSON:</p>
+			<textarea name="json" id="json" class="textarea"></textarea>
+			<p class="has-text-centered">YAML:</p>
+			<textarea name="yaml" id="yaml" class="textarea"></textarea>
+            <p class="has-text-centered">Entered text will automatically be converted</p>
+		</div>
+	</body>
+	<script>
+		function jsonToYaml(json) {
+			try {
+				// Parse JSON string to object and then convert to YAML
+				const obj = JSON.parse(json);
+				return jsyaml.dump(obj);
+			} catch (error) {
+				console.error("Invalid JSON format:", error);
+				return "Invalid JSON format";
+			}
+		}
+		function yamlToJson(yaml) {
+			try {
+				// Parse YAML string to object and then convert to JSON string
+				const obj = jsyaml.load(yaml);
+				return JSON.stringify(obj, null, "\t"); // formatted JSON output
+			} catch (error) {
+				console.error("Invalid YAML format:", error);
+				return "Invalid YAML format";
+			}
+		}
+		function autoResize(textarea) {
+			// Reset the height so that scrollHeight will measure correctly
+			textarea.style.height = "auto";
+
+			// Set the new height, but no more than 50vh
+			const maxHeight = window.innerHeight * 0.5;
+			textarea.style.height =
+				Math.min(textarea.scrollHeight, maxHeight) + "px";
+		}
+		document.getElementById("json").addEventListener("input", function () {
+			const json = this.value;
+			const yaml = jsonToYaml(json);
+			document.getElementById("yaml").value = yaml;
+			autoResize(this);
+			autoResize(document.getElementById("yaml"));
+		});
+		document.getElementById("yaml").addEventListener("input", function () {
+			const yaml = this.value;
+			const json = yamlToJson(yaml);
+			document.getElementById("json").value = json;
+			autoResize(this);
+			autoResize(document.getElementById("json"));
+		});
+		var json = document.getElementById("json");
+		var yaml = document.getElementById("yaml");
+		json.addEventListener("keydown", function (event) {
+			if (event.key === "Tab") {
+				event.preventDefault();
+
+				const start = this.selectionStart;
+				const end = this.selectionEnd;
+
+				// Set textarea value to: text before caret + tab character + text after caret
+				this.value =
+					this.value.substring(0, start) +
+					"\t" +
+					this.value.substring(end);
+
+				// Move the caret to after the inserted tab
+				this.selectionStart = this.selectionEnd = start + 1;
+			}
+		});
+		yaml.addEventListener("keydown", function (event) {
+			if (event.key === "Tab") {
+				event.preventDefault();
+
+				const start = this.selectionStart;
+				const end = this.selectionEnd;
+
+				// Set textarea value to: text before caret + tab character + text after caret
+				this.value =
+					this.value.substring(0, start) +
+					"\t" +
+					this.value.substring(end);
+
+				// Move the caret to after the inserted tab
+				this.selectionStart = this.selectionEnd = start + 1;
+			}
+		});
+	</script>
+</html>
