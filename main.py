@@ -41,6 +41,42 @@ tools = [
         'link': '/markdowneditor',
         'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/markdown/markdown-original.svg'
     },
+    {
+        'name': 'Meta Tag Generator',
+        'description': 'Generate meta tags for your web pages.',
+        'link': '/metatags',
+        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg'
+    },
+    {
+        'name': 'Image to Base64',
+        'description': 'Convert an image to base64 encoded data.',
+        'link': '/image2base64',
+        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg'
+    },
+    {
+        'name': 'Base64 to Image',
+        'description': 'Convert base64 encoded data to an image.',
+        'link': '/base642image',
+        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg'
+    },
+    {
+        'name': 'Hex to HSL',
+        'description': 'Converts hex color codes to HSL values.',
+        'link': '/hex2hsl',
+        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg'
+    },
+    {
+        'name': 'HSL to Hex',
+        'description': 'Converts HSL values to hex color codes.',
+        'link': '/hsl2hex',
+        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg'
+    },
+    {
+        'name': 'Diff Editor',
+        'description': 'Generate a diff file between two text files.',
+        'link': '/diffeditor',
+        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg'
+    }
 ]
 
 @app.route('/')
