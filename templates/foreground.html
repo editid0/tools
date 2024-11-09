@@ -41,6 +41,7 @@
 			<div class="buttons is-centered">
 				<button id="submit" class="button is-primary">Submit</button>
 			</div>
+			<p id="remaining" class="has-text-centered"></p>
 			<p id="response" class="has-text-centered"></p>
 			<div id="options"></div>
 		</div>
@@ -67,12 +68,36 @@
 				document.getElementById("hex").classList.add("is-danger");
 			}
 		});
-
+		function like(input, res) {
+			fetch("/like", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					input: input,
+					response: res,
+				}),
+			});
+		}
+		function dislike(input, res) {
+			fetch("/dislike", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					input: input,
+					response: res,
+				}),
+			});
+		}
+		document.like = like;
+		document.dislike = dislike;
 		function tryGen(hex, color, fgbg, depth=0) {
             var hex = hex
             var color = color
             var fgbg = fgbg
-            console.log(hex, color, fgbg, depth)
             if (depth > 5) {
                 document.getElementById("response").innerHTML = "Too many attempts. Please try again.";
                 return;
@@ -96,32 +121,52 @@
                         tryGen(hex, color, fgbg, depth + 1);
                     }
 					document.getElementById("response").innerHTML = data.reason;
+					if (data.remaining != null) {
+						document.getElementById("remaining").innerHTML =
+							`You have ${data.remaining} remaining questions.`;
+					}
 					document.getElementById("options").innerHTML = "";
 					for (var i = 0; i < data.choices.length; i++) {
 						// create a canvas which will be used to display the color, set the background to the color specified using hex, and add text with color from choice
-                        "{% if path == '/foreground' %}"
+						var parent = document.createElement("div");
+						parent.className = "box responsebox has-text-centered";
 						var canvas = document.createElement("canvas");
 						canvas.width = 400;
 						canvas.height = 100;
 						var ctx = canvas.getContext("2d");
+                        "{% if path == '/foreground' %}"
 						ctx.fillStyle = color;
 						ctx.fillRect(0, 0, 400, 100);
 						ctx.font = "48px arial";
 						ctx.fillStyle = data.choices[i];
-						ctx.fillText(data.choices[i], 10, 58);
-						document.getElementById("options").appendChild(canvas);
                         "{% else %}"
-                        var canvas = document.createElement("canvas");
-                        canvas.width = 400;
-                        canvas.height = 100;
-                        var ctx = canvas.getContext("2d");
                         ctx.fillStyle = data.choices[i];
                         ctx.fillRect(0, 0, 400, 100);
                         ctx.font = "48px arial";
                         ctx.fillStyle = color;
-                        ctx.fillText(data.choices[i], 10, 58);
-                        document.getElementById("options").appendChild(canvas);
                         "{% endif %}"
+						ctx.fillText(data.choices[i], 10, 58);
+						parent.appendChild(canvas);
+                        document.getElementById("options").appendChild(parent);
+						var buttons_div = document.createElement("div");
+						buttons_div.className = "buttons is-centered";
+						var like = document.createElement("button");
+						like.className = "button is-success";
+						like.innerHTML = "Like";
+						like.id = i
+						like.addEventListener("click", function () {
+							document.like(hex, data.choices[this.id]);
+						});
+						var dislike = document.createElement("button");
+						dislike.className = "button is-danger";
+						dislike.innerHTML = "Dislike";
+						dislike.id = i
+						dislike.addEventListener("click", function () {
+							document.dislike(hex, data.choices[this.id]);
+						});
+						buttons_div.appendChild(like);
+						buttons_div.appendChild(dislike);
+						parent.appendChild(buttons_div);
 					}
 					document.getElementById("submit").classList.remove("is-loading");
 				});
@@ -158,5 +203,12 @@
             margin-left: auto;
             margin-right: auto;
         }
+		.responsebox > canvas {
+			margin: 10px;
+			max-width: 400px;
+			max-height: 100px;
+			margin-left: auto;
+			margin-right: auto;
+		}
 	</style>
 </html>

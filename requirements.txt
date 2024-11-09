@@ -2,3 +2,5 @@ requests
 python-dotenv
 openai
 flask
+pydantic
+humanize
