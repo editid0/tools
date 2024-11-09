@@ -69,7 +69,10 @@
             const date = new Date(timestamp);
             dateInput.value = date.toLocaleDateString();
             timeInput.value = date.toLocaleTimeString();
-        } else if (/^(\d{11,13})$/.test(timestamp)) {
+        } else if (/^(\d{11,13})$/.test(timestamp) && 
+            Number(timestamp) >= 0 && 
+            new Date(Number(timestamp)).getFullYear() >= 1970 && 
+            new Date(Number(timestamp)).getFullYear() <= 2100) {
             // timestamp is in milliseconds
             formatInput.value = 'Unix Milliseconds';
             var ts = parseInt(timestamp);
