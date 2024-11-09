@@ -304,10 +304,7 @@ class RegexAI(BaseModel):
 
 
 def match_regex(regex: str, test_case: str) -> bool:
-    if re.match(regex, test_case):
-        return True
-    else:
-        return False
+    return bool(re.match(regex, test_case))
 
 
 tools = [
