@@ -30,10 +30,12 @@ if not os.path.exists("data.json"):
 
 dotenv.load_dotenv()
 
+
 # Used for OpenAI
 class Color(BaseModel):
     reason: str
     choices: list[str]
+
 
 # SnipSpace?
 
@@ -171,12 +173,14 @@ def colorai():
     # check if the count is greater than 10
     if data[today_string][ip_hash] > 10:
         # create variable resets that is time until midnight of the next day
-        resets = (datetime.now() + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0) - datetime.now()
+        resets = (datetime.now() + timedelta(days=1)).replace(
+            hour=0, minute=0, second=0, microsecond=0
+        ) - datetime.now()
         # convert to human readable format using humanize
         resets = humanize.naturaldelta(resets, minimum_unit="seconds")
         return {
             "reason": f"You have exceeded the maximum number of attempts for today, your limit resets in {resets}.",
-            "choices": ['#000000'],
+            "choices": ["#000000"],
             "remaining": 0,
         }
     else:
@@ -199,20 +203,29 @@ def colorai():
                 },
             ],
             model="gpt-4o-mini",
-            response_format=Color
+            response_format=Color,
         )
         response = chat_completion.choices[0].message
         if response.refusal:
-            return {'reason': 'Too many attempts. Please try again.', 'choices': ['#000000']}
+            return {
+                "reason": "Too many attempts. Please try again.",
+                "choices": ["#000000"],
+            }
         res = json.loads(response.content)
-        choices = [c.upper().strip() for c in res['choices']]
+        choices = [c.upper().strip() for c in res["choices"]]
         print(choices)
-        return {'reason': res['reason'], 'choices': choices, 'remaining': remaining}
+        return {"reason": res["reason"], "choices": choices, "remaining": remaining}
     except Exception as e:
         if type(e) == openai.LengthFinishReasonError:
-            return {'reason': 'Too many attempts. Please try again.', 'choices': ['#000000']}
+            return {
+                "reason": "Too many attempts. Please try again.",
+                "choices": ["#000000"],
+            }
         else:
-            return {'reason': 'Something went wrong. Please try again.', 'choices': ['#000000']}
+            return {
+                "reason": "Something went wrong. Please try again.",
+                "choices": ["#000000"],
+            }
     # res = chat_completion.choices[0].message.content
     # colors = extract_hex_codes(res)
     # colors = [c for c in colors if c.upper() != color.upper()]
@@ -254,25 +267,30 @@ def hex2hsl():
 def diffeditor():
     return render_template("diffeditor.html")
 
-@app.route('/like', methods=['POST'])
+
+@app.route("/like", methods=["POST"])
 def like():
     data = request.get_json()
-    print(data) # do something with the data at some point
+    print(data)  # do something with the data at some point
     return "OK"
 
-@app.route('/dislike', methods=['POST'])
+
+@app.route("/dislike", methods=["POST"])
 def dislike():
     data = request.get_json()
-    print(data) # do something with the data at some point
+    print(data)  # do something with the data at some point
     return "OK"
+
 
 # REMOVE BELOW IN PRODUCTION
 # REMOVE BELOW IN PRODUCTION
 # REMOVE BELOW IN PRODUCTION
+
 
 @app.route("/template/<template_name>")
 def template(template_name):
     return render_template(f"{template_name}.html")
+
 
 # REMOVE ABOVE IN PRODUCTION
 # REMOVE ABOVE IN PRODUCTION
