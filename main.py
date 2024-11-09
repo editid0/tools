@@ -13,6 +13,7 @@ import humanize
 # check if .env file exists
 if not os.path.exists(".env"):
     # create .env file
+    print("Creating .env file...")
     with open(".env", "w") as f:
         f.write("")
 
@@ -23,6 +24,7 @@ if not os.path.exists(".env"):
 # check if data.json exists
 if not os.path.exists("data.json"):
     # create data.json file
+    print("Creating data.json file...")
     with open("data.json", "w") as f:
         f.write("{}")
 
