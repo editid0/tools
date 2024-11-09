@@ -1,16 +1,24 @@
+import json
 from flask import Flask, render_template, request
 import requests, re
 import dotenv
 import os
 from openai import OpenAI
+from pydantic import BaseModel
 
 dotenv.load_dotenv()
+
+class Color(BaseModel):
+    reason: str
+    choices: list[str]
 
 # SnipSpace?
 
 app = Flask(__name__)
 
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY') # create a .env file and set OPENAI_API_KEY to '' if it's causing errors
+OPENAI_API_KEY = os.getenv(
+    "OPENAI_API_KEY"
+)  # create a .env file and set OPENAI_API_KEY to '' if it's causing errors
 client = OpenAI(
     # This is the default and can be omitted
     api_key=OPENAI_API_KEY,
@@ -18,84 +26,89 @@ client = OpenAI(
 
 tools = [
     {
-        'name': 'Hex to RGB',
-        'description': 'Converts hex color codes to RGB values.',
-        'link': '/hex2rgb',
-        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg'
+        "name": "Hex to RGB",
+        "description": "Converts hex color codes to RGB values.",
+        "link": "/hex2rgb",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg",
     },
     {
-        'name': 'RGB to Hex',
-        'description': 'Converts RGB values to hex color codes.',
-        'link': '/rgb2hex',
-        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg'
+        "name": "RGB to Hex",
+        "description": "Converts RGB values to hex color codes.",
+        "link": "/rgb2hex",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg",
     },
     {
-        'name': 'JSON Editor',
-        'description': 'Edit JSON data with a drag-and-drop interface.',
-        'link': '/jsoneditor',
-        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/json/json-original.svg'
+        "name": "JSON Editor",
+        "description": "Edit JSON data with a drag-and-drop interface.",
+        "link": "/jsoneditor",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/json/json-original.svg",
     },
     {
-        'name': 'Markdown Editor',
-        'description': 'Edit and preview markdown content.',
-        'link': '/markdowneditor',
-        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/markdown/markdown-original.svg'
+        "name": "Markdown Editor",
+        "description": "Edit and preview markdown content.",
+        "link": "/markdowneditor",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/markdown/markdown-original.svg",
     },
     {
-        'name': 'Meta Tag Generator',
-        'description': 'Generate meta tags for your web pages.',
-        'link': '/metatags',
-        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg'
+        "name": "Meta Tag Generator",
+        "description": "Generate meta tags for your web pages.",
+        "link": "/metatags",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
     },
     {
-        'name': 'Image to Base64',
-        'description': 'Convert an image to base64 encoded data.',
-        'link': '/image2base64',
-        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg'
+        "name": "Image to Base64",
+        "description": "Convert an image to base64 encoded data.",
+        "link": "/image2base64",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
     },
     {
-        'name': 'Base64 to Image',
-        'description': 'Convert base64 encoded data to an image.',
-        'link': '/base642image',
-        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg'
+        "name": "Base64 to Image",
+        "description": "Convert base64 encoded data to an image.",
+        "link": "/base642image",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
     },
     {
-        'name': 'Hex to HSL',
-        'description': 'Converts hex color codes to HSL values.',
-        'link': '/hex2hsl',
-        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg'
+        "name": "Hex to HSL",
+        "description": "Converts hex color codes to HSL values.",
+        "link": "/hex2hsl",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg",
     },
     {
-        'name': 'HSL to Hex',
-        'description': 'Converts HSL values to hex color codes.',
-        'link': '/hsl2hex',
-        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg'
+        "name": "HSL to Hex",
+        "description": "Converts HSL values to hex color codes.",
+        "link": "/hsl2hex",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg",
     },
     {
-        'name': 'Diff Editor',
-        'description': 'Generate a diff file between two text files.',
-        'link': '/diffeditor',
-        'image': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg'
-    }
+        "name": "Diff Editor",
+        "description": "Generate a diff file between two text files.",
+        "link": "/diffeditor",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+    },
 ]
 
-@app.route('/')
+
+@app.route("/")
 def index():
-    return render_template('index.html', tools=tools)
+    return render_template("index.html", tools=tools)
 
-@app.route('/hex2rgb')
-@app.route('/rgb2hex')
+
+@app.route("/hex2rgb")
+@app.route("/rgb2hex")
 def hex2rgb():
-    return render_template('hex2rgb.html', path=request.path)
+    return render_template("hex2rgb.html", path=request.path)
 
-@app.route('/foreground')
-@app.route('/background')
+
+@app.route("/foreground")
+@app.route("/background")
 def foreground():
-    return render_template('foreground.html', path=request.path)
+    return render_template("foreground.html", path=request.path)
 
-@app.route('/image2base64')
+
+@app.route("/image2base64")
 def image2base64():
-    return render_template('image2base64.html')
+    return render_template("image2base64.html")
+
 
 def extract_hex_codes(text):
     # Regular expression pattern for hex color codes
@@ -103,78 +116,92 @@ def extract_hex_codes(text):
     # Find all matches in the text
     return re.findall(pattern, text)
 
-@app.route('/color', methods=['POST', 'GET'])
+
+@app.route("/color", methods=["POST", "GET"])
 def colorai():
-    color = request.json.get('color')
-    fgbg = request.json.get('fgbg')
-    if fgbg.lower() not in ['foreground', 'background']:
-        return {'reason': 'Invalid fgbg', 'choices': []}
-    if len(color) != 7 or color[0] != '#':
-        return {'reason': 'Invalid color', 'choices': []}
-    print(f'color: {color}, fgbg: {fgbg}')
+    color = request.json.get("color")
+    fgbg = request.json.get("fgbg")
+    if fgbg.lower() not in ["foreground", "background"]:
+        return {"reason": "Invalid fgbg", "choices": []}
+    if len(color) != 7 or color[0] != "#":
+        return {"reason": "Invalid color", "choices": []}
+    print(f"color: {color}, fgbg: {fgbg}")
     # return {'reason': 'Color not found', 'choices': []}
     # local AI
     # req = requests.get(f'http://192.168.7.254:57372?color={color}&fgbg={fgbg}')
     # return req.json()
     # openAI
-    chat_completion = client.chat.completions.create(
-    messages=[
-        {
-            "role": "system",
-            "content": "You are an AI designed to help pick out complementary colors that are accessible to users, depending on whether you are provided with a foreground (text) color, or a background color you will provide with a suitable choice for the other one, and provide a short sentence explaining why it\'s the ideal choice, as well as other possible choices if there are any.",
-        },
-        {
-            "role": "user",
-            "content": f"{fgbg} color is {color}",
-        }
-    ],
-    model="gpt-4o-mini",
+    chat_completion = client.beta.chat.completions.parse(
+        messages=[
+            {
+                "role": "system",
+                "content": "You are an AI designed to help pick out complementary colors that are accessible to users, depending on whether you are provided with a foreground (text) color, or a background color you will provide with a suitable choice for the other one, and provide a short sentence explaining why it's the ideal choice, as well as other possible choices if there are any. Output a reason and a list of colors in hex format.",
+            },
+            {
+                "role": "user",
+                "content": f"{fgbg} color is {color}",
+            },
+        ],
+        model="gpt-4o-mini",
+        response_format=Color
     )
-    res = chat_completion.choices[0].message.content
-    colors = extract_hex_codes(res)
-    colors = [c for c in colors if c.upper() != color.upper()]
-    return {'reason': res, 'choices': colors}
+    res = json.loads(chat_completion.choices[0].message.content)
+    return {'reason': res['reason'], 'choices': res['choices']}
+    # res = chat_completion.choices[0].message.content
+    # colors = extract_hex_codes(res)
+    # colors = [c for c in colors if c.upper() != color.upper()]
+    # return {'reason': res, 'choices': colors}
 
-@app.route('/assets/<filename>')
+
+@app.route("/assets/<filename>")
 def serve_static(filename):
     return app.send_static_file(filename)
 
-@app.route('/jsoneditor')
+
+@app.route("/jsoneditor")
 def jsoneditor():
-    return render_template('json_editor.html')
+    return render_template("json_editor.html")
 
-@app.route('/markdowneditor')
+
+@app.route("/markdowneditor")
 def markdowneditor():
-    return render_template('markdownEditor.html')
+    return render_template("markdownEditor.html")
 
-@app.route('/base642image')
+
+@app.route("/base642image")
 def base642image():
-    return render_template('base642image.html')
+    return render_template("base642image.html")
 
-@app.route('/metatags')
+
+@app.route("/metatags")
 def metatags():
-    return render_template('metatags.html')
+    return render_template("metatags.html")
 
-@app.route('/hex2hsl')
-@app.route('/hsl2hex')
+
+@app.route("/hex2hsl")
+@app.route("/hsl2hex")
 def hex2hsl():
-    return render_template('hex2hsl.html')
+    return render_template("hex2hsl.html")
 
-@app.route('/diffeditor')
+
+@app.route("/diffeditor")
 def diffeditor():
-    return render_template('diffeditor.html')
+    return render_template("diffeditor.html")
 
-#REMOVE IN PRODUCTION
-#REMOVE IN PRODUCTION
-#REMOVE IN PRODUCTION
 
-@app.route('/template/<template_name>')
+# REMOVE IN PRODUCTION
+# REMOVE IN PRODUCTION
+# REMOVE IN PRODUCTION
+
+
+@app.route("/template/<template_name>")
 def template(template_name):
-    return render_template(template_name + '.html')
+    return render_template(template_name + ".html")
 
-#REMOVE ABOVE IN PRODUCTION
-#REMOVE ABOVE IN PRODUCTION
-#REMOVE ABOVE IN PRODUCTION
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5738)
+# REMOVE ABOVE IN PRODUCTION
+# REMOVE ABOVE IN PRODUCTION
+# REMOVE ABOVE IN PRODUCTION
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=5738)
