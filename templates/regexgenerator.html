@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Regex Generator</title>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+		/>
+	</head>
+	<body>
+		<div class="container has-text-centered" id="container">
+			<div class="box">
+				<h1 class="title">Regex Generator</h1>
+				<span>Create a regex to match </span>
+				<input id="regex" type="text" placeholder="email addresses" />
+				<div class="buttons is-centered mt-2">
+					<button id="generate" class="button is-primary">
+						Generate
+					</button>
+				</div>
+                <p id="info"></p>
+			</div>
+			<div id="result"></div>
+		</div>
+	</body>
+	<style>
+		#regex {
+			border: none;
+			border-bottom: 2px dashed #ccc;
+		}
+	</style>
+	<script>
+		var placeholders = [
+			"email addresses",
+			"phone numbers",
+			"urls",
+			"ip addresses",
+			"credit cards",
+			"social security numbers",
+			"zip codes",
+			"first names",
+			"last names",
+			"usernames",
+			"passwords",
+			"dates",
+			"times",
+			"numbers",
+			"unix timestamps",
+			"hex colors",
+			"rgb colors",
+			"hsl colors",
+		];
+		setInterval(() => {
+			if (document.getElementById("regex").value == "") {
+				document.getElementById("regex").placeholder =
+					placeholders[
+						Math.floor(Math.random() * placeholders.length)
+					];
+			}
+		}, 1500);
+		document
+			.getElementById("generate")
+			.addEventListener("click", (event) => {
+				event.target.classList.add("is-loading");
+				var regex = document.getElementById("regex").value;
+				fetch("/regexai", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						regex: regex,
+					}),
+				})
+					.then((res) => res.json())
+					.then((res) => {
+						console.log(res);
+                        if (res.message) {
+                            document.getElementById("info").innerText = res.message;
+                            document.getElementById('info').classList.add('has-background-danger');
+                            return
+                        } else {
+                            document.getElementById('info').classList.remove('has-background-danger');
+                            document.getElementById("info").innerText = `You have ${res.remaining} requests left.`;
+                        }
+						var regex = res.regex;
+						for (var i = 0; i < regex.length; i++) {
+							var div = document.createElement("div");
+							div.classList.add("box");
+							var h1 = document.createElement("h1");
+							h1.classList.add("title");
+							h1.innerHTML = "Response";
+							div.appendChild(h1);
+							var testCases = res.test_cases;
+							// create a readonly input for the regex
+							var input = document.createElement("input");
+							input.classList.add("input");
+							input.classList.add("my-2");
+							input.readOnly = true;
+							input.value = regex;
+							div.appendChild(input);
+							// create a div for the test cases
+							document.getElementById("result").innerHTML = "";
+							testCases.forEach((testCase) => {
+								var div2 = document.createElement("div");
+								div2.classList.add("box");
+								div2.innerHTML = `<input class="input testcase" type="text" value="${testCase}" data-regex="${regex}"></input>`;
+								// test the test case with the regex
+								if (testCase.match(regex)) {
+									div2.classList.add(
+										"has-background-success"
+									);
+								} else {
+									div2.classList.add("has-background-danger");
+								}
+								div.appendChild(div2);
+							});
+							document.getElementById("result").appendChild(div);
+							// remove the loading class
+							event.target.classList.remove("is-loading");
+						}
+					});
+			});
+		document.getElementById("regex").addEventListener("input", () => {
+			// automatically increase the width of the input
+			document.getElementById("regex").style.width = "auto";
+			document.getElementById("regex").style.width =
+				document.getElementById("regex").scrollWidth + "px";
+		});
+		document.addEventListener("input", (event) => {
+			if (event.target.classList.contains("testcase")) {
+				var regex = event.target.dataset.regex;
+				var testCase = event.target.value;
+				var parent = event.target.parentElement;
+				// remove old classes
+				parent.classList.remove("has-background-success");
+				parent.classList.remove("has-background-danger");
+				// test the test case with the regex
+				if (testCase.match(regex)) {
+					parent.classList.add("has-background-success");
+				} else {
+					parent.classList.add("has-background-danger");
+				}
+			}
+		});
+	</script>
+	<style>
+		.box {
+			max-width: 800px;
+		}
+	</style>
+</html>

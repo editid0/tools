@@ -204,6 +204,7 @@ def colorai():
             ],
             model="gpt-4o-mini",
             response_format=Color,
+            store=True,
         )
         response = chat_completion.choices[0].message
         if response.refusal:
@@ -295,6 +296,193 @@ def template(template_name):
 # REMOVE ABOVE IN PRODUCTION
 # REMOVE ABOVE IN PRODUCTION
 # REMOVE ABOVE IN PRODUCTION
+
+
+class RegexAI(BaseModel):
+    regexs: list[str]
+    test_cases: list[str]
+
+
+def match_regex(regex: str, test_case: str) -> bool:
+    if re.match(regex, test_case):
+        return True
+    else:
+        return False
+
+
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "match_regex",
+            "description": "Matches a regex against a test case.",
+            "strict": True,
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "regex": {
+                        "type": "string",
+                        "description": "The regex to match.",
+                    },
+                    "test_case": {
+                        "type": "string",
+                        "description": "The test case to match the regex against.",
+                    },
+                },
+                "required": ["regex", "test_case"],
+                "additionalProperties": False,
+            },
+        },
+    }
+]
+
+
+@app.route("/regexai", methods=["POST"])
+def regexai():
+    if "CF-Connecting-IP" not in request.headers:
+        ip = request.remote_addr
+    else:
+        ip = request.headers["CF-Connecting-IP"]
+    # hash the ip
+    ip_hash = hashlib.sha256(ip.encode()).hexdigest()
+    # check if the ip has been seen before in data.json
+    with open("data.json", "r") as f:
+        data = json.load(f)
+    today_string = datetime.now().strftime("%d-%m-%Y")
+    if today_string not in data:
+        data[today_string] = {}
+    if ip_hash in data[today_string]:
+        data[today_string][ip_hash] += 1
+    else:
+        data[today_string][ip_hash] = 1
+    with open("data.json", "w") as f:
+        json.dump(data, f, indent=4)
+    # check if the count is greater than 10
+    if data[today_string][ip_hash] > 10:
+        # create variable resets that is time until midnight of the next day
+        resets = (datetime.now() + timedelta(days=1)).replace(
+            hour=0, minute=0, second=0, microsecond=0
+        ) - datetime.now()
+        # convert to human readable format using humanize
+        resets = humanize.naturaldelta(resets, minimum_unit="seconds")
+        return {
+            "message": "You have exceeded the limit of 10 requests per day. Please try again in {}.".format(resets),
+            "remaining": 0,
+        }
+    else:
+        remaining = 10 - data[today_string][ip_hash]
+    data = request.get_json()
+    regex_query = data["regex"]
+    try:
+        messages = [
+            {
+                "role": "system",
+                "content": "You are an AI designed to help generate regular expressions, and test cases that help check if the regex is valid. Refuse innapropriate requests. Make sure that at least 2 of the test cases match the regex, and at least 1 of the test cases do not match the regex. Use the tools provided to validate the regex.",
+            },
+            {
+                "role": "user",
+                "content": f"Generate a regular expression that matches: {regex_query}",
+            },
+        ]
+        chat_completion = client.beta.chat.completions.parse(
+            messages=messages,
+            model="gpt-4o-mini",
+            response_format=RegexAI,
+            store=True,
+            tools=tools,
+            # max_completion_tokens=600,
+        )
+        tool_calls = chat_completion.choices[0].message.tool_calls
+        if tool_calls:
+            messages.append(chat_completion.choices[0].message)
+            print(f"Used {len(tool_calls)} tools")
+            for tool_call in tool_calls:
+                function_id = tool_call.id
+                args = json.loads(tool_call.function.arguments)
+                regex_ = args["regex"]
+                test_case = args["test_case"]
+                result_ = match_regex(regex_, test_case)
+                messages.append(
+                    {
+                        "role": "tool",
+                        "content": json.dumps(
+                            {
+                                "result": result_,
+                            }
+                        ),
+                        "tool_call_id": function_id,
+                    }
+                )
+            chat_completion = client.beta.chat.completions.parse(
+                messages=messages,
+                model="gpt-4o-mini",
+                response_format=RegexAI,
+                store=True,
+                tools=tools,
+                # max_completion_tokens=600,
+            )
+            tool_calls2 = chat_completion.choices[0].message.tool_calls
+            if tool_calls2:
+                messages.append(chat_completion.choices[0].message)
+                print(f"Used {len(tool_calls)} tools")
+                for tool_call in tool_calls:
+                    function_id = tool_call.id
+                    args = json.loads(tool_call.function.arguments)
+                    regex_ = args["regex"]
+                    test_case = args["test_case"]
+                    result_ = match_regex(regex_, test_case)
+                    messages.append(
+                        {
+                            "role": "tool",
+                            "content": json.dumps(
+                                {
+                                    "result": result_,
+                                }
+                            ),
+                            "tool_call_id": function_id,
+                        }
+                    )
+                chat_completion = client.beta.chat.completions.parse(
+                    messages=messages,
+                    model="gpt-4o-mini",
+                    response_format=RegexAI,
+                    store=True,
+                    # max_completion_tokens=600,
+                )
+            else:
+                tool_calls2 = None
+        response = chat_completion.choices[0].message
+        res = response.parsed
+        # print(str(chat_completion.usage.total_tokens) + ' tokens used')
+        if response.refusal:
+            return {
+                "regex": [],
+                "test_cases": [],
+                "message": res.refusal,
+            }
+        return {
+            "regex": res.regexs,
+            "test_cases": res.test_cases,
+            "message": "",
+            "tool": True if tool_calls else False,
+            "tool2": True if tool_calls2 else False,
+            "remaining": remaining,
+        }
+    except openai.LengthFinishReasonError:
+        print("Error: LengthFinishReasonError")
+        return {
+            "regex": [],
+            "test_cases": [],
+            "message": "Too many attempts. Please try again.",
+        }
+    except Exception as e:
+        raise e
+        return {
+            "regex": [],
+            "test_cases": [],
+            "message": "Something went wrong. Please try again.",
+        }
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5738)
