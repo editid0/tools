@@ -107,6 +107,10 @@ def extract_hex_codes(text):
 def colorai():
     color = request.json.get('color')
     fgbg = request.json.get('fgbg')
+    if fgbg.lower() not in ['foreground', 'background']:
+        return {'reason': 'Invalid fgbg', 'choices': []}
+    if len(color) != 7 or color[0] != '#':
+        return {'reason': 'Invalid color', 'choices': []}
     print(f'color: {color}, fgbg: {fgbg}')
     # return {'reason': 'Color not found', 'choices': []}
     # local AI
@@ -159,6 +163,18 @@ def hex2hsl():
 @app.route('/diffeditor')
 def diffeditor():
     return render_template('diffeditor.html')
+
+#REMOVE IN PRODUCTION
+#REMOVE IN PRODUCTION
+#REMOVE IN PRODUCTION
+
+@app.route('/template/<template_name>')
+def template(template_name):
+    return render_template(template_name + '.html')
+
+#REMOVE ABOVE IN PRODUCTION
+#REMOVE ABOVE IN PRODUCTION
+#REMOVE ABOVE IN PRODUCTION
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5738)
