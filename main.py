@@ -272,7 +272,7 @@ def dislike():
 
 @app.route("/template/<template_name>")
 def template(template_name):
-    return render_template(template_name + ".html")
+    return render_template(f"{template_name}.html")
 
 # REMOVE ABOVE IN PRODUCTION
 # REMOVE ABOVE IN PRODUCTION
