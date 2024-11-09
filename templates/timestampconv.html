@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timestamp to Date</title>
+    <link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+		/>
+</head>
+<body>
+    <div class="container box mt-2">
+        <h1 class="title">Timestamp to Date</h1>
+        <div class="field">
+            <label class="label">Timestamp</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Enter timestamp" id="timestamp">
+            </div>
+        </div>
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Date</label>
+            </div>
+            <div class="field-body">
+                <div class="control">
+                    <input class="input" type="text" placeholder="Date" id="date" disabled>
+                </div>
+            </div>
+
+            <div class="field-label is-normal"><label class="label">Time</label></div>
+            <div class="field-body">
+                <div class="control">
+                    <input class="input" type="text" placeholder="Time" id="time" disabled>
+                </div>
+            </div>
+            <div class="field-label is-normal">
+                <p>Detected format</p>
+            </div>
+            <div class="field-body">
+                <div class="control">
+                    <input class="input" type="text" placeholder="Format" id="format" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="buttons is-centered">
+            <button class="button is-primary" id="current">Set Current Timestamp</button>
+        </div>
+    </div>
+</body>
+<script>
+    const timestampInput = document.getElementById('timestamp');
+    const dateInput = document.getElementById('date');
+    const timeInput = document.getElementById('time');
+    const formatInput = document.getElementById('format');
+
+    timestampInput.addEventListener('input', () => {
+        const timestamp = (timestampInput.value);
+        console.log(timestamp);
+        if (/^(\d{2})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\+(\d{2}):(\d{2})$/.test(timestamp)) {
+            // timestamp is in ISO 8601 format
+            formatInput.value = 'ISO 8601';
+            const date = new Date(timestamp);
+            dateInput.value = date.toLocaleDateString();
+            timeInput.value = date.toLocaleTimeString();
+        }  else if (/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\+(\d{2}):(\d{2})$/.test(timestamp)) {
+            // timestamp is in ISO 8601 or RFC 3339 format
+            formatInput.value = 'ISO 8601/RFC 3339';
+            const date = new Date(timestamp);
+            dateInput.value = date.toLocaleDateString();
+            timeInput.value = date.toLocaleTimeString();
+        } else if (/^(\d{11,13})$/.test(timestamp)) {
+            // timestamp is in milliseconds
+            formatInput.value = 'Unix Milliseconds';
+            var ts = parseInt(timestamp);
+            const date = new Date(ts);
+            dateInput.value = date.toLocaleDateString();
+            timeInput.value = date.toLocaleTimeString();
+        } else if (/^(\d{1,10})$/.test(timestamp)) {
+            // timestamp is in seconds
+            formatInput.value = 'Unix Seconds';
+            var ts = parseInt(timestamp);
+            const date = new Date(ts * 1000);
+            dateInput.value = date.toLocaleDateString();
+            timeInput.value = date.toLocaleTimeString();
+        } else if (/^(?:\w+\s)?(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}):(\d{2})(?:\s\w+)?$/.test(timestamp)) {
+            // timestamp is in RFC 2822 format
+            formatInput.value = 'RFC 2822';
+            const date = new Date(timestamp);
+            dateInput.value = date.toLocaleDateString();
+            timeInput.value = date.toLocaleTimeString();
+        } else {
+            // timestamp is invalid
+            console.log('timestamp is invalid');
+            dateInput.value = '';
+            timeInput.value = '';
+            formatInput.value = '';
+        }
+    });
+    document.getElementById('current').addEventListener('click', () => {
+        const date = new Date();
+        const timestamp = date.getTime();
+        timestampInput.value = timestamp;
+        timestampInput.dispatchEvent(new Event('input'));
+    })
+</script>
+</html>
