@@ -1,6 +1,6 @@
 # Tools (In development)
 
-Tools is a website made for developers, with all your everyday developer tools in one website, and it is ad free.
+Tools is a platform for developers, with all your everyday developer tools in one place, and it is ad free.
 
 <!-- Table of Contents -->
 <details open="open">
