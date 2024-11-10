@@ -119,7 +119,7 @@ our_tools = [
     {
         "name": "Color Palette Generator",
         "description": "Generate a color palette based on a given color.",
-        "link": "/palettegen",
+        "link": "/palettegenerator",
         "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
     },
 ]
