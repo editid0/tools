@@ -16,13 +16,16 @@ Tools is a website made for developers, with all your everyday developer tools i
       </ul>
     </li>
     <li><a href="#Additional-Information">Additional Information</a></li>
-    <!-- <li><a href="#contact">Contact</a></li> -->
   </ol>
 </details>
+
+<!-- Details about the project -->
 
 ## About the Project
 
 Tools is Created using Python and HTML, CSS is done using Bulma Framework. Tools has alot of simple utilities all packeged up into a single website, and there is no ads on the website so use the website distraction free. Some of the most used utilities are Hex to RGB Converter, JSON Editor and Markdown editor.
+
+<!-- What tools are used to make the project -->
 
 ### Built With
 
@@ -31,6 +34,8 @@ Tools is Created using Python and HTML, CSS is done using Bulma Framework. Tools
 [Bulma CSS](https://bulma.io/documentation/)
 
 <!-- Add more if needed -->
+
+<!-- How to isntall and run the project -->
 
 ## Installation
 
