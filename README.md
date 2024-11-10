@@ -29,10 +29,9 @@ Tools is created using Python and HTML, CSS is done using Bulma Framework. Tools
 
 ### Built With
 
-- [Python](https://www.python.org/doc/)
-- HTML
-- [Bulma](https://bulma.io/documentation/)
-
+-   [Python](https://www.python.org/doc/)
+-   HTML
+-   [Bulma](https://bulma.io/documentation/)
 
 <!-- Add more if needed -->
 
@@ -41,26 +40,36 @@ Tools is created using Python and HTML, CSS is done using Bulma Framework. Tools
 ## Installation
 
 ### Windows:
+
 1. Install requirements:
+
 ```
 py -3 pip install -r requirements.txt
 ```
+
 2. Run the webserver:
+
 ```
 py -3 main.py
 ```
+
 > If this is your first time running, ensure that the script outputs that it is creating a .env file and a data.json file.
+
 ### Linux/Mac
+
 1. Install requirements
+
 ```sh
 pip3 install -r requirements.txt
 ```
+
 2. Run webserver
+
 ```sh
 python3 main.py
 ```
-> If this is your first time running, ensure that the script outputs that it is creating a .env file and a data.json file.
 
+> If this is your first time running, ensure that the script outputs that it is creating a .env file and a data.json file.
 
 ## Additional Information
 
