@@ -110,6 +110,12 @@ our_tools = [
         "link": "/diffeditor",
         "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
     },
+    {
+        "name": "Regex Generator",
+        "description": "Generate a regex to match a given string.",
+        "link": "/regexgenerator",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+    }
 ]
 
 
@@ -333,6 +339,10 @@ tools = [
     }
 ]
 
+@app.route('/regexgenerator')
+def regexgenerator():
+    return render_template('regexgenerator.html')
+
 
 @app.route("/regexai", methods=["POST"])
 def regexai():
@@ -473,7 +483,7 @@ def regexai():
             "message": "Too many attempts. Please try again.",
         }
     except Exception as e:
-        raise e
+        # raise e
         return {
             "regex": [],
             "test_cases": [],
