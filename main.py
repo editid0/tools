@@ -125,7 +125,7 @@ our_tools = [
     {
         "name": "UUID Generator",
         "description": "Generate a UUID v1, v3, v4, or v5.",
-        "link": "/uuidgen",
+        "link": "/uuidgenerator",
         "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
     },
     {
