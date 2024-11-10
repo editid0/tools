@@ -44,8 +44,19 @@
 				document.getElementById("qrinput").scrollWidth + 5 + "px";
 			errormsg.innerHTML = "";
 			qrcode.innerHTML = "";
+            if (qrinput.value.length > 2000) {
+                errormsg.innerHTML = "Please enter less than 2000 characters";
+                return
+            }
 			if (qrinput.value.length > 0) {
-				new QRCode(qrcode, { text: qrinput.value });
+				try {
+					new QRCode(qrcode, {
+						text: qrinput.value,
+					});
+				} catch (error) {
+					errormsg.innerHTML =
+						"Failed to generate QR code: " + error.message;
+				}
 			} else {
 				errormsg.innerHTML = "Please enter some text";
 			}
