@@ -1,72 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Generator</title>
-    <link
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>QR Code Generator</title>
+		<link
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
 		/>
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-</head>
-<body>
-    <div class="container">
-        <div class="box mt-2 has-text-centered">
-            <h1 class="title">QR Code Generator</h1>
-            <p id="errormsg" class="has-text-centered"></p>
-            <input type="text" name="qrinput" id="qrinput" class="input" value="Demo">
-            <div class="buttons is-centered mt-2">
-                <button id="gen" class="button is-success">Generate</button>
-            </div>
-            <div id="qrcode"></div>
-        </div>
-    </div>
-</body>
-<script>
-    const qrinput = document.getElementById("qrinput");
-    const qrcode = document.getElementById("qrcode");
-    const gen = document.getElementById("gen");
-    const errormsg = document.getElementById("errormsg");
-    // on load
-    document.addEventListener("DOMContentLoaded", () => {
-        // trigger input event
-        qrinput.dispatchEvent(new Event("input"));
-    })
-    qrinput.addEventListener("input", () => {
-        // resize the input to the width of the text
-        qrinput.style.width = document.getElementById("qrinput").scrollWidth + 5 + "px";
-        errormsg.innerHTML = "";
-        qrcode.innerHTML = "";
-        if (qrinput.value.length > 0) {
-            new QRCode(qrcode, {
-                text: qrinput.value,
-            });
-        } else {
-            errormsg.innerHTML = "Please enter some text";
-        }
-    });
-    gen.addEventListener("click", () => {
-        if (qrinput.value.length > 0) {
-            qrcode.innerHTML = "";
-            new QRCode(qrcode, {
-                text: qrinput.value,
-            });
-        } else {
-            errormsg.innerHTML = "Please enter some text";
-        }
-    });
-</script>
-<style>
-    #qrcode > img {
-        margin: 0 auto;
-        display: block;
-        max-width: 100%;
-    }
-    #qrinput {
-        width: 30%;
-        min-width: 30%;
-        max-width: 100%;
-    }
-</style>
+		<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="box mt-2 has-text-centered">
+				<h1 class="title">QR Code Generator</h1>
+				<p id="errormsg" class="has-text-centered"></p>
+				<input
+					type="text"
+					name="qrinput"
+					id="qrinput"
+					class="input"
+					value="Demo"
+				/>
+				<div class="buttons is-centered mt-2">
+					<button id="gen" class="button is-success">Generate</button>
+				</div>
+				<div id="qrcode"></div>
+			</div>
+		</div>
+	</body>
+	<script>
+		const qrinput = document.getElementById("qrinput");
+		const qrcode = document.getElementById("qrcode");
+		const gen = document.getElementById("gen");
+		const errormsg = document.getElementById("errormsg");
+		// on load
+		document.addEventListener("DOMContentLoaded", () => {
+			// trigger input event
+			qrinput.dispatchEvent(new Event("input"));
+		});
+		function generateQRCode() {
+			qrinput.style.width =
+				document.getElementById("qrinput").scrollWidth + 5 + "px";
+			errormsg.innerHTML = "";
+			qrcode.innerHTML = "";
+			if (qrinput.value.length > 0) {
+				new QRCode(qrcode, { text: qrinput.value });
+			} else {
+				errormsg.innerHTML = "Please enter some text";
+			}
+		}
+		qrinput.addEventListener("input", generateQRCode);
+		gen.addEventListener("click", () => {
+			generateQRCode();
+		});
+	</script>
+	<style>
+		#qrcode > img {
+			margin: 0 auto;
+			display: block;
+			max-width: 100%;
+		}
+		#qrinput {
+			width: 30%;
+			min-width: 30%;
+			max-width: 100%;
+		}
+	</style>
 </html>
