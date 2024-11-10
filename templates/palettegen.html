@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Color Palette Generator</title>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+		/>
+		<script src="https://cdn.tutorialjinni.com/chroma-js/2.4.2/chroma.min.js"></script>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+			integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+	</head>
+	<body>
+		<div id="notification-container"></div>
+		<div class="container">
+			<div class="box mt-2">
+				<h1 class="title">Color Palette Generator</h1>
+				<h2 class="subtitle">
+					Click a color to lock/unlock it, double click a color to
+					copy the color. Click on a row/column number to copy the
+					row/column. You can also use the spacebar to generate a new
+					palette.
+				</h2>
+				<div class="gridcoords">
+					<p class="button docopy" data-copy="1,6,11,16,21">1</p>
+					<p class="button docopy" data-copy="2,7,12,17,22">2</p>
+					<p class="button docopy" data-copy="3,8,13,18,23">3</p>
+					<p class="button docopy" data-copy="4,9,14,19,24">4</p>
+					<p class="button docopy" data-copy="5,10,15,20,25">5</p>
+				</div>
+				<div class="palette pal1">
+					<p
+						class="button row docopy"
+						id="palette1button"
+						data-copy="1,2,3,4,5"
+					>
+						1
+					</p>
+					<div id="color1" class="colorbox"></div>
+					<div id="color2" class="colorbox"></div>
+					<div id="color3" class="colorbox"></div>
+					<div id="color4" class="colorbox"></div>
+					<div id="color5" class="colorbox"></div>
+				</div>
+				<div class="palette pal2">
+					<p
+						class="button row docopy"
+						id="palette2button"
+						data-copy="6,7,8,9,10"
+					>
+						2
+					</p>
+					<div id="color6" class="colorbox"></div>
+					<div id="color7" class="colorbox"></div>
+					<div id="color8" class="colorbox"></div>
+					<div id="color9" class="colorbox"></div>
+					<div id="color10" class="colorbox"></div>
+				</div>
+				<div class="palette pal3">
+					<p
+						class="button row docopy"
+						id="palette3button"
+						data-copy="11,12,13,14,15"
+					>
+						3
+					</p>
+					<div id="color11" class="colorbox"></div>
+					<div id="color12" class="colorbox"></div>
+					<div id="color13" class="colorbox"></div>
+					<div id="color14" class="colorbox"></div>
+					<div id="color15" class="colorbox"></div>
+				</div>
+				<div class="palette pal4">
+					<p
+						class="button row docopy"
+						id="palette4button"
+						data-copy="16,17,18,19,20"
+					>
+						4
+					</p>
+					<div id="color16" class="colorbox"></div>
+					<div id="color17" class="colorbox"></div>
+					<div id="color18" class="colorbox"></div>
+					<div id="color19" class="colorbox"></div>
+					<div id="color20" class="colorbox"></div>
+				</div>
+				<div class="palette pal5">
+					<p
+						class="button row docopy"
+						id="palette5button"
+						data-copy="21,22,23,24,25"
+					>
+						5
+					</p>
+					<div id="color21" class="colorbox"></div>
+					<div id="color22" class="colorbox"></div>
+					<div id="color23" class="colorbox"></div>
+					<div id="color24" class="colorbox"></div>
+					<div id="color25" class="colorbox"></div>
+				</div>
+				<div class="buttons is-centered mt-2">
+					<button class="button is-primary is-fullwidth" id="generate">
+						Generate
+					</button>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		function generatePalette(items) {
+			return chroma
+				.scale([chroma.random(), chroma.random()])
+				.mode("lab")
+				.colors(items);
+		}
+		function createPalettes() {
+			// create 5 palettes using chroma.random()
+			const palette1 = generatePalette(5);
+			const palette2 = generatePalette(5);
+			const palette3 = generatePalette(5);
+			const palette4 = generatePalette(5);
+			const palette5 = generatePalette(5);
+			// loop through the 5 palettes
+			for (let i = 0; i < 5; i++) {
+				var elem1 = document.getElementById("color" + (i + 1));
+				var elem2 = document.getElementById("color" + (i + 6));
+				var elem3 = document.getElementById("color" + (i + 11));
+				var elem4 = document.getElementById("color" + (i + 16));
+				var elem5 = document.getElementById("color" + (i + 21));
+				if (
+					!elem1.hasAttribute("data-locked") ||
+					elem1.getAttribute("data-locked") == "false"
+				) {
+					elem1.style.backgroundColor = palette1[i];
+				}
+				if (
+					!elem2.hasAttribute("data-locked") ||
+					elem2.getAttribute("data-locked") == "false"
+				) {
+					elem2.style.backgroundColor = palette2[i];
+				}
+				if (
+					!elem3.hasAttribute("data-locked") ||
+					elem3.getAttribute("data-locked") == "false"
+				) {
+					elem3.style.backgroundColor = palette3[i];
+				}
+				if (
+					!elem4.hasAttribute("data-locked") ||
+					elem4.getAttribute("data-locked") == "false"
+				) {
+					elem4.style.backgroundColor = palette4[i];
+				}
+				if (
+					!elem5.hasAttribute("data-locked") ||
+					elem5.getAttribute("data-locked") == "false"
+				) {
+					elem5.style.backgroundColor = palette5[i];
+				}
+			}
+		}
+		createPalettes();
+		document
+			.getElementById("generate")
+			.addEventListener("click", createPalettes);
+		document.addEventListener("click", (e) => {
+			if (e.target.classList.contains("colorbox")) {
+				// check if the element has data-locked attribute
+				if (e.target.hasAttribute("data-locked")) {
+					// if it has it set to false, set it to true
+					if (e.target.getAttribute("data-locked") == "false") {
+						e.target.setAttribute("data-locked", "true");
+						var icon = document.createElement("i");
+						icon.classList.add("fa-solid");
+						icon.classList.add("fa-lock");
+						e.target.appendChild(icon);
+					} else {
+						e.target.setAttribute("data-locked", "false");
+						// remove the icon
+						e.target.innerHTML = "";
+					}
+				} else {
+					// if it doesn't have it, add it
+					e.target.setAttribute("data-locked", "true");
+					var icon = document.createElement("i");
+					icon.classList.add("fa-solid");
+					icon.classList.add("fa-lock");
+					e.target.appendChild(icon);
+				}
+			}
+			if (e.target.classList.contains("docopy")) {
+				// get data-copy attribute
+				var dataCopy = e.target.getAttribute("data-copy");
+				// get the colors from the data-copy attribute
+				var colors = dataCopy.split(",");
+				var to_copy = "";
+				// loop through the colors
+				for (let i = 0; i < colors.length; i++) {
+					// get the color from the id
+					var color = document.getElementById("color" + colors[i]);
+					// append the color to the to_copy variable
+					to_copy += color.style.backgroundColor + ", ";
+				}
+				// remove the last comma
+				to_copy = to_copy.slice(0, -2);
+				// copy the colors to clipboard
+				navigator.clipboard.writeText(to_copy);
+				// add a notification
+				showNotification(`Copied ${to_copy} to clipboard!`);
+			}
+		});
+		document.addEventListener("dblclick", (e) => {
+			console.log(e.target);
+			if (e.target.classList.contains("colorbox")) {
+				// copy the color to clipboard
+				navigator.clipboard.writeText(e.target.style.backgroundColor);
+				// add a notification
+				showNotification(
+					`Copied ${e.target.style.backgroundColor} to clipboard!`
+				);
+			} else if (e.target.parentElement.classList.contains("colorbox")) {
+				// copy the color to clipboard
+				navigator.clipboard.writeText(
+					e.target.parentElement.style.backgroundColor
+				);
+				// add a notification
+				showNotification(
+					`Copied ${e.target.parentElement.style.backgroundColor} to clipboard!`
+				);
+			}
+		});
+		function showNotification(message, type = "is-primary") {
+			const container = document.getElementById("notification-container");
+
+			// Create the notification element
+			const notification = document.createElement("div");
+			notification.className = `notification ${type}`;
+			notification.innerHTML = `<button class="delete"></button>${message}`;
+
+			// Add close functionality for the "delete" button
+			notification
+				.querySelector(".delete")
+				.addEventListener("click", () => {
+					container.removeChild(notification);
+				});
+
+			// Append the notification to the container
+			container.appendChild(notification);
+
+			// Automatically remove notification after 5 seconds
+			setTimeout(() => {
+				if (container.contains(notification)) {
+					container.removeChild(notification);
+				}
+			}, 5000);
+		}
+		// get computed width of palette1button
+		var palette1button = document.getElementById("palette1button");
+		var palette1buttonWidth = palette1button.offsetWidth;
+		// set --grid-offset to the computed width of palette1button
+		document.documentElement.style.setProperty(
+			"--grid-offset",
+			palette1buttonWidth + "px"
+		);
+		document.addEventListener("keydown", (e) => {
+			console.log(e.key);
+			if (e.key === " ") {
+				e.preventDefault();
+				createPalettes();
+				console.log("Space pressed");
+			}
+		});
+	</script>
+	<style>
+		.palette {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+		}
+		.palette > div {
+			width: 10vw;
+			height: 10vw;
+			margin: 10px;
+			transition: all 0.2s ease-in-out;
+		}
+		.colorbox[data-locked="true"] {
+			border-radius: 50%;
+		}
+		.colorbox {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.colorbox i {
+			font-size: 1.5rem;
+		}
+		#notification-container .notification {
+			background-color: rgba(
+				255,
+				255,
+				255,
+				0.8
+			); /* Semi-transparent white */
+			backdrop-filter: blur(
+				8px
+			); /* Blurs content behind the notification */
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: subtle shadow for depth */
+			border-radius: 8px; /* Optional: rounded corners */
+		}
+		#notification-container {
+			position: fixed;
+			top: 0;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 100%;
+			max-width: 600px;
+			z-index: 1000;
+			padding: 1rem;
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+		}
+		.gridcoords {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 0.8rem;
+			margin-left: var(--grid-offset);
+		}
+		.gridcoords p {
+			width: 10vw;
+			margin: 10px;
+		}
+		.row {
+			height: 10vw;
+		}
+	</style>
+</html>
