@@ -49,7 +49,7 @@ client = OpenAI(
     api_key=OPENAI_API_KEY,
 )
 
-tools = [
+our_tools = [
     {
         "name": "Hex to RGB",
         "description": "Converts hex color codes to RGB values.",
@@ -115,7 +115,7 @@ tools = [
 
 @app.route("/")
 def index():
-    return render_template("index.html", tools=tools)
+    return render_template("index.html", tools=our_tools)
 
 
 @app.route("/hex2rgb")
