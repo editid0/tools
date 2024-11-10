@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>UUID Generator</title>
+		<script src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuid.min.js"></script>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+		/>
+	</head>
+	<body>
+		<div class="container">
+			<div class="box mt-2 has-text-centered">
+				<h1 class="title">UUID Generator</h1>
+				<input
+					id="uuid"
+					type="text"
+					placeholder="UUID"
+					readonly
+					class="input"
+				/>
+				<div class="buttons is-centered mt-2">
+					<button id="gen-1" class="button is-success">
+						Generate V1
+					</button>
+					<button id="gen-3" class="button is-success">
+						Generate V3
+					</button>
+					<button id="gen-4" class="button is-info">
+						Generate V4
+					</button>
+					<button id="gen-5" class="button is-info">
+						Generate V5
+					</button>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		function resizeUuid() {
+			// set the width of the input to the width of the text
+			document.getElementById("uuid").style.width =
+				document.getElementById("uuid").scrollWidth + "px";
+		}
+		document.getElementById("gen-1").addEventListener("click", () => {
+			document.getElementById("uuid").value = uuid.v1();
+			resizeUuid();
+		});
+		document.getElementById("gen-4").addEventListener("click", () => {
+			document.getElementById("uuid").value = uuid.v4();
+			resizeUuid();
+		});
+		document.getElementById("gen-3").addEventListener("click", () => {
+			const namespaceCDN = uuid.v5.URL;
+			const uuid_v3_CDN = uuid.v3(name, namespaceCDN);
+			document.getElementById("uuid").value = uuid_v3_CDN;
+			resizeUuid();
+		});
+		document.getElementById("gen-5").addEventListener("click", () => {
+			const namespaceCDN = uuid.v5.URL;
+			const uuid_v5_CDN = uuid.v5(name, namespaceCDN);
+			document.getElementById("uuid").value = uuid_v5_CDN;
+			resizeUuid();
+		});
+	</script>
+	<style>
+		.input {
+			width: 30%;
+		}
+	</style>
+</html>
