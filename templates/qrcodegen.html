@@ -42,10 +42,10 @@
 		function generateQRCode() {
 			qrinput.style.width =
 				document.getElementById("qrinput").scrollWidth + 5 + "px";
-			errormsg.innerHTML = "";
-			qrcode.innerHTML = "";
+			errormsg.textContent = "";
+			qrcode.textContent = "";
             if (qrinput.value.length > 2000) {
-                errormsg.innerHTML = "Please enter less than 2000 characters";
+                errormsg.textContent = "Please enter less than 2000 characters";
                 return
             }
 			if (qrinput.value.length > 0) {
@@ -54,11 +54,11 @@
 						text: qrinput.value,
 					});
 				} catch (error) {
-					errormsg.innerHTML =
+					errormsg.textContent =
 						"Failed to generate QR code: " + error.message;
 				}
 			} else {
-				errormsg.innerHTML = "Please enter some text";
+				errormsg.textContent = "Please enter some text";
 			}
 		}
 		qrinput.addEventListener("input", generateQRCode);
