@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>SVG to Image</title>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+		/>
+		<meta
+			name="description"
+			content="Convert an SVG file to an image, with support for resizing. Supports PNG, JPG and WEBP outputs."
+		/>
+	</head>
+	<body>
+		<div class="container">
+			<div class="box has-text-centered mt-2">
+				<h1 class="title">SVG to Image</h1>
+                <h2 class="subtitle">Easily convert your SVG to a PNG, JPG or WEBP.</h2>
+				<p>Upload an SVG file</p>
+				<input type="file" id="fileinput" accept="image/svg+xml" />
+				<div id="image" style="display: none">
+					<p>Preview:</p>
+					<img src="" alt="SVG Image" id="svgim" />
+				</div>
+				<p>Resize:</p>
+				<input
+					type="range"
+					min="1"
+					max="100"
+					value="10"
+					id="resizerange"
+					step="1"
+				/>
+				<p id="resizevalue" class="">10X</p>
+				<div class="info" id="imageinfo" style="display: none">
+					<p id="imagesize" data-width="" data-height="">
+						Image Size:
+					</p>
+					<p id="scaledsize">Scaled Image Size:</p>
+				</div>
+				<div class="buttons is-centered mt-2">
+					<button class="button is-success" id="savepng">
+						Save as PNG
+					</button>
+					<button class="button is-info" id="savewebp">
+						Save as WebP
+					</button>
+					<button class="button is-primary" id="savejpg">
+						Save as JPG
+					</button>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		document
+			.getElementById("resizerange")
+			.addEventListener("input", function () {
+				document.getElementById("resizevalue").innerHTML =
+					this.value + "X";
+				// update the scaled size
+				const width = document
+					.getElementById("imagesize")
+					.getAttribute("data-width");
+				const height = document
+					.getElementById("imagesize")
+					.getAttribute("data-height");
+				const scaledWidth = width * this.value;
+				const scaledHeight = height * this.value;
+				document.getElementById("scaledsize").innerHTML =
+					"Scaled Image Size: " +
+					scaledWidth.toFixed(2) +
+					"x" +
+					scaledHeight.toFixed(2);
+			});
+
+		document
+			.getElementById("fileinput")
+			.addEventListener("change", function () {
+                // check if fileinput is empty
+                if (this.files.length === 0) {
+                    document.getElementById("image").style.display = "none";
+                    document.getElementById("svgim").src = "";
+                    document.getElementById("imageinfo").style.display = "none";
+                    document.getElementById("image").style.display = "none";
+                    
+                    return;
+                }
+				document.getElementById("image").style.display = "block";
+				document.getElementById("svgim").src = URL.createObjectURL(
+					this.files[0]
+				);
+				document.getElementById("imageinfo").style.display = "block";
+				const file = event.target.files[0];
+				if (file && file.type === "image/svg+xml") {
+					const reader = new FileReader();
+
+					reader.onload = function (e) {
+						const svgText = e.target.result;
+
+						// Parse the SVG content
+						const parser = new DOMParser();
+						const svgDoc = parser.parseFromString(
+							svgText,
+							"image/svg+xml"
+						);
+
+						// Find the SVG element and extract width and height
+						const svgElement = svgDoc.querySelector("svg");
+						const width = svgElement.getAttribute("width");
+						const height = svgElement.getAttribute("height");
+
+						if (width && height) {
+							// set the image size
+							var widthfloat = parseFloat(width);
+							var heightfloat = parseFloat(height);
+							document
+								.getElementById("imagesize")
+								.setAttribute(
+									"data-width",
+									widthfloat.toFixed(2)
+								);
+							document
+								.getElementById("imagesize")
+								.setAttribute(
+									"data-height",
+									heightfloat.toFixed(2)
+								);
+							document.getElementById("imagesize").innerHTML =
+								"Image Size: " +
+								widthfloat.toFixed(2) +
+								"x" +
+								heightfloat.toFixed(2);
+							// set the scaled image size based on the resize value
+							const scaledWidth =
+								width *
+								document.getElementById("resizerange").value;
+							const scaledHeight =
+								height *
+								document.getElementById("resizerange").value;
+							document.getElementById("scaledsize").innerHTML =
+								"Scaled Image Size: " +
+								scaledWidth.toFixed(2) +
+								"x" +
+								scaledHeight.toFixed(2);
+						} else {
+							console.log(
+								"Width and/or height attributes not found in the SVG file."
+							);
+						}
+					};
+
+					// Read the file as text
+					reader.readAsText(file);
+				} else {
+					console.log("Please upload a valid SVG file.");
+				}
+			});
+
+		async function exportSVG(scale = 1, format = "png") {
+			const fileInput = document.getElementById("fileinput");
+			if (
+				!fileInput ||
+				!fileInput.files ||
+				fileInput.files.length === 0
+			) {
+				console.error("No SVG file selected.");
+				return;
+			}
+
+			const file = fileInput.files[0];
+			const reader = new FileReader();
+
+			reader.onload = async function (event) {
+				const svgData = event.target.result;
+
+				// Create an off-screen image to render the SVG
+				const img = new Image();
+				img.onload = function () {
+					const width = img.width * scale;
+					const height = img.height * scale;
+
+					const canvas = document.createElement("canvas");
+					canvas.width = width;
+					canvas.height = height;
+					const ctx = canvas.getContext("2d");
+
+					// Draw SVG image to canvas
+					ctx.drawImage(img, 0, 0, width, height);
+
+					// Export canvas to the desired format
+					let mimeType;
+					switch (format.toLowerCase()) {
+						case "jpg":
+						case "jpeg":
+							mimeType = "image/jpeg";
+							break;
+						case "webp":
+							mimeType = "image/webp";
+							break;
+						default:
+							mimeType = "image/png";
+					}
+
+					canvas.toBlob((blob) => {
+						const downloadLink = document.createElement("a");
+                        try {
+                            downloadLink.href = URL.createObjectURL(blob);
+                        } catch (error) {
+                            alert('Image too large to export');
+                        }
+						downloadLink.download = `exported_image.${format}`;
+						downloadLink.click();
+					}, mimeType);
+				};
+
+				// Set the SVG data as the image source
+				img.src =
+					"data:image/svg+xml;base64," +
+					btoa(unescape(encodeURIComponent(svgData)));
+			};
+
+			reader.readAsText(file);
+		}
+        document.getElementById("savepng").addEventListener("click", function () {
+            var scale = document.getElementById("resizerange").value;
+            exportSVG(scale, "png");
+        });
+        document.getElementById("savejpg").addEventListener("click", function () {
+            var scale = document.getElementById("resizerange").value;
+            exportSVG(scale, "jpg");
+        });
+        document.getElementById("savewebp").addEventListener("click", function () {
+            var scale = document.getElementById("resizerange").value;
+            exportSVG(scale, "webp");
+        })
+	</script>
+	<style>
+		#resizerange {
+			width: 100%;
+		}
+	</style>
+</html>
