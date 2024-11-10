@@ -115,7 +115,13 @@ our_tools = [
         "description": "Generate a regex to match a given string.",
         "link": "/regexgenerator",
         "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
-    }
+    },
+    {
+        "name": "Color Palette Generator",
+        "description": "Generate a color palette based on a given color.",
+        "link": "/palettegenerator",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+    },
 ]
 
 
@@ -490,6 +496,9 @@ def regexai():
             "message": "Something went wrong. Please try again.",
         }
 
+@app.route('/palettegenerator')
+def palettegenerator():
+    return render_template('palettegenerator.html')
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5738)
