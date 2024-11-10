@@ -1,6 +1,6 @@
-# Tools (In Alpha)
+# Tools (In development)
 
-Tools is a website made for developers, with all your everyday developer tools in one website, and it is ads free.
+Tools is a website made for developers, with all your everyday developer tools in one website, and it is ad free.
 
 <!-- Table of Contents -->
 <details open="open">
@@ -23,15 +23,16 @@ Tools is a website made for developers, with all your everyday developer tools i
 
 ## About the Project
 
-Tools is Created using Python and HTML, CSS is done using Bulma Framework. Tools has alot of simple utilities all packeged up into a single website, and there is no ads on the website so use the website distraction free. Some of the most used utilities are Hex to RGB Converter, JSON Editor and Markdown editor.
+Tools is created using Python and HTML, CSS is done using Bulma Framework. Tools has a lot of simple utilities all packaged up into a single website, and there is no ads on the website so use the website distraction free. Some of the most used utilities are Hex to RGB Converter, JSON Editor and Markdown editor.
 
 <!-- What tools are used to make the project -->
 
 ### Built With
 
-[Python](https://www.python.org/doc/)
-[HTML](https://html.com/)
-[Bulma CSS](https://bulma.io/documentation/)
+- [Python](https://www.python.org/doc/)
+- HTML
+- [Bulma](https://bulma.io/documentation/)
+
 
 <!-- Add more if needed -->
 
@@ -39,12 +40,27 @@ Tools is Created using Python and HTML, CSS is done using Bulma Framework. Tools
 
 ## Installation
 
+### Windows:
 1. Install requirements:
-   Windows: `py -m pip install -r requirements.txt`
-   Linux/Mac: `pip3 install -r requirements.txt`
-2. Run:
-   Windows: `py -3 main.py`
-   Linux/Mac: `python3 main.py`
+```
+py -3 pip install -r requirements.txt
+```
+2. Run the webserver:
+```
+py -3 main.py
+```
+> If this is your first time running, ensure that the script outputs that it is creating a .env file and a data.json file.
+### Linux/Mac
+1. Install requirements
+```sh
+pip3 install -r requirements.txt
+```
+2. Run webserver
+```sh
+python3 main.py
+```
+> If this is your first time running, ensure that the script outputs that it is creating a .env file and a data.json file.
+
 
 ## Additional Information
 
