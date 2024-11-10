@@ -211,7 +211,12 @@
 				// remove the last comma
 				to_copy = to_copy.slice(0, -2);
 				// copy the colors to clipboard
-				navigator.clipboard.writeText(to_copy);
+				try {
+					navigator.clipboard.writeText(to_copy);
+				} catch (err) {
+					showNotification('Failed to copy to clipboard', 'is-danger');
+					return;
+				}
 				// add a notification
 				showNotification(`Copied ${to_copy} to clipboard!`);
 			}
@@ -256,9 +261,15 @@
 
 			// Automatically remove notification after 5 seconds
 			setTimeout(() => {
+				notification
+					.querySelector(".delete")
+					.removeEventListener("click", () => {
+						container.removeChild(notification);
+					});
 				if (container.contains(notification)) {
 					container.removeChild(notification);
 				}
+				// remove event listener from delete button
 			}, 5000);
 		}
 		// get computed width of palette1button
