@@ -157,6 +157,12 @@ our_tools = [
         "description": "Convert between Unix timestamps and human-readable dates.",
         "link": "/timestampconverter",
         "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+    },
+    {
+        "name": "QR Code Generator",
+        "description": "Generate a QR code for a given text.",
+        "link": "/qrgenerator",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
     }
 ]
 
@@ -551,6 +557,10 @@ def timestampconverter():
 @app.route('/json2yaml')
 def json2yaml():
     return render_template('json2yaml.html')
+
+@app.route('/qrgenerator')
+def qrcodegenerator():
+    return render_template('qrcodegen.html')
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5738)
