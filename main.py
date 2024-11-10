@@ -122,6 +122,42 @@ our_tools = [
         "link": "/palettegenerator",
         "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
     },
+    {
+        "name": "UUID Generator",
+        "description": "Generate a UUID v1, v3, v4, or v5.",
+        "link": "/uuidgen",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+    },
+    {
+        "name": "Foreground Color Helper",
+        "description": "Generate a foreground color based on a given background color.",
+        "link": "/foreground",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+    },
+    {
+        "name": "Background Color Helper",
+        "description": "Generate a background color based on a given foreground color.",
+        "link": "/background",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+    },
+    {
+        "name": "JSON to YAML Converter",
+        "description": "Convert JSON data to YAML format and vice versa.",
+        "link": "/json2yaml",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+    },
+    {
+        "name": "SVG to Image",
+        "description": "Convert an SVG file to an image with support for resizing.",
+        "link": "/svg2image",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+    },
+    {
+        "name": "Timestamp Converter",
+        "description": "Convert between Unix timestamps and human-readable dates.",
+        "link": "/timestampconverter",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+    }
 ]
 
 
@@ -499,6 +535,22 @@ def regexai():
 @app.route('/palettegenerator')
 def palettegenerator():
     return render_template('palettegen.html')
+
+@app.route('/uuidgenerator')
+def uuidgenerator():
+    return render_template('uuidgen.html')
+
+@app.route('/svg2image')
+def svg2image():
+    return render_template('svg2image.html')
+
+@app.route('/timestampconverter')
+def timestampconverter():
+    return render_template('timestampconv.html')
+
+@app.route('/json2yaml')
+def json2yaml():
+    return render_template('json2yaml.html')
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5738)
