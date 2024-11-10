@@ -16,9 +16,9 @@
 				<h1 class="title">Tools</h1>
 				<h2 class="subtitle">Some of our favourites:</h2>
 			</div>
-			<div class="parent">
+			<div class="grid is-col-min-6">
 				{% for tool in tools %}
-				<div class="item">
+				<div class="cell">
 					<a href="{{ tool['link'] }}" target="_blank">
 						<img
 							src="{{ tool['image'] }}"
@@ -43,25 +43,26 @@
 	</body>
 	<!-- This is the CSS -->
 	<style>
-		.item {
+		.cell {
 			border-radius: 20px;
 			background-color: rgb(242, 241, 241);
 			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-			width: 20vw; /* Set a fixed width */
-			max-width: 300px; /* Optional: limits the maximum width */
 			padding: 1rem;
 			text-align: center; /* Center-align text within each item */
+		}
+		.grid {
+			margin: 10px;
 		}
 		.item h3,
 		.item p {
 			word-wrap: break-word; /* Ensures words wrap to the next line */
 		}
-		.parent {
+		/* .parent {
 			display: flex;
 			flex-wrap: wrap;
 			gap: 1rem;
 			justify-content: center;
-		}
+		} */
 		img {
 			aspect-ratio: 1 / 1;
 			max-width: 100%; /* Ensure image scales within the container */
