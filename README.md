@@ -29,9 +29,9 @@ Tools is created using Python and HTML, CSS is done using Bulma Framework. Tools
 
 ### Built With
 
--   [Python](https://www.python.org/doc/)
--   HTML
--   [Bulma](https://bulma.io/documentation/)
+- [Python](https://www.python.org/doc/)
+- HTML
+- [Bulma](https://bulma.io/documentation/)
 
 <!-- Add more if needed -->
 
