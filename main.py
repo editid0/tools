@@ -163,6 +163,12 @@ our_tools = [
         "description": "Generate a QR code for a given text.",
         "link": "/qrgenerator",
         "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+    },
+    {
+        "name": "Image to Palette",
+        "description": "Generate a color palette from an image.",
+        "link": "/image2palette",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
     }
 ]
 
@@ -561,6 +567,10 @@ def json2yaml():
 @app.route('/qrgenerator')
 def qrcodegenerator():
     return render_template('qrcodegen.html')
+
+@app.route('/image2palette')
+def image2palette():
+    return render_template('im2palette.html')
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5738)
