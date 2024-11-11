@@ -4,3 +4,4 @@ openai
 flask
 pydantic
 humanize
+gitpython

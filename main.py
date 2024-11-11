@@ -9,6 +9,10 @@ from openai import OpenAI
 import openai
 from pydantic import BaseModel
 import humanize
+import git
+
+repo = git.Repo(search_parent_directories=True)
+sha = repo.head.object.hexsha[:7]
 
 # check if .env file exists
 if not os.path.exists(".env"):
@@ -175,7 +179,7 @@ our_tools = [
 
 @app.route("/")
 def index():
-    return render_template("index.html", tools=our_tools)
+    return render_template("index.html", tools=our_tools, hash=sha)
 
 
 @app.route("/hex2rgb")
