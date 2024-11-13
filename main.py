@@ -55,16 +55,10 @@ client = OpenAI(
 
 our_tools = [
     {
-        "name": "Hex to RGB",
-        "description": "Converts hex color codes to RGB values.",
-        "link": "/hex2rgb",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg",
-    },
-    {
-        "name": "RGB to Hex",
-        "description": "Converts RGB values to hex color codes.",
+        "name": "RGB to Hex Converter",
+        "description": "Converts RGB values to hex color codes and vice versa.",
         "link": "/rgb2hex",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg",
+        "image": "/static/rgb2hex.png",
     },
     {
         "name": "JSON Editor",
