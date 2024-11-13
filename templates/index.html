@@ -17,7 +17,7 @@
 				<h2 class="subtitle">Some of our favourites:</h2>
 				<p>Latest hash: {{ hash }}</p>
 			</div>
-			<div class="grid is-col-min-6">
+			<div class="grid is-col-min-8">
 				{% for tool in tools %}
 				<div class="cell">
 					<a href="{{ tool['link'] }}" target="_blank">
@@ -50,6 +50,11 @@
 			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 			padding: 1rem;
 			text-align: center; /* Center-align text within each item */
+		}
+		@media (prefers-color-scheme: dark) {
+			.cell {
+				background-color: rgb(66, 66, 66);
+			}
 		}
 		.grid {
 			margin: 10px;
