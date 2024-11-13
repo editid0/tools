@@ -570,5 +570,10 @@ def qrcodegenerator():
 def image2palette():
     return render_template('im2palette.html')
 
+@app.route('/secret')
+def secret():
+    raise Exception('a')
+    return 'e'
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5738)
