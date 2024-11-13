@@ -34,14 +34,12 @@ if not os.path.exists("data.json"):
 
 dotenv.load_dotenv()
 
-
 # Used for OpenAI
 class Color(BaseModel):
     reason: str
     choices: list[str]
 
 
-# SnipSpace?
 
 app = Flask(__name__)
 
@@ -169,7 +167,6 @@ our_tools = [
         "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
     }
 ]
-
 
 @app.route("/")
 def index():
