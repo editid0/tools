@@ -80,6 +80,12 @@ our_tools = [
         "name": "Image to Base64",
         "description": "Convert an image to base64 encoded data.",
         "link": "/image2base64",
+        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+    },
+    {
+        "name": "Base64 to Image",
+        "description": "Convert base64 encoded data to an image.",
+        "link": "/base642image",
         "image": "/static/base642image.png",
     },
     {
