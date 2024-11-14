@@ -23,14 +23,6 @@
 					<header class="card-header mb-1">
 						<p class="card-header-title">{{ tool['name'] }}</p>
 					</header>
-					<!-- <div class="card-image mb-1">
-						<a href="{{ tool['link'] }}" target="_blank">
-							<img
-							src="{{ tool['image'] }}"
-							alt="{{ tool['name'] }}"
-							/>
-						</a>
-					</div> -->
 					<div class="card-content">
 						<p>{{ tool['description'] }}</p>
 					</div>
@@ -54,18 +46,6 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
-		}
-		.card-image {
-			height: 200px;
-			padding: 1rem;
-		}
-		.card-image img {
-			border-radius: 10px;
-		}
-		@media (prefers-color-scheme: dark) {
-			.card-image img {
-				filter: invert(1);
-			}
 		}
 		.card-content {
 			flex-grow: 1; /* This will push the button to the bottom */
