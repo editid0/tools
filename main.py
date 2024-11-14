@@ -14,6 +14,7 @@ import git
 repo = git.Repo(search_parent_directories=True)
 sha = repo.head.object.hexsha[:7]
 
+
 # check if .env file exists
 if not os.path.exists(".env"):
     # create .env file
@@ -41,7 +42,6 @@ class Color(BaseModel):
 
 
 
-app = Flask(__name__)
 
 OPENAI_API_KEY = os.getenv(
     "OPENAI_API_KEY"
@@ -50,6 +50,15 @@ client = OpenAI(
     # This is the default and can be omitted
     api_key=OPENAI_API_KEY,
 )
+
+if os.getenv("SENTRY_DSN"):
+    import sentry_sdk
+
+    sentry_sdk.init(
+        dsn=os.getenv("SENTRY_DSN"),
+    )
+app = Flask(__name__)
+
 
 our_tools = [
     {
@@ -86,7 +95,7 @@ our_tools = [
         "name": "Base64 to Image",
         "description": "Convert base64 encoded data to an image.",
         "link": "/base642image",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+        "image": "/static/base642image.png",
     },
     {
         "name": "Hex to HSL",
@@ -566,6 +575,10 @@ def qrcodegenerator():
 @app.route('/image2palette')
 def image2palette():
     return render_template('im2palette.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5738)
