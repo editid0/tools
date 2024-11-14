@@ -12,86 +12,59 @@
 	<body>
 		{% include 'nav.html' %}
 		<div class="container has-text-centered">
-			<!-- This is Title and Subtitle -->
 			<div class="title-container">
 				<h1 class="title">Tools</h1>
 				<h2 class="subtitle">Some of our favourites:</h2>
-				<p>Latest hash: {{ hash }}</p>
+				<p>Latest commit: {{ hash }}</p>
 			</div>
 			<div class="grid is-col-min-8">
 				{% for tool in tools %}
-				<div class="cell">
-					<a href="{{ tool['link'] }}" target="_blank">
-						<img
+				<div class="cell card">
+					<header class="card-header mb-1">
+						<p class="card-header-title">{{ tool['name'] }}</p>
+					</header>
+					<div class="card-image mb-1">
+						<a href="{{ tool['link'] }}" target="_blank">
+							<img
 							src="{{ tool['image'] }}"
 							alt="{{ tool['name'] }}"
-						/>
-					</a>
-					<h3>{{ tool['name'] }}</h3>
-					<p>{{ tool['description'] }}</p>
+							/>
+						</a>
+					</div>
+					<div class="card-content">
+						<p>{{ tool['description'] }}</p>
+					</div>
 					<!-- This is buttons -->
-					<div class="buttons is-centered">
-						<a
-							class="button is-primary my-5"
-							href="{{ tool['link'] }}"
-							target="_blank"
-							>Visit</a
-						>
+					<div class="card-footer has-text-centered">
+						<div class="buttons card-footer-item">
+							<a
+								class="button is-primary"
+								href="{{ tool['link'] }}"
+								target="_blank"
+								>Visit</a
+							>
+						</div>
 					</div>
 				</div>
 				{% endfor %}
 			</div>
 		</div>
 	</body>
-	<!-- This is the CSS -->
 	<style>
-		.cell {
-			border-radius: 20px;
-			background-color: rgb(242, 241, 241);
-			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+		.card {
+			height: 100%;
+		}
+		.card-image {
+			height: 200px;
 			padding: 1rem;
-			text-align: center; /* Center-align text within each item */
+		}
+		.card-image img {
+			border-radius: 10px;
 		}
 		@media (prefers-color-scheme: dark) {
-			.cell {
-				background-color: rgb(66, 66, 66);
+			.card-image img {
+				filter: invert(1);
 			}
-		}
-		.grid {
-			margin: 10px;
-		}
-		.item h3,
-		.item p {
-			word-wrap: break-word; /* Ensures words wrap to the next line */
-		}
-		/* .parent {
-			display: flex;
-			flex-wrap: wrap;
-			gap: 1rem;
-			justify-content: center;
-		} */
-		img {
-			aspect-ratio: 1 / 1;
-			max-width: 100%; /* Ensure image scales within the container */
-			height: auto;
-		}
-		.title-container {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			text-align: center;
-			margin-top: 20px;
-		}
-
-		.title {
-			font-size: 2.5rem; /* Adjust as needed */
-			font-weight: bold;
-		}
-
-		.subtitle {
-			font-size: 1.5rem; /* Adjust as needed */
-			color: #555; /* Optional: subtle color for subtitle */
 		}
 	</style>
 </html>
