@@ -14,6 +14,7 @@ import git
 repo = git.Repo(search_parent_directories=True)
 sha = repo.head.object.hexsha[:7]
 
+
 # check if .env file exists
 if not os.path.exists(".env"):
     # create .env file
@@ -41,7 +42,6 @@ class Color(BaseModel):
 
 
 
-app = Flask(__name__)
 
 OPENAI_API_KEY = os.getenv(
     "OPENAI_API_KEY"
@@ -50,6 +50,15 @@ client = OpenAI(
     # This is the default and can be omitted
     api_key=OPENAI_API_KEY,
 )
+
+if os.getenv("SENTRY_DSN"):
+    import sentry_sdk
+
+    sentry_sdk.init(
+        dsn=os.getenv("SENTRY_DSN"),
+    )
+app = Flask(__name__)
+
 
 our_tools = [
     {

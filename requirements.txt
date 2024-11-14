@@ -5,3 +5,4 @@ flask
 pydantic
 humanize
 gitpython
+sentry-sdk[flask]
