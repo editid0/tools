@@ -174,6 +174,11 @@ our_tools = [
         "description": "Generate a color palette from an image.",
         "link": "/image2palette",
         "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+    },
+    {
+        "name": "AI Image Palette Generator",
+        "description": "Use AI to generate a color palette.",
+        "link": "/aipalettegenerator"
     }
 ]
 
@@ -579,6 +584,89 @@ def image2palette():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+class ColorPalette(BaseModel):
+    colors: list[str]
+
+@app.route('/aipalette', methods=["POST"])
+def aipalette():
+    data = request.get_json()
+    theme = data.get("theme", '')
+    theme = theme[:100]
+    if "CF-Connecting-IP" not in request.headers:
+        ip = request.remote_addr
+    else:
+        ip = request.headers["CF-Connecting-IP"]
+    # hash the ip
+    ip_hash = hashlib.sha256(ip.encode()).hexdigest()
+    # check if the ip has been seen before in data.json
+    with open("data.json", "r") as f:
+        data = json.load(f)
+    today_string = datetime.now().strftime("%d-%m-%Y")
+    if today_string not in data:
+        data[today_string] = {}
+    if ip_hash in data[today_string]:
+        data[today_string][ip_hash] += 1
+    else:
+        data[today_string][ip_hash] = 1
+    with open("data.json", "w") as f:
+        json.dump(data, f, indent=4)
+    # check if the count is greater than 10
+    if data[today_string][ip_hash] > 10:
+        # create variable resets that is time until midnight of the next day
+        resets = (datetime.now() + timedelta(days=1)).replace(
+            hour=0, minute=0, second=0, microsecond=0
+        ) - datetime.now()
+        # convert to human readable format using humanize
+        resets = humanize.naturaldelta(resets, minimum_unit="seconds")
+        return {
+            "message": "You have exceeded the limit of 10 requests per day. Please try again in {}.".format(resets),
+            "remaining": 0,
+        }
+    else:
+        remaining = 10 - data[today_string][ip_hash]
+    messages = [
+        {
+            "role": "system",
+            "content": "You are a color palette generator. You must return a list of 5 colors formatted in hex format, include the hashtag at the start of each one. If you are unable to return a list of 5 colors, make any unavailable colors #000000. Try to create a color palette based on the specified theme, or if theme is random then pick a random complementary color palette.",
+        }
+    ]
+    if theme:
+        messages.append(
+            {
+                "role": "system",
+                "content": "Theme: " + theme,
+            }
+        )
+    else:
+        messages.append(
+            {
+                "role": "user",
+                "content": "Theme: Random",
+            }
+        )
+    response = client.beta.chat.completions.parse(
+        messages=messages,
+        model="gpt-4o-mini",
+        response_format=ColorPalette,
+        store=True,
+    )
+    response = response.choices[0].message
+    if response.refusal:
+        return {
+            "reason": "Too many attempts. Please try again.",
+            "choices": ["#000000"],
+        }
+    res = json.loads(response.content)
+    colors = [c.upper().strip() for c in res["colors"]]
+    return {
+        "colors": colors,
+        "remaining": remaining,
+    }
+    
+@app.route('/aipalettegenerator')
+def aipalettegenerator():
+    return render_template('aicolorpalette.html')
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5738)
