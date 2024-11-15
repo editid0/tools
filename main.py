@@ -35,12 +35,11 @@ if not os.path.exists("data.json"):
 
 dotenv.load_dotenv()
 
+
 # Used for OpenAI
 class Color(BaseModel):
     reason: str
     choices: list[str]
-
-
 
 
 OPENAI_API_KEY = os.getenv(
@@ -62,147 +61,151 @@ app = Flask(__name__)
 
 our_tools = [
     {
-        "name": "RGB to Hex Converter",
+        "name": "RGB to Hex and Hex to RGB Converter",
         "description": "Converts RGB values to hex color codes and vice versa.",
         "link": "/rgb2hex",
-        "image": "/static/rgb2hex.png",
+        "route": "rgb2hex",
+        "template": "hex2rgb.html",
     },
     {
         "name": "JSON Editor",
         "description": "Edit JSON data with a drag-and-drop interface.",
         "link": "/jsoneditor",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/json/json-original.svg",
+        "route": "jsoneditor",
+        "template": "json_editor.html",
     },
     {
         "name": "Markdown Editor",
         "description": "Edit and preview markdown content.",
         "link": "/markdowneditor",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/markdown/markdown-original.svg",
+        "route": "markdowneditor",
+        "template": "markdownEditor.html",
     },
     {
         "name": "Meta Tag Generator",
         "description": "Generate meta tags for your web pages.",
         "link": "/metatags",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+        "route": "metatags",
+        "template": "metatags.html",
     },
     {
         "name": "Image to Base64",
         "description": "Convert an image to base64 encoded data.",
         "link": "/image2base64",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+        "route": "image2base64",
+        "template": "image2base64.html",
     },
     {
         "name": "Base64 to Image",
         "description": "Convert base64 encoded data to an image.",
         "link": "/base642image",
-        "image": "/static/base642image.png",
+        "route": "base642image",
+        "template": "base642image.html",
     },
     {
-        "name": "Hex to HSL",
-        "description": "Converts hex color codes to HSL values.",
+        "name": "Hex to HSL and HSL to Hex Converter",
+        "description": "Converts hex color codes to HSL values and vice versa.",
         "link": "/hex2hsl",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg",
-    },
-    {
-        "name": "HSL to Hex",
-        "description": "Converts HSL values to hex color codes.",
-        "link": "/hsl2hex",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg",
+        "route": "hex2hsl",
+        "template": "hex2hsl.html",
     },
     {
         "name": "Diff Editor",
         "description": "Generate a diff file between two text files.",
         "link": "/diffeditor",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+        "route": "diffeditor",
+        "template": "diffeditor.html",
     },
     {
         "name": "Regex Generator",
         "description": "Generate a regex to match a given string.",
         "link": "/regexgenerator",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+        "route": "regexgenerator",
+        "template": "regexgenerator.html",
     },
     {
         "name": "Color Palette Generator",
         "description": "Generate a color palette based on a given color.",
         "link": "/palettegenerator",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+        "route": "palettegenerator",
+        "template": "palettegen.html",
     },
     {
         "name": "UUID Generator",
         "description": "Generate a UUID v1, v3, v4, or v5.",
         "link": "/uuidgenerator",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+        "route": "uuidgenerator",
+        "template": "uuidgen.html",
     },
     {
         "name": "Foreground Color Helper",
         "description": "Generate a foreground color based on a given background color.",
         "link": "/foreground",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+        "route": "foreground",
+        "template": "foreground.html",
     },
     {
         "name": "Background Color Helper",
         "description": "Generate a background color based on a given foreground color.",
         "link": "/background",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+        "route": "background",
+        "template": "foreground.html",
     },
     {
         "name": "JSON to YAML Converter",
         "description": "Convert JSON data to YAML format and vice versa.",
         "link": "/json2yaml",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+        "route": "json2yaml",
+        "template": "json2yaml.html",
     },
     {
         "name": "SVG to Image",
         "description": "Convert an SVG file to an image with support for resizing.",
         "link": "/svg2image",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+        "route": "svg2image",
+        "template": "svg2image.html",
     },
     {
         "name": "Timestamp Converter",
         "description": "Convert between Unix timestamps and human-readable dates.",
         "link": "/timestampconverter",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+        "route": "timestampconverter",
+        "template": "timestampconv.html",
     },
     {
         "name": "QR Code Generator",
         "description": "Generate a QR code for a given text.",
         "link": "/qrgenerator",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+        "route": "qrgenerator",
+        "template": "qrcodegen.html",
     },
     {
         "name": "Image to Palette",
         "description": "Generate a color palette from an image.",
         "link": "/image2palette",
-        "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+        "route": "image2palette",
+        "template": "im2palette.html",
     },
     {
         "name": "AI Image Palette Generator",
         "description": "Use AI to generate a color palette.",
-        "link": "/aipalettegenerator"
-    }
+        "link": "/aipalettegenerator",
+        "route": "aipalettegenerator",
+        "template": "aicolorpalette.html",
+    },
 ]
+
 
 @app.route("/")
 def index():
     return render_template("index.html", tools=our_tools, hash=sha)
 
-
-@app.route("/hex2rgb")
-@app.route("/rgb2hex")
-def hex2rgb():
-    return render_template("hex2rgb.html", path=request.path)
-
-
-@app.route("/foreground")
-@app.route("/background")
-def foreground():
-    return render_template("foreground.html", path=request.path)
-
-
-@app.route("/image2base64")
-def image2base64():
-    return render_template("image2base64.html")
-
+@app.route('/tools/<tool_name>')
+def tool(tool_name):
+    for tool in our_tools:
+        if tool['route'] == tool_name:
+            return render_template(tool['template'], tool=tool, path=request.path)
+    return render_template('404.html')
 
 def extract_hex_codes(text):
     # Regular expression pattern for hex color codes
@@ -307,37 +310,6 @@ def serve_static(filename):
     return app.send_static_file(filename)
 
 
-@app.route("/jsoneditor")
-def jsoneditor():
-    return render_template("json_editor.html")
-
-
-@app.route("/markdowneditor")
-def markdowneditor():
-    return render_template("markdownEditor.html")
-
-
-@app.route("/base642image")
-def base642image():
-    return render_template("base642image.html")
-
-
-@app.route("/metatags")
-def metatags():
-    return render_template("metatags.html")
-
-
-@app.route("/hex2hsl")
-@app.route("/hsl2hex")
-def hex2hsl():
-    return render_template("hex2hsl.html")
-
-
-@app.route("/diffeditor")
-def diffeditor():
-    return render_template("diffeditor.html")
-
-
 @app.route("/like", methods=["POST"])
 def like():
     data = request.get_json()
@@ -402,10 +374,6 @@ tools = [
     }
 ]
 
-@app.route('/regexgenerator')
-def regexgenerator():
-    return render_template('regexgenerator.html')
-
 
 @app.route("/regexai", methods=["POST"])
 def regexai():
@@ -436,7 +404,9 @@ def regexai():
         # convert to human readable format using humanize
         resets = humanize.naturaldelta(resets, minimum_unit="seconds")
         return {
-            "message": "You have exceeded the limit of 10 requests per day. Please try again in {}.".format(resets),
+            "message": "You have exceeded the limit of 10 requests per day. Please try again in {}.".format(
+                resets
+            ),
             "remaining": 0,
         }
     else:
@@ -553,45 +523,20 @@ def regexai():
             "message": "Something went wrong. Please try again.",
         }
 
-@app.route('/palettegenerator')
-def palettegenerator():
-    return render_template('palettegen.html')
 
-@app.route('/uuidgenerator')
-def uuidgenerator():
-    return render_template('uuidgen.html')
-
-@app.route('/svg2image')
-def svg2image():
-    return render_template('svg2image.html')
-
-@app.route('/timestampconverter')
-def timestampconverter():
-    return render_template('timestampconv.html')
-
-@app.route('/json2yaml')
-def json2yaml():
-    return render_template('json2yaml.html')
-
-@app.route('/qrgenerator')
-def qrcodegenerator():
-    return render_template('qrcodegen.html')
-
-@app.route('/image2palette')
-def image2palette():
-    return render_template('im2palette.html')
-
-@app.route('/about')
+@app.route("/about")
 def about():
-    return render_template('about.html')
+    return render_template("about.html")
+
 
 class ColorPalette(BaseModel):
     colors: list[str]
 
-@app.route('/aipalette', methods=["POST"])
+
+@app.route("/aipalette", methods=["POST"])
 def aipalette():
     data = request.get_json()
-    theme = data.get("theme", '')
+    theme = data.get("theme", "")
     theme = theme[:100]
     if "CF-Connecting-IP" not in request.headers:
         ip = request.remote_addr
@@ -620,7 +565,9 @@ def aipalette():
         # convert to human readable format using humanize
         resets = humanize.naturaldelta(resets, minimum_unit="seconds")
         return {
-            "message": "You have exceeded the limit of 10 requests per day. Please try again in {}.".format(resets),
+            "message": "You have exceeded the limit of 10 requests per day. Please try again in {}.".format(
+                resets
+            ),
             "remaining": 0,
         }
     else:
@@ -663,10 +610,7 @@ def aipalette():
         "colors": colors,
         "remaining": remaining,
     }
-    
-@app.route('/aipalettegenerator')
-def aipalettegenerator():
-    return render_template('aicolorpalette.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5738)
