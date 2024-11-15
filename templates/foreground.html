@@ -11,18 +11,29 @@
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
 		/>
+		<script
+			defer
+			src="https://st.editid.uk/script.js"
+			data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"
+		></script>
 	</head>
 	<body>
-		{# adds the nav bar to the file #}
-		{% include 'nav.html' %}
+		{# adds the nav bar to the file #} {% include 'nav.html' %}
 		<div class="container">
 			<div class="box mt-2">
 				<h1 class="title has-text-centered">
-					{% if path == '/tools/foreground' %}Foreground color helper{% else
-					%}Background color helper{% endif %}
+					{% if path == '/tools/foreground' %}Foreground color
+					helper{% else %}Background color helper{% endif %}
 				</h1>
-							<img src="/assets/fgbg.png" alt="Foreground background demo" id="demo">
-							<p class="has-text-centered">The foreground is black (#000000) and the background is white (#FFFFFF)</p>
+				<img
+					src="/assets/fgbg.png"
+					alt="Foreground background demo"
+					id="demo"
+				/>
+				<p class="has-text-centered">
+					The foreground is black (#000000) and the background is
+					white (#FFFFFF)
+				</p>
 				{% if path == '/tools/foreground' %}
 				<p class="has-text-centered">Background color (hex):</p>
 				{% else %}
@@ -42,7 +53,9 @@
 					</p>
 				</div>
 				<div class="buttons is-centered">
-					<button id="submit" class="button is-primary">Submit</button>
+					<button id="submit" class="button is-primary">
+						Submit
+					</button>
 				</div>
 				<p id="remaining" class="has-text-centered"></p>
 				<p id="response" class="has-text-centered"></p>
@@ -98,36 +111,38 @@
 		}
 		document.like = like;
 		document.dislike = dislike;
-		function tryGen(hex, color, fgbg, depth=0) {
-            var hex = hex
-            var color = color
-            var fgbg = fgbg
-            if (depth > 5) {
-                document.getElementById("response").innerHTML = "Too many attempts. Please try again.";
-                return;
-            }
-            fetch("/color", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    color: color,
-                    fgbg: fgbg,
-                }),
-            })
+		function tryGen(hex, color, fgbg, depth = 0) {
+			var hex = hex;
+			var color = color;
+			var fgbg = fgbg;
+			if (depth > 5) {
+				document.getElementById("response").innerHTML =
+					"Too many attempts. Please try again.";
+				return;
+			}
+			fetch("/color", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					color: color,
+					fgbg: fgbg,
+				}),
+			})
 				.then((response) => response.json())
 				.then((data) => {
-                    if (!data.reason) {
-                        tryGen(hex, color, fgbg, depth + 1);
-                    }
-                    if (!data.choices) {
-                        tryGen(hex, color, fgbg, depth + 1);
-                    }
+					if (!data.reason) {
+						tryGen(hex, color, fgbg, depth + 1);
+					}
+					if (!data.choices) {
+						tryGen(hex, color, fgbg, depth + 1);
+					}
 					document.getElementById("response").innerHTML = data.reason;
 					if (data.remaining != null) {
-						document.getElementById("remaining").innerHTML =
-							`You have ${data.remaining} remaining questions.`;
+						document.getElementById(
+							"remaining"
+						).innerHTML = `You have ${data.remaining} remaining questions.`;
 					}
 					document.getElementById("options").innerHTML = "";
 					for (var i = 0; i < data.choices.length; i++) {
@@ -138,33 +153,33 @@
 						canvas.width = 400;
 						canvas.height = 100;
 						var ctx = canvas.getContext("2d");
-                        "{% if path == '/tools/foreground' %}"
+						("{% if path == '/tools/foreground' %}");
 						ctx.fillStyle = color;
 						ctx.fillRect(0, 0, 400, 100);
 						ctx.font = "48px arial";
 						ctx.fillStyle = data.choices[i];
-                        "{% else %}"
-                        ctx.fillStyle = data.choices[i];
-                        ctx.fillRect(0, 0, 400, 100);
-                        ctx.font = "48px arial";
-                        ctx.fillStyle = color;
-                        "{% endif %}"
+						("{% else %}");
+						ctx.fillStyle = data.choices[i];
+						ctx.fillRect(0, 0, 400, 100);
+						ctx.font = "48px arial";
+						ctx.fillStyle = color;
+						("{% endif %}");
 						ctx.fillText(data.choices[i], 10, 58);
 						parent.appendChild(canvas);
-                        document.getElementById("options").appendChild(parent);
+						document.getElementById("options").appendChild(parent);
 						var buttons_div = document.createElement("div");
 						buttons_div.className = "buttons is-centered";
 						var like = document.createElement("button");
 						like.className = "button is-success";
 						like.innerHTML = "Like";
-						like.id = i
+						like.id = i;
 						like.addEventListener("click", function () {
 							document.like(hex, data.choices[this.id]);
 						});
 						var dislike = document.createElement("button");
 						dislike.className = "button is-danger";
 						dislike.innerHTML = "Dislike";
-						dislike.id = i
+						dislike.id = i;
 						dislike.addEventListener("click", function () {
 							document.dislike(hex, data.choices[this.id]);
 						});
@@ -172,7 +187,9 @@
 						buttons_div.appendChild(dislike);
 						parent.appendChild(buttons_div);
 					}
-					document.getElementById("submit").classList.remove("is-loading");
+					document
+						.getElementById("submit")
+						.classList.remove("is-loading");
 				});
 		}
 
@@ -183,7 +200,7 @@
 				let hex = document.getElementById("hex").value;
 				let color = "#" + hex;
 				let fgbg = `{% if path == '/tools/foreground' %}background{% else %}foreground{% endif %}`;
-                tryGen(hex, color, fgbg, 0);
+				tryGen(hex, color, fgbg, 0);
 			});
 	</script>
 	<style>
@@ -191,22 +208,22 @@
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: center;
-            flex-direction: column;
+			flex-direction: column;
 		}
-        #options canvas {
-            margin: 10px;
-            max-width: 400px;
-            max-height: 100px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        #demo {
-            display: flex;
-            justify-content: center;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+		#options canvas {
+			margin: 10px;
+			max-width: 400px;
+			max-height: 100px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		#demo {
+			display: flex;
+			justify-content: center;
+			max-width: 400px;
+			margin-left: auto;
+			margin-right: auto;
+		}
 		.responsebox > canvas {
 			margin: 10px;
 			max-width: 400px;
@@ -214,7 +231,8 @@
 			margin-left: auto;
 			margin-right: auto;
 		}
-		canvas, img {
+		canvas,
+		img {
 			max-width: 100%;
 		}
 	</style>

@@ -26,10 +26,14 @@
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer"
 		/>
+		<script
+			defer
+			src="https://st.editid.uk/script.js"
+			data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"
+		></script>
 	</head>
 	<body>
-		{# adds the nav bar to the file #}
-		{% include 'nav.html' %}
+		{# adds the nav bar to the file #} {% include 'nav.html' %}
 		<div class="container">
 			<div class="box mt-2">
 				<h1 class="title has-text-centered mt-2">Generate a Diff</h1>
@@ -57,7 +61,9 @@
 										<span class="file-icon">
 											<i class="fas fa-upload"></i>
 										</span>
-										<span class="file-label">Choose a file...</span>
+										<span class="file-label"
+											>Choose a file...</span
+										>
 									</span>
 								</label>
 							</div>
@@ -89,7 +95,9 @@
 										<span class="file-icon">
 											<i class="fas fa-upload"></i>
 										</span>
-										<span class="file-label">Choose a file...</span>
+										<span class="file-label"
+											>Choose a file...</span
+										>
 									</span>
 								</label>
 							</div>
@@ -101,7 +109,10 @@
 					<button onclick="generateDiff()" class="button is-success">
 						Generate Diff
 					</button>
-					<a id="download-link" style="display: none" class="button is-info"
+					<a
+						id="download-link"
+						style="display: none"
+						class="button is-info"
 						>Download Diff File</a
 					>
 				</div>

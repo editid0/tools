@@ -8,17 +8,25 @@
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
 		/>
+		<script
+			defer
+			src="https://st.editid.uk/script.js"
+			data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"
+		></script>
 	</head>
 	<body>
-		{# adds the nav bar to the file #}
-		{% include 'nav.html' %}
+		{# adds the nav bar to the file #} {% include 'nav.html' %}
 		<div class="container">
 			<div class="box mt-2">
-                <h1 class="has-text-centered title">Base64 to Image</h1>
-                <p class="subtitle has-text-centered">Enter base64 string:</p>
-				<textarea name="base64" id="base64" class="textarea my-3"></textarea>
+				<h1 class="has-text-centered title">Base64 to Image</h1>
+				<p class="subtitle has-text-centered">Enter base64 string:</p>
+				<textarea
+					name="base64"
+					id="base64"
+					class="textarea my-3"
+				></textarea>
 				<div id="image">
-                    <p class="has-text-centered">Image:</p>
+					<p class="has-text-centered">Image:</p>
 					<img src="" alt="Base64 Image" id="b64im" />
 				</div>
 				<div class="buttons is-centered mt-2">
@@ -45,8 +53,8 @@
 
 			// Set the source of the image to the base64 string
 			img.src = base64String;
-            // Show the image
-            document.getElementById("image").style.display = "block";
+			// Show the image
+			document.getElementById("image").style.display = "block";
 		}
 		document.addEventListener("paste", (e) => {
 			const clipboardData = e.clipboardData || window.clipboardData;
@@ -67,12 +75,12 @@
 			document.getElementById("b64im").click();
 		});
 	</script>
-    <style>
-        #image {
-            display: flex;
-            justify-content: center;
-            border: 1px solid #ccc;
-            display: none;
-        }
-    </style>
+	<style>
+		#image {
+			display: flex;
+			justify-content: center;
+			border: 1px solid #ccc;
+			display: none;
+		}
+	</style>
 </html>

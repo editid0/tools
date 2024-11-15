@@ -15,11 +15,15 @@
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer"
 		/>
+		<script
+			defer
+			src="https://st.editid.uk/script.js"
+			data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"
+		></script>
 	</head>
 
 	<body>
-		{# adds the nav bar to the file #}
-		{% include 'nav.html' %}
+		{# adds the nav bar to the file #} {% include 'nav.html' %}
 		<div class="container">
 			<div class="box mt-2">
 				<h1 class="has-text-centered">Image to Base64</h1>
@@ -37,14 +41,24 @@
 								<span class="file-icon">
 									<i class="fas fa-upload"></i>
 								</span>
-								<span class="file-label"> Choose a file...</span>
+								<span class="file-label">
+									Choose a file...</span
+								>
 							</span>
 						</label>
 					</div>
-					<textarea name="base64" id="base64" class="textarea"></textarea>
+					<textarea
+						name="base64"
+						id="base64"
+						class="textarea"
+					></textarea>
 					<div class="buttons is-centered mt-2">
-						<button class="button is-primary" id="copy">Copy</button>
-						<button class="button is-is-info" id="save">Save</button>
+						<button class="button is-primary" id="copy">
+							Copy
+						</button>
+						<button class="button is-is-info" id="save">
+							Save
+						</button>
 					</div>
 				</div>
 			</div>
@@ -116,10 +130,10 @@
 			.getElementById("imageinput")
 			.addEventListener("change", function (e) {
 				var file = document.getElementById("imageinput");
-                encodeImageFileAsBase64(file, function (base64) {
-                    document.getElementById("base64").value = base64;
-                    document.getElementById("base64").innerText = base64;
-                })
+				encodeImageFileAsBase64(file, function (base64) {
+					document.getElementById("base64").value = base64;
+					document.getElementById("base64").innerText = base64;
+				});
 			});
 		document.getElementById("copy").addEventListener("click", function () {
 			navigator.clipboard.writeText(document.getElementById("base64"));

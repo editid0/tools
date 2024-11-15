@@ -9,10 +9,14 @@
 			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
 		/>
 		<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+		<script
+			defer
+			src="https://st.editid.uk/script.js"
+			data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"
+		></script>
 	</head>
 	<body>
-		{# adds the nav bar to the file #}
-		{% include 'nav.html' %}
+		{# adds the nav bar to the file #} {% include 'nav.html' %}
 		<div class="container">
 			<div class="box mt-2 has-text-centered">
 				<h1 class="title">QR Code Generator</h1>
@@ -23,7 +27,7 @@
 					id="qrinput"
 					class="input"
 					value="Demo"
-                    maxlength="2000"
+					maxlength="2000"
 				/>
 				<div class="buttons is-centered mt-2">
 					<button id="gen" class="button is-success">Generate</button>
@@ -47,10 +51,10 @@
 				document.getElementById("qrinput").scrollWidth + 5 + "px";
 			errormsg.textContent = "";
 			qrcode.textContent = "";
-            if (qrinput.value.length > 2000) {
-                errormsg.textContent = "Please enter less than 2000 characters";
-                return
-            }
+			if (qrinput.value.length > 2000) {
+				errormsg.textContent = "Please enter less than 2000 characters";
+				return;
+			}
 			if (qrinput.value.length > 0) {
 				try {
 					new QRCode(qrcode, {

@@ -8,10 +8,14 @@
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
 		/>
+		<script
+			defer
+			src="https://st.editid.uk/script.js"
+			data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"
+		></script>
 	</head>
 	<body>
-		{# adds the nav bar to the file #}
-		{% include 'nav.html' %}
+		{# adds the nav bar to the file #} {% include 'nav.html' %}
 		<div class="container has-text-centered">
 			<div class="box mt-2">
 				<h1 class="title">Hex to RGB and RGB to Hex</h1>
@@ -122,7 +126,7 @@
 			}
 			var color = "#" + hex;
 			var canvas = document.getElementById("preview");
-            setCanvasBackground(canvas, color);
+			setCanvasBackground(canvas, color);
 		}
 		function hexToRGBA(hex) {
 			// Ensure hex is valid
@@ -249,7 +253,7 @@
 			rgb = rgb.replace(/,$/, "");
 			try {
 				var hex = rgbToHex(rgb);
-                setPreview(hex, null);
+				setPreview(hex, null);
 				document.getElementById("rgb").classList.remove("is-danger");
 			} catch (error) {
 				document.getElementById("rgb").classList.add("is-danger");
@@ -262,36 +266,50 @@
 				document.getElementById("hex").classList.remove("is-danger");
 			}
 		});
-        document.addEventListener('paste', (e) => {
-            const clipboardData = e.clipboardData || window.clipboardData;
-            const pastedData = clipboardData.getData('Text');
-            // check if pastedData meets regex rgb\((\d+),?\s?(\d+),?\s?(\d+)\);? and if so then extract the rgb
-            if (/rgb\((\d+),?\s?(\d+),?\s?(\d+)\);?/.test(pastedData)) {
-                e.preventDefault();
-                const rgb = pastedData.match(/rgb\((\d+),?\s?(\d+),?\s?(\d+)\);?/);
-                // set the value of rgb and start typing in it
-                document.getElementById("rgb").value = rgb[1] + "," + rgb[2] + "," + rgb[3];
-                // remove the is-danger class
-                document.getElementById("rgb").classList.remove("is-danger");
-                // start typing in the rgb input
-                document.getElementById("rgb").focus();
-                document.getElementById("rgb").select();
-                // trigger input event
-                document.getElementById("rgb").dispatchEvent(new Event('input'));
-            } else if (/rgba\((\d+),?\s?(\d+),?\s?(\d+),?\s?(\d?(?:\.\d+)?)/.test(pastedData)) {
-                e.preventDefault();
-                const rgba = pastedData.match(/rgba\((\d+),?\s?(\d+),?\s?(\d+),?\s?(\d?(?:\.\d+)?)/);
-                console.log(rgba);
-                // set the value of rgb and start typing in it
-                document.getElementById("rgb").value = rgba[1] + "," + rgba[2] + "," + rgba[3] + "," + rgba[4];
-                // remove the is-danger class
-                document.getElementById("rgb").classList.remove("is-danger");
-                // start typing in the rgb input
-                document.getElementById("rgb").focus();
-                document.getElementById("rgb").select();
-                // trigger input event
-                document.getElementById("rgb").dispatchEvent(new Event('input'));
-            }
-        });
+		document.addEventListener("paste", (e) => {
+			const clipboardData = e.clipboardData || window.clipboardData;
+			const pastedData = clipboardData.getData("Text");
+			// check if pastedData meets regex rgb\((\d+),?\s?(\d+),?\s?(\d+)\);? and if so then extract the rgb
+			if (/rgb\((\d+),?\s?(\d+),?\s?(\d+)\);?/.test(pastedData)) {
+				e.preventDefault();
+				const rgb = pastedData.match(
+					/rgb\((\d+),?\s?(\d+),?\s?(\d+)\);?/
+				);
+				// set the value of rgb and start typing in it
+				document.getElementById("rgb").value =
+					rgb[1] + "," + rgb[2] + "," + rgb[3];
+				// remove the is-danger class
+				document.getElementById("rgb").classList.remove("is-danger");
+				// start typing in the rgb input
+				document.getElementById("rgb").focus();
+				document.getElementById("rgb").select();
+				// trigger input event
+				document
+					.getElementById("rgb")
+					.dispatchEvent(new Event("input"));
+			} else if (
+				/rgba\((\d+),?\s?(\d+),?\s?(\d+),?\s?(\d?(?:\.\d+)?)/.test(
+					pastedData
+				)
+			) {
+				e.preventDefault();
+				const rgba = pastedData.match(
+					/rgba\((\d+),?\s?(\d+),?\s?(\d+),?\s?(\d?(?:\.\d+)?)/
+				);
+				console.log(rgba);
+				// set the value of rgb and start typing in it
+				document.getElementById("rgb").value =
+					rgba[1] + "," + rgba[2] + "," + rgba[3] + "," + rgba[4];
+				// remove the is-danger class
+				document.getElementById("rgb").classList.remove("is-danger");
+				// start typing in the rgb input
+				document.getElementById("rgb").focus();
+				document.getElementById("rgb").select();
+				// trigger input event
+				document
+					.getElementById("rgb")
+					.dispatchEvent(new Event("input"));
+			}
+		});
 	</script>
 </html>

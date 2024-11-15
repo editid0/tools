@@ -9,11 +9,18 @@
 			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
 		/>
 		<script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
-		<meta name="description" content="JSON to YAML and YAML to JSON converter.">
+		<meta
+			name="description"
+			content="JSON to YAML and YAML to JSON converter."
+		/>
+		<script
+			defer
+			src="https://st.editid.uk/script.js"
+			data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"
+		></script>
 	</head>
 	<body>
-		{# adds the nav bar to the file #}
-		{% include 'nav.html' %}
+		{# adds the nav bar to the file #} {% include 'nav.html' %}
 		<div class="container">
 			<div class="box mt-2">
 				<h1 class="title has-text-centered">JSON to YAML</h1>
@@ -21,7 +28,9 @@
 				<textarea name="json" id="json" class="textarea"></textarea>
 				<p class="has-text-centered">YAML:</p>
 				<textarea name="yaml" id="yaml" class="textarea"></textarea>
-							<p class="has-text-centered">Entered text will automatically be converted</p>
+				<p class="has-text-centered">
+					Entered text will automatically be converted
+				</p>
 			</div>
 		</div>
 	</body>
