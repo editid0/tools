@@ -41,6 +41,7 @@ class Color(BaseModel):
     reason: str
     choices: list[str]
 
+DAILY_AI_LIMIT=os.getenv("DAILY_AI_LIMIT", 100) # This value is much lower on the server
 
 OPENAI_API_KEY = os.getenv(
     "OPENAI_API_KEY"
@@ -245,8 +246,8 @@ def colorai():
         data[today_string][ip_hash] = 1
     with open("data.json", "w") as f:
         json.dump(data, f, indent=4)
-    # check if the count is greater than 10
-    if data[today_string][ip_hash] > 10:
+    # check if the count is greater than DAILY_AI_LIMIT
+    if data[today_string][ip_hash] > DAILY_AI_LIMIT:
         # create variable resets that is time until midnight of the next day
         resets = (datetime.now() + timedelta(days=1)).replace(
             hour=0, minute=0, second=0, microsecond=0
@@ -259,7 +260,7 @@ def colorai():
             "remaining": 0,
         }
     else:
-        remaining = 10 - data[today_string][ip_hash]
+        remaining = DAILY_AI_LIMIT - data[today_string][ip_hash]
     # return {'reason': 'Color not found', 'choices': []}
     # local AI
     # req = requests.get(f'http://192.168.7.254:57372?color={color}&fgbg={fgbg}')
@@ -398,8 +399,8 @@ def regexai():
         data[today_string][ip_hash] = 1
     with open("data.json", "w") as f:
         json.dump(data, f, indent=4)
-    # check if the count is greater than 10
-    if data[today_string][ip_hash] > 10:
+    # check if the count is greater than DAILY_AI_LIMIT
+    if data[today_string][ip_hash] > DAILY_AI_LIMIT:
         # create variable resets that is time until midnight of the next day
         resets = (datetime.now() + timedelta(days=1)).replace(
             hour=0, minute=0, second=0, microsecond=0
@@ -407,13 +408,11 @@ def regexai():
         # convert to human readable format using humanize
         resets = humanize.naturaldelta(resets, minimum_unit="seconds")
         return {
-            "message": "You have exceeded the limit of 10 requests per day. Please try again in {}.".format(
-                resets
-            ),
+            "message": f"You have exceeded the limit of {DAILY_AI_LIMIT} requests per day. Please try again in {resets}.",
             "remaining": 0,
         }
     else:
-        remaining = 10 - data[today_string][ip_hash]
+        remaining = DAILY_AI_LIMIT - data[today_string][ip_hash]
     data = request.get_json()
     regex_query = data["regex"]
     try:
@@ -559,8 +558,8 @@ def aipalette():
         data[today_string][ip_hash] = 1
     with open("data.json", "w") as f:
         json.dump(data, f, indent=4)
-    # check if the count is greater than 10
-    if data[today_string][ip_hash] > 10:
+    # check if the count is greater than DAILY_AI_LIMIT
+    if data[today_string][ip_hash] > DAILY_AI_LIMIT:
         # create variable resets that is time until midnight of the next day
         resets = (datetime.now() + timedelta(days=1)).replace(
             hour=0, minute=0, second=0, microsecond=0
@@ -568,13 +567,11 @@ def aipalette():
         # convert to human readable format using humanize
         resets = humanize.naturaldelta(resets, minimum_unit="seconds")
         return {
-            "message": "You have exceeded the limit of 10 requests per day. Please try again in {}.".format(
-                resets
-            ),
+            "message": f"You have exceeded the limit of {DAILY_AI_LIMIT} requests per day. Please try again in {resets}.",
             "remaining": 0,
         }
     else:
-        remaining = 10 - data[today_string][ip_hash]
+        remaining = DAILY_AI_LIMIT - data[today_string][ip_hash]
     messages = [
         {
             "role": "system",
