@@ -30,78 +30,82 @@
 	<body>
 		{# adds the nav bar to the file #}
 		{% include 'nav.html' %}
-		<h1 class="title has-text-centered mt-2">Generate a Diff</h1>
-		<div class="field-body">
-			<div class="field">
-				<textarea
-					id="before"
-					placeholder="Enter the original text"
-					class="textarea is-expanded"
-					rows="10"
-				></textarea>
-			</div>
-			<div class="field">
-				<div class="box is-expanded">
-					<div class="file is-boxed">
-						<label class="file-label">
-							<input
-								class="file-input"
-								type="file"
-								name="origfile"
-								id="origfile"
-								accept="text/*"
-							/>
-							<span class="file-cta">
-								<span class="file-icon">
-									<i class="fas fa-upload"></i>
-								</span>
-								<span class="file-label">Choose a file...</span>
-							</span>
-						</label>
+		<div class="container">
+			<div class="box mt-2">
+				<h1 class="title has-text-centered mt-2">Generate a Diff</h1>
+				<div class="field-body">
+					<div class="field">
+						<textarea
+							id="before"
+							placeholder="Enter the original text"
+							class="textarea is-expanded"
+							rows="10"
+						></textarea>
+					</div>
+					<div class="field">
+						<div class="box is-expanded">
+							<div class="file is-boxed">
+								<label class="file-label">
+									<input
+										class="file-input"
+										type="file"
+										name="origfile"
+										id="origfile"
+										accept="text/*"
+									/>
+									<span class="file-cta">
+										<span class="file-icon">
+											<i class="fas fa-upload"></i>
+										</span>
+										<span class="file-label">Choose a file...</span>
+									</span>
+								</label>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-		<br />
-		<div class="field-body">
-			<div class="field">
-				<textarea
-					id="after"
-					placeholder="Enter the modified text"
-					class="textarea"
-					rows="10"
-				></textarea>
-			</div>
-			<div class="field">
-				<div class="box is-expanded">
-					<div class="file is-boxed">
-						<label class="file-label">
-							<input
-								class="file-input"
-								type="file"
-								name="modfile"
-								id="modfile"
-								accept="text/*"
-							/>
-							<span class="file-cta">
-								<span class="file-icon">
-									<i class="fas fa-upload"></i>
-								</span>
-								<span class="file-label">Choose a file...</span>
-							</span>
-						</label>
+				<br />
+				<div class="field-body">
+					<div class="field">
+						<textarea
+							id="after"
+							placeholder="Enter the modified text"
+							class="textarea"
+							rows="10"
+						></textarea>
+					</div>
+					<div class="field">
+						<div class="box is-expanded">
+							<div class="file is-boxed">
+								<label class="file-label">
+									<input
+										class="file-input"
+										type="file"
+										name="modfile"
+										id="modfile"
+										accept="text/*"
+									/>
+									<span class="file-cta">
+										<span class="file-icon">
+											<i class="fas fa-upload"></i>
+										</span>
+										<span class="file-label">Choose a file...</span>
+									</span>
+								</label>
+							</div>
+						</div>
 					</div>
 				</div>
+				<br />
+				<div class="buttons is-centered">
+					<button onclick="generateDiff()" class="button is-success">
+						Generate Diff
+					</button>
+					<a id="download-link" style="display: none" class="button is-info"
+						>Download Diff File</a
+					>
+				</div>
 			</div>
-		</div>
-		<br />
-		<div class="buttons is-centered">
-			<button onclick="generateDiff()" class="button is-success">
-				Generate Diff
-			</button>
-			<a id="download-link" style="display: none" class="button is-info"
-				>Download Diff File</a
-			>
 		</div>
 		<pre><code id="preview" class="language-diff"></code></pre>
 		<script>

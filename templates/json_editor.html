@@ -12,8 +12,10 @@
 	{# adds the nav bar to the file #}
 	{% include 'nav.html' %}
 	<div class="container has-text-centered">
-		<h1 class="title">JSON Editor</h1>
-		<div id="jsoneditor" style="min-height: 100%;"></div>
+		<div class="box mt-2">
+			<h1 class="title">JSON Editor</h1>
+			<div id="jsoneditor" style="min-height: 100%;"></div>
+		</div>
 	</div>
 	<script>
 		const container = document.getElementById("jsoneditor");

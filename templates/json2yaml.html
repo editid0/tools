@@ -14,13 +14,15 @@
 	<body>
 		{# adds the nav bar to the file #}
 		{% include 'nav.html' %}
-		<div class="container mt-2">
-			<h1 class="title has-text-centered">JSON to YAML</h1>
-			<p class="has-text-centered">JSON:</p>
-			<textarea name="json" id="json" class="textarea"></textarea>
-			<p class="has-text-centered">YAML:</p>
-			<textarea name="yaml" id="yaml" class="textarea"></textarea>
-            <p class="has-text-centered">Entered text will automatically be converted</p>
+		<div class="container">
+			<div class="box mt-2">
+				<h1 class="title has-text-centered">JSON to YAML</h1>
+				<p class="has-text-centered">JSON:</p>
+				<textarea name="json" id="json" class="textarea"></textarea>
+				<p class="has-text-centered">YAML:</p>
+				<textarea name="yaml" id="yaml" class="textarea"></textarea>
+							<p class="has-text-centered">Entered text will automatically be converted</p>
+			</div>
 		</div>
 	</body>
 	<script>

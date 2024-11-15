@@ -13,37 +13,39 @@
 		{# adds the nav bar to the file #}
 		{% include 'nav.html' %}
 		<div class="container has-text-centered">
-			<h1 class="title">Hex to RGB and RGB to Hex</h1>
-			<p>Hex:</p>
-			<div class="field has-addons has-addons-centered">
-				<p class="control">
-					<a class="button is-static">#</a>
-				</p>
-				<p class="control">
-					<input
-						class="input"
-						type="text"
-						placeholder="FFFFFF"
-						id="hex"
-					/>
-				</p>
-			</div>
-			<p>RGB:</p>
-			<div class="field has-addons has-addons-centered">
-				<p class="control">
-					<a class="button is-static">RGB</a>
-				</p>
-				<p class="control">
-					<input
-						class="input"
-						type="text"
-						placeholder="255,255,255"
-						id="rgb"
-					/>
-				</p>
-			</div>
-			<div class="centered">
-				<canvas id="preview" width="200" height="200"> </canvas>
+			<div class="box mt-2">
+				<h1 class="title">Hex to RGB and RGB to Hex</h1>
+				<p>Hex:</p>
+				<div class="field has-addons has-addons-centered">
+					<p class="control">
+						<a class="button is-static">#</a>
+					</p>
+					<p class="control">
+						<input
+							class="input"
+							type="text"
+							placeholder="FFFFFF"
+							id="hex"
+						/>
+					</p>
+				</div>
+				<p>RGB:</p>
+				<div class="field has-addons has-addons-centered">
+					<p class="control">
+						<a class="button is-static">RGB</a>
+					</p>
+					<p class="control">
+						<input
+							class="input"
+							type="text"
+							placeholder="255,255,255"
+							id="rgb"
+						/>
+					</p>
+				</div>
+				<div class="centered">
+					<canvas id="preview" width="200" height="200"> </canvas>
+				</div>
 			</div>
 		</div>
 	</body>

@@ -16,36 +16,38 @@
 		{# adds the nav bar to the file #}
 		{% include 'nav.html' %}
 		<div class="container">
-			<h1 class="title has-text-centered">
-				{% if path == '/tools/foreground' %}Foreground color helper{% else
-				%}Background color helper{% endif %}
-			</h1>
-            <img src="/assets/fgbg.png" alt="Foreground background demo" id="demo">
-            <p class="has-text-centered">The foreground is black (#000000) and the background is white (#FFFFFF)</p>
-			{% if path == '/tools/foreground' %}
-			<p class="has-text-centered">Background color (hex):</p>
-			{% else %}
-			<p class="has-text-centered">Foreground color (hex):</p>
-			{% endif %}
-			<div class="field has-addons has-addons-centered">
-				<p class="control">
-					<a class="button is-static">#</a>
-				</p>
-				<p class="control">
-					<input
-						class="input"
-						type="text"
-						placeholder="FFFFFF"
-						id="hex"
-					/>
-				</p>
+			<div class="box mt-2">
+				<h1 class="title has-text-centered">
+					{% if path == '/tools/foreground' %}Foreground color helper{% else
+					%}Background color helper{% endif %}
+				</h1>
+							<img src="/assets/fgbg.png" alt="Foreground background demo" id="demo">
+							<p class="has-text-centered">The foreground is black (#000000) and the background is white (#FFFFFF)</p>
+				{% if path == '/tools/foreground' %}
+				<p class="has-text-centered">Background color (hex):</p>
+				{% else %}
+				<p class="has-text-centered">Foreground color (hex):</p>
+				{% endif %}
+				<div class="field has-addons has-addons-centered">
+					<p class="control">
+						<a class="button is-static">#</a>
+					</p>
+					<p class="control">
+						<input
+							class="input"
+							type="text"
+							placeholder="FFFFFF"
+							id="hex"
+						/>
+					</p>
+				</div>
+				<div class="buttons is-centered">
+					<button id="submit" class="button is-primary">Submit</button>
+				</div>
+				<p id="remaining" class="has-text-centered"></p>
+				<p id="response" class="has-text-centered"></p>
+				<div id="options"></div>
 			</div>
-			<div class="buttons is-centered">
-				<button id="submit" class="button is-primary">Submit</button>
-			</div>
-			<p id="remaining" class="has-text-centered"></p>
-			<p id="response" class="has-text-centered"></p>
-			<div id="options"></div>
 		</div>
 	</body>
 	<script>

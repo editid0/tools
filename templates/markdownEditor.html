@@ -82,52 +82,48 @@
     {# adds the nav bar to the file #}
     {% include 'nav.html' %}
     <div class="container">
-        <h1 class="title has-text-centered">Enhanced Markdown Editor</h1>
-        <div class="editor-container">
-            <div class="editor-toolbar">
-                <!-- Font dropdown -->
-                <div class="toolbar-dropdown">
-                    <select onchange="changeFont(this.value)">
-                        <option value="Arial">Arial</option>
-                        <option value="Georgia">Georgia</option>
-                        <option value="Times New Roman">Times New Roman</option>
-                        <option value="Courier New">Courier New</option>
-                    </select>
+        <div class="box mt-2">
+            <h1 class="title has-text-centered">Enhanced Markdown Editor</h1>
+            <div class="editor-container">
+                <div class="editor-toolbar">
+                    <!-- Font dropdown -->
+                    <div class="toolbar-dropdown">
+                        <select onchange="changeFont(this.value)">
+                            <option value="Arial">Arial</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="Courier New">Courier New</option>
+                        </select>
+                    </div>
+                    <!-- Font size dropdown -->
+                    <div class="toolbar-dropdown">
+                        <select onchange="changeFontSize(this.value)">
+                            <option value="1rem">Normal</option>
+                            <option value="1.25rem">Large</option>
+                            <option value="1.5rem">Extra Large</option>
+                        </select>
+                    </div>
+                    <!-- Text color -->
+                    <button class="button is-small" onclick="addMarkdownSyntax('<span style=\'color: red\'>', '</span>')">Text Color</button>
+                    <!-- Highlight color -->
+                    <button class="button is-small" onclick="addMarkdownSyntax('<mark>', '</mark>')">Highlight</button>
+                    <!-- Bold, Italic, Underline -->
+                    <button class="button is-small" onclick="addMarkdownSyntax('**', '**')">Bold</button>
+                    <button class="button is-small" onclick="addMarkdownSyntax('*', '*')">Italic</button>
+                    <button class="button is-small" onclick="addMarkdownSyntax('~~', '~~')">Strikethrough</button>
+                    <!-- Markdown elements -->
+                    <button class="button is-small" onclick="addMarkdownSyntax('# ')">H1</button>
+                    <button class="button is-small" onclick="addMarkdownSyntax('## ')">H2</button>
+                    <button class="button is-small" onclick="addMarkdownSyntax('> ')">Quote</button>
+                    <button class="button is-small" onclick="addMarkdownSyntax('- ')">List</button>
+                    <button class="button is-small" onclick="addMarkdownSyntax('\n---\n')">Divider</button>
+                    <button class="button is-small" onclick="addMarkdownSyntax('`', '`')">Code</button>
+                    <button class="button is-small" onclick="addMarkdownSyntax('| Header | Header |\n| ------ | ------ |\n| Cell   | Cell   |\n')">Table</button>
                 </div>
-
-                <!-- Font size dropdown -->
-                <div class="toolbar-dropdown">
-                    <select onchange="changeFontSize(this.value)">
-                        <option value="1rem">Normal</option>
-                        <option value="1.25rem">Large</option>
-                        <option value="1.5rem">Extra Large</option>
-                    </select>
+                <div class="editor-content">
+                    <textarea id="markdown-input" placeholder="Enter your markdown here..."></textarea>
+                    <div id="markdown-preview"></div>
                 </div>
-
-                <!-- Text color -->
-                <button class="button is-small" onclick="addMarkdownSyntax('<span style=\'color: red\'>', '</span>')">Text Color</button>
-
-                <!-- Highlight color -->
-                <button class="button is-small" onclick="addMarkdownSyntax('<mark>', '</mark>')">Highlight</button>
-
-                <!-- Bold, Italic, Underline -->
-                <button class="button is-small" onclick="addMarkdownSyntax('**', '**')">Bold</button>
-                <button class="button is-small" onclick="addMarkdownSyntax('*', '*')">Italic</button>
-                <button class="button is-small" onclick="addMarkdownSyntax('~~', '~~')">Strikethrough</button>
-
-                <!-- Markdown elements -->
-                <button class="button is-small" onclick="addMarkdownSyntax('# ')">H1</button>
-                <button class="button is-small" onclick="addMarkdownSyntax('## ')">H2</button>
-                <button class="button is-small" onclick="addMarkdownSyntax('> ')">Quote</button>
-                <button class="button is-small" onclick="addMarkdownSyntax('- ')">List</button>
-                <button class="button is-small" onclick="addMarkdownSyntax('\n---\n')">Divider</button>
-                <button class="button is-small" onclick="addMarkdownSyntax('`', '`')">Code</button>
-                <button class="button is-small" onclick="addMarkdownSyntax('| Header | Header |\n| ------ | ------ |\n| Cell   | Cell   |\n')">Table</button>
-            </div>
-
-            <div class="editor-content">
-                <textarea id="markdown-input" placeholder="Enter your markdown here..."></textarea>
-                <div id="markdown-preview"></div>
             </div>
         </div>
     </div>
