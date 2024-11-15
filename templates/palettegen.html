@@ -16,10 +16,14 @@
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer"
 		/>
+		<script
+			defer
+			src="https://st.editid.uk/script.js"
+			data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"
+		></script>
 	</head>
 	<body>
-		{# adds the nav bar to the file #}
-		{% include 'nav.html' %}
+		{# adds the nav bar to the file #} {% include 'nav.html' %}
 		<div id="notification-container"></div>
 		<div class="container">
 			<div class="box mt-2">
@@ -108,7 +112,10 @@
 					<div id="color25" class="colorbox"></div>
 				</div>
 				<div class="buttons is-centered mt-2">
-					<button class="button is-primary is-fullwidth" id="generate">
+					<button
+						class="button is-primary is-fullwidth"
+						id="generate"
+					>
 						Generate
 					</button>
 				</div>
@@ -216,7 +223,10 @@
 				try {
 					navigator.clipboard.writeText(to_copy);
 				} catch (err) {
-					showNotification('Failed to copy to clipboard', 'is-danger');
+					showNotification(
+						"Failed to copy to clipboard",
+						"is-danger"
+					);
 					return;
 				}
 				// add a notification

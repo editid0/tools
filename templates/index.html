@@ -8,6 +8,11 @@
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
 		/>
+		<script
+			defer
+			src="https://st.editid.uk/script.js"
+			data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"
+		></script>
 	</head>
 	<body>
 		{# adds the nav bar to the file #} {% include 'nav.html' %}
@@ -30,7 +35,7 @@
 					<div class="buttons card-footer-item mb-3">
 						<a
 							class="button is-primary is-fullwidth"
-							href="{{ tool['link'] }}"
+							href="/tools/{{ tool['route'] }}"
 							target="_blank"
 							>Visit</a
 						>
@@ -42,7 +47,7 @@
 	</body>
 	<style>
 		.card {
-			height: 90%;
+			height: 100%;
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;

@@ -1,34 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>JSON Editor</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
-	<script src="https://cdn.jsdelivr.net/npm/jsoneditor@9.5.6/dist/jsoneditor.min.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsoneditor@9.5.6/dist/jsoneditor.min.css" />
-</head>
-<body>
-	{# adds the nav bar to the file #}
-	{% include 'nav.html' %}
-	<div class="container has-text-centered">
-		<h1 class="title">JSON Editor</h1>
-		<div id="jsoneditor" style="min-height: 100%;"></div>
-	</div>
-	<script>
-		const container = document.getElementById("jsoneditor");
-		const options = {
-			mode: "tree",
-			modes: ["code","tree", "view"], // allowed modes
-			onError: function (err) {
-				alert(err.toString());
-			},
-			onModeChange: function (newMode, oldMode) {
-				console.log("Mode switched from", oldMode, "to", newMode);
-			},
-		};
-		const editor = new JSONEditor(container, options);
-
-	</script>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>JSON Editor</title>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+		/>
+		<script src="https://cdn.jsdelivr.net/npm/jsoneditor@9.5.6/dist/jsoneditor.min.js"></script>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/jsoneditor@9.5.6/dist/jsoneditor.min.css"
+		/>
+		<script
+			defer
+			src="https://st.editid.uk/script.js"
+			data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"
+		></script>
+	</head>
+	<body>
+		{# adds the nav bar to the file #} {% include 'nav.html' %}
+		<div class="container has-text-centered">
+			<div class="box mt-2">
+				<h1 class="title">JSON Editor</h1>
+				<div id="jsoneditor" style="min-height: 100%"></div>
+			</div>
+		</div>
+		<script>
+			const container = document.getElementById("jsoneditor");
+			const options = {
+				mode: "tree",
+				modes: ["code", "tree", "view"], // allowed modes
+				onError: function (err) {
+					alert(err.toString());
+				},
+				onModeChange: function (newMode, oldMode) {
+					console.log("Mode switched from", oldMode, "to", newMode);
+				},
+			};
+			const editor = new JSONEditor(container, options);
+		</script>
+	</body>
 </html>

@@ -10,62 +10,63 @@
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
 		/>
-		<meta name="description" content="Hex to HSL and HSL to Hex converter." />
+		<meta
+			name="description"
+			content="Hex to HSL and HSL to Hex converter."
+		/>
+		<script
+			defer
+			src="https://st.editid.uk/script.js"
+			data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"
+		></script>
 	</head>
 	<body>
-		{# adds the nav bar to the file #}
-		{% include 'nav.html' %}
+		{# adds the nav bar to the file #} {% include 'nav.html' %}
 		<div class="container has-text-centered">
-			<h1 class="title">
-				{% if path == '/hex2hsl' %}Hex to HSL{% else %}HSL to Hex{%
-				endif %}
-			</h1>
-			<p>Hex:</p>
-			<div class="field has-addons has-addons-centered">
-				<p class="control">
-					<a class="button is-static">#</a>
-				</p>
-				<p class="control">
-					<input
-						class="input"
-						type="text"
-						placeholder="FFFFFF"
-						id="hex"
-					/>
-				</p>
+			<div class="box mt-2">
+				<h1 class="title">
+					{% if path == '/hex2hsl' %}Hex to HSL{% else %}HSL to Hex{%
+					endif %}
+				</h1>
+				<p>Hex:</p>
+				<div class="field has-addons has-addons-centered">
+					<p class="control">
+						<a class="button is-static">#</a>
+					</p>
+					<p class="control">
+						<input
+							class="input"
+							type="text"
+							placeholder="FFFFFF"
+							id="hex"
+						/>
+					</p>
+				</div>
+				<p>HSL:</p>
+				<div class="field has-addons has-addons-centered">
+					<p class="control">
+						<a class="button is-static">HSL</a>
+					</p>
+					<p class="control">
+						<input
+							class="input"
+							type="text"
+							placeholder="360,100%,50%"
+							id="hsl"
+						/>
+					</p>
+				</div>
+				<div class="centered">
+					<canvas id="preview" width="200" height="200"> </canvas>
+				</div>
 			</div>
-			<p>HSL:</p>
-			<div class="field has-addons has-addons-centered">
-				<p class="control">
-					<a class="button is-static">HSL</a>
-				</p>
-				<p class="control">
-					<input
-						class="input"
-						type="text"
-						placeholder="360,100%,50%"
-						id="hsl"
-					/>
-				</p>
-			</div>
-			<div class="centered">
-				<canvas id="preview" width="200" height="200"> </canvas>
+			<div class="box mt-2">
+				<h1 class="title">Similar tools</h1>
+				<div class="buttons is-centered is-flex-direction-column">
+					<a class="button" href="/tools/rgb2hex">RGB to Hex</a>
+				</div>
 			</div>
 		</div>
-        <div class="box has-text-centered">
-            <h2 class="title">Other tools</h2>
-            <div class="columns is-multiline">
-                <div class="column is-one-third">
-                    <a class="button is-primary is-fullwidth" href="/rgb2hex">RGB to Hex</a>
-                </div>
-                <div class="column is-one-third">
-                    <a class="button is-primary is-fullwidth" href="/hex2rgb">Hex to RGB</a>
-                </div>
-                <div class="column is-one-third">
-                    <a class="button is-primary is-fullwidth" href="/markdowneditor">Markdown Editor</a>
-                </div>
-            </div>
-        </div>
 	</body>
 	<style>
 		.centered {
@@ -261,71 +262,86 @@
 			// set the value
 			document.getElementById("hex").value = hex;
 			var hex = document.getElementById("hex").value;
-            console.log(hex)
+			console.log(hex);
 			var hsla = hexToHSL(`#${hex}`);
-            console.log(hsla)
-            var h = hsla.h;
-            var s = hsla.s;
-            var l = hsla.l;
-            var a = hsla.a;
-            a = Math.round(a * 100) / 100;
-            if (a == 1){
-                document.getElementById('hsl').value = `hsl(${h},${s}%,${l}%)`;
-            } else {
-                document.getElementById('hsl').value = `hsla(${h},${s}%,${l}%,${a})`;
-            }
-            setPreview(hex, null);
+			console.log(hsla);
+			var h = hsla.h;
+			var s = hsla.s;
+			var l = hsla.l;
+			var a = hsla.a;
+			if (isNaN(h) || isNaN(s) || isNaN(l) || isNaN(a)) {
+				return;
+			}
+			a = Math.round(a * 100) / 100;
+			if (a == 1) {
+				document.getElementById("hsl").value = `hsl(${h},${s}%,${l}%)`;
+			} else {
+				document.getElementById(
+					"hsl"
+				).value = `hsla(${h},${s}%,${l}%,${a})`;
+			}
+			setPreview(hex, null);
 		});
 		document.getElementById("hsl").addEventListener("input", () => {
 			var hsl = document.getElementById("hsl").value;
-            // extract just numbers, try to get alpha value if it exists
-            var hex;
-            var h;
-            var s;
-            var l;
-            var a;
-            if (/^(\d+),\s?(\d+)%?,\s?(\d+)%?$/.test(hsl)) {
-                hsl = hsl.match(/^(\d+),\s?(\d+)%?,\s?(\d+)%?$/);
-                // create 3 variables
-                h = parseInt(hsl[1]);
-                s = parseInt(hsl[2]);
-                l = parseInt(hsl[3]);
-                a = 1;
-                hex = hslToHex(h, s, l);
-            } else if (/^hsl\((\d+),\s?(\d+)%?,\s?(\d+)%?\)/.test(hsl)) {
-                hsl = hsl.match(/^hsl\((\d+),\s?(\d+)%?,\s?(\d+)%?\)/);
-                // create 3 variables
-                h = parseInt(hsl[1]);
-                s = parseInt(hsl[2]);
-                l = parseInt(hsl[3]);
-                a = 1;
-                hex = hslToHex(h, s, l);
-            } else if (/^hsla\((\d+),\s?(\d+)%?,\s?(\d+)%?,\s?(\d{0,}\.?\d+)\);?$/.test(hsl)) {
-                hsl = hsl.match(/^hsla\((\d+),\s?(\d+)%?,\s?(\d+)%?,\s?(\d{0,}\.?\d+)\);?$/);
-                // create 3 variables
-                h = parseInt(hsl[1]);
-                s = parseInt(hsl[2]);
-                l = parseInt(hsl[3]);
-                a = parseFloat(hsl[4]);
-                hex = hslToHex(h, s, l, a);
-            }
-            // check if alpha value exists
-            if (a == 1){
-                if (h && s && l) {
-                    document.getElementById('hsl').value = `hsl(${h},${s}%,${l}%)`;
-                }
-            } else {
-                if (h && s && l) {
-                    document.getElementById('hsl').value = `hsla(${h},${s}%,${l}%,${a})`;
-                }
-            }
-            if (!hex) {
-                return;   
-            } else {
-                document.getElementById("hex").value = hex.toUpperCase();
-                setPreview(hex, null);
-                console.log(hex)
-            }
+			// extract just numbers, try to get alpha value if it exists
+			var hex;
+			var h;
+			var s;
+			var l;
+			var a;
+			if (/^(\d+),\s?(\d+)%?,\s?(\d+)%?$/.test(hsl)) {
+				hsl = hsl.match(/^(\d+),\s?(\d+)%?,\s?(\d+)%?$/);
+				// create 3 variables
+				h = parseInt(hsl[1]);
+				s = parseInt(hsl[2]);
+				l = parseInt(hsl[3]);
+				a = 1;
+				hex = hslToHex(h, s, l);
+			} else if (/^hsl\((\d+),\s?(\d+)%?,\s?(\d+)%?\)/.test(hsl)) {
+				hsl = hsl.match(/^hsl\((\d+),\s?(\d+)%?,\s?(\d+)%?\)/);
+				// create 3 variables
+				h = parseInt(hsl[1]);
+				s = parseInt(hsl[2]);
+				l = parseInt(hsl[3]);
+				a = 1;
+				hex = hslToHex(h, s, l);
+			} else if (
+				/^hsla\((\d+),\s?(\d+)%?,\s?(\d+)%?,\s?(\d{0,}\.?\d+)\);?$/.test(
+					hsl
+				)
+			) {
+				hsl = hsl.match(
+					/^hsla\((\d+),\s?(\d+)%?,\s?(\d+)%?,\s?(\d{0,}\.?\d+)\);?$/
+				);
+				// create 3 variables
+				h = parseInt(hsl[1]);
+				s = parseInt(hsl[2]);
+				l = parseInt(hsl[3]);
+				a = parseFloat(hsl[4]);
+				hex = hslToHex(h, s, l, a);
+			}
+			// check if alpha value exists
+			if (a == 1) {
+				if (h && s && l) {
+					document.getElementById(
+						"hsl"
+					).value = `hsl(${h},${s}%,${l}%)`;
+				}
+			} else {
+				if (h && s && l) {
+					document.getElementById(
+						"hsl"
+					).value = `hsla(${h},${s}%,${l}%,${a})`;
+				}
+			}
+			if (!hex) {
+				return;
+			} else {
+				document.getElementById("hex").value = hex.toUpperCase();
+				setPreview(hex, null);
+				console.log(hex);
+			}
 		});
 
 		document.addEventListener("paste", (e) => {

@@ -12,14 +12,20 @@
 			name="description"
 			content="Convert an SVG file to an image, with support for resizing. Supports PNG, JPG and WEBP outputs."
 		/>
+		<script
+			defer
+			src="https://st.editid.uk/script.js"
+			data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"
+		></script>
 	</head>
 	<body>
-		{# adds the nav bar to the file #}
-		{% include 'nav.html' %}
+		{# adds the nav bar to the file #} {% include 'nav.html' %}
 		<div class="container">
 			<div class="box has-text-centered mt-2">
 				<h1 class="title">SVG to Image</h1>
-                <h2 class="subtitle">Easily convert your SVG to a PNG, JPG or WEBP.</h2>
+				<h2 class="subtitle">
+					Easily convert your SVG to a PNG, JPG or WEBP.
+				</h2>
 				<p>Upload an SVG file</p>
 				<input type="file" id="fileinput" accept="image/svg+xml" />
 				<div id="image" style="display: none">
@@ -81,15 +87,15 @@
 		document
 			.getElementById("fileinput")
 			.addEventListener("change", function () {
-                // check if fileinput is empty
-                if (this.files.length === 0) {
-                    document.getElementById("image").style.display = "none";
-                    document.getElementById("svgim").src = "";
-                    document.getElementById("imageinfo").style.display = "none";
-                    document.getElementById("image").style.display = "none";
-                    
-                    return;
-                }
+				// check if fileinput is empty
+				if (this.files.length === 0) {
+					document.getElementById("image").style.display = "none";
+					document.getElementById("svgim").src = "";
+					document.getElementById("imageinfo").style.display = "none";
+					document.getElementById("image").style.display = "none";
+
+					return;
+				}
 				document.getElementById("image").style.display = "block";
 				document.getElementById("svgim").src = URL.createObjectURL(
 					this.files[0]
@@ -208,11 +214,11 @@
 
 					canvas.toBlob((blob) => {
 						const downloadLink = document.createElement("a");
-                        try {
-                            downloadLink.href = URL.createObjectURL(blob);
-                        } catch (error) {
-                            alert('Image too large to export');
-                        }
+						try {
+							downloadLink.href = URL.createObjectURL(blob);
+						} catch (error) {
+							alert("Image too large to export");
+						}
 						downloadLink.download = `exported_image.${format}`;
 						downloadLink.click();
 					}, mimeType);
@@ -226,18 +232,24 @@
 
 			reader.readAsText(file);
 		}
-        document.getElementById("savepng").addEventListener("click", function () {
-            var scale = document.getElementById("resizerange").value;
-            exportSVG(scale, "png");
-        });
-        document.getElementById("savejpg").addEventListener("click", function () {
-            var scale = document.getElementById("resizerange").value;
-            exportSVG(scale, "jpg");
-        });
-        document.getElementById("savewebp").addEventListener("click", function () {
-            var scale = document.getElementById("resizerange").value;
-            exportSVG(scale, "webp");
-        })
+		document
+			.getElementById("savepng")
+			.addEventListener("click", function () {
+				var scale = document.getElementById("resizerange").value;
+				exportSVG(scale, "png");
+			});
+		document
+			.getElementById("savejpg")
+			.addEventListener("click", function () {
+				var scale = document.getElementById("resizerange").value;
+				exportSVG(scale, "jpg");
+			});
+		document
+			.getElementById("savewebp")
+			.addEventListener("click", function () {
+				var scale = document.getElementById("resizerange").value;
+				exportSVG(scale, "webp");
+			});
 	</script>
 	<style>
 		#resizerange {

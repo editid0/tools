@@ -8,10 +8,14 @@
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
 		/>
+		<script
+			defer
+			src="https://st.editid.uk/script.js"
+			data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"
+		></script>
 	</head>
 	<body>
-		{# adds the nav bar to the file #}
-		{% include 'nav.html' %}
+		{# adds the nav bar to the file #} {% include 'nav.html' %}
 		<div class="container has-text-centered" id="container">
 			<div class="box">
 				<h1 class="title">Regex Generator</h1>
@@ -22,7 +26,7 @@
 						Generate
 					</button>
 				</div>
-                <p id="info"></p>
+				<p id="info"></p>
 			</div>
 			<div id="result"></div>
 		</div>
@@ -79,14 +83,21 @@
 					.then((res) => res.json())
 					.then((res) => {
 						console.log(res);
-                        if (res.message) {
-                            document.getElementById("info").innerText = res.message;
-                            document.getElementById('info').classList.add('has-background-danger');
-                            return
-                        } else {
-                            document.getElementById('info').classList.remove('has-background-danger');
-                            document.getElementById("info").innerText = `You have ${res.remaining} requests left.`;
-                        }
+						if (res.message) {
+							document.getElementById("info").innerText =
+								res.message;
+							document
+								.getElementById("info")
+								.classList.add("has-background-danger");
+							return;
+						} else {
+							document
+								.getElementById("info")
+								.classList.remove("has-background-danger");
+							document.getElementById(
+								"info"
+							).innerText = `You have ${res.remaining} requests left.`;
+						}
 						var regex = res.regex;
 						for (var i = 0; i < regex.length; i++) {
 							var div = document.createElement("div");

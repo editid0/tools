@@ -8,10 +8,14 @@
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
 		/>
+		<script
+			defer
+			src="https://st.editid.uk/script.js"
+			data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"
+		></script>
 	</head>
 	<body>
-		{# adds the nav bar to the file #}
-		{% include 'nav.html' %}
+		{# adds the nav bar to the file #} {% include 'nav.html' %}
 		<div class="container has-text-centered mt-2">
 			<h1 class="title is-1">Meta Tag Generator</h1>
 			<div class="box">
@@ -86,7 +90,7 @@
 					id="htmlcode"
 					class="textarea"
 					rows="7"
-                    readonly
+					readonly
 				></textarea>
 			</div>
 		</div>
@@ -137,48 +141,42 @@
 				document.getElementById("errormsg").innerHTML =
 					"Description must be 300 characters or less.";
 				return false;
-            } else if (image.length > 300) {
-                // add is-danger class
-                document
-                    .getElementById("image")
-                    .classList.add("is-danger");
-                document.getElementById("errormsg").innerHTML =
-                    "Image URL must be 300 characters or less.";
-                return false;
-            } else if (/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/.test(url) === false) {
-                // add is-danger class
-                document
-                    .getElementById("url")
-                    .classList.add("is-danger");
-                document.getElementById("errormsg").innerHTML =
-                    "Please enter a valid URL.";
-                return false;
-            } else if (/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/.test(image) === false) {
-                // add is-danger class
-                document
-                    .getElementById("image")
-                    .classList.add("is-danger");
-                document.getElementById("errormsg").innerHTML =
-                    "Please enter a valid URL for the image.";
-                return false;
-            } else {
-                // remove is-danger class
-                document
-                    .getElementById("title")
-                    .classList.remove("is-danger");
-                document
-                    .getElementById("description")
-                    .classList.remove("is-danger");
-                document
-                    .getElementById("image")
-                    .classList.remove("is-danger");
-                document
-                    .getElementById("url")
-                    .classList.remove("is-danger");
-                document
-                    .getElementById("type")
-                    .classList.remove("is-danger");
-            }
+			} else if (image.length > 300) {
+				// add is-danger class
+				document.getElementById("image").classList.add("is-danger");
+				document.getElementById("errormsg").innerHTML =
+					"Image URL must be 300 characters or less.";
+				return false;
+			} else if (
+				/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/.test(
+					url
+				) === false
+			) {
+				// add is-danger class
+				document.getElementById("url").classList.add("is-danger");
+				document.getElementById("errormsg").innerHTML =
+					"Please enter a valid URL.";
+				return false;
+			} else if (
+				/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/.test(
+					image
+				) === false
+			) {
+				// add is-danger class
+				document.getElementById("image").classList.add("is-danger");
+				document.getElementById("errormsg").innerHTML =
+					"Please enter a valid URL for the image.";
+				return false;
+			} else {
+				// remove is-danger class
+				document.getElementById("title").classList.remove("is-danger");
+				document
+					.getElementById("description")
+					.classList.remove("is-danger");
+				document.getElementById("image").classList.remove("is-danger");
+				document.getElementById("url").classList.remove("is-danger");
+				document.getElementById("type").classList.remove("is-danger");
+			}
 			// clear error message
 			document.getElementById("errormsg").innerHTML = "";
 			return true;
