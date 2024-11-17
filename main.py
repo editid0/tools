@@ -162,6 +162,11 @@ our_tools = [
         "name": "UUID Generator",
         "url": "/uuid_generator",
         "description": "Generate a V1, V3, V4 or V5 UUID.",
+    },
+    {
+        "name": "Password Generator",
+        "url": "/password_generator",
+        "description": "Generate a password.",
     }
 ]
 

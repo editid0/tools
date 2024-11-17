@@ -89,3 +89,7 @@ def timestamp_converter():
 @tools_blueprint.route('/uuid_generator')
 def uuid_generator():
     return render_template('uuidgen.html')
+
+@tools_blueprint.route('/password_generator')
+def password_generator():
+    return render_template('passwordgen.html')
