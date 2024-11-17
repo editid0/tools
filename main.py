@@ -176,6 +176,10 @@ def extract_hex_codes(text):
     return re.findall(pattern, text)
 
 
+@app.route('/favicon.ico')
+def favicon():
+    return app.send_static_file('favicon.ico')
+
 @app.route("/color", methods=["POST", "GET"])
 def colorai():
     color = request.json.get("color")
