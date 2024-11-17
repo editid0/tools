@@ -59,7 +59,9 @@ if os.getenv("SENTRY_DSN"):
     )
 app = Flask(__name__)
 
-import tools
+from tools import tools_blueprint
+
+app.register_blueprint(tools_blueprint)
 
 @app.errorhandler(404)
 def page_not_found(e):
