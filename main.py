@@ -10,6 +10,7 @@ import openai
 from pydantic import BaseModel
 import humanize
 import git
+from markupsafe import Markup
 
 repo = git.Repo(search_parent_directories=True)
 sha = repo.head.object.hexsha[:7]
@@ -62,6 +63,15 @@ app = Flask(__name__)
 from tools import tools_blueprint
 
 app.register_blueprint(tools_blueprint)
+
+@app.context_processor
+def utility_processor():
+    to_return = {}
+    to_return["sha"] = sha
+    to_return["bulma"] = Markup('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">')
+    to_return["fontawesome"] = Markup('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">')
+    to_return['analytics'] = Markup('<script defer src="https://st.editid.uk/script.js" data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"></script>') if os.getenv("IS_PRODUCTION") else ''
+    return to_return
 
 @app.errorhandler(404)
 def page_not_found(e):
