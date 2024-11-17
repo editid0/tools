@@ -18,78 +18,6 @@
 			src="https://st.editid.uk/script.js"
 			data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"
 		></script>
-		<style>
-			/* Container */
-			.editor-container {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				padding: 20px;
-				max-width: 1200px;
-				margin: auto;
-			}
-
-			/* Toolbar styling */
-			.editor-toolbar {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 5px;
-				margin-bottom: 15px;
-				padding: 5px;
-				background-color: #f0f0f0;
-				border: 1px solid #ddd;
-				border-radius: 4px;
-				width: 100%;
-				box-sizing: border-box;
-			}
-
-			/* Dropdown menus in toolbar */
-			.toolbar-dropdown {
-				margin-right: 5px;
-			}
-
-			/* Textarea and preview styling */
-			#markdown-input,
-			#markdown-preview {
-				width: 100%;
-				min-height: 400px;
-				padding: 15px;
-				border: 1px solid #ddd;
-				border-radius: 4px;
-				box-sizing: border-box;
-				resize: vertical;
-				overflow: auto;
-				background-color: #fff;
-				font-family: Arial, sans-serif;
-				font-size: 1rem;
-				line-height: 1.6;
-			}
-
-			/* Preview style */
-			#markdown-preview {
-				background-color: #f9f9f9;
-				padding: 20px;
-				border-left: 3px solid #ddd;
-			}
-
-			/* Responsive layout for editor and preview */
-			.editor-content {
-				display: flex;
-				flex-direction: column;
-				gap: 10px;
-				width: 100%;
-			}
-
-			@media (min-width: 768px) {
-				.editor-content {
-					flex-direction: row;
-				}
-				#markdown-input,
-				#markdown-preview {
-					flex: 1;
-				}
-			}
-		</style>
 	</head>
 	<body>
 		{# adds the nav bar to the file #} {% include 'nav.html' %}
@@ -206,51 +134,121 @@
 				</div>
 			</div>
 		</div>
-
-		<script>
-			// Update preview on input change
-			document
-				.getElementById("markdown-input")
-				.addEventListener("input", function () {
-					updatePreview();
-				});
-
-			// Update the preview
-			function updatePreview() {
-				const markdownText =
-					document.getElementById("markdown-input").value;
-				document.getElementById("markdown-preview").innerHTML =
-					marked.parse(markdownText);
-			}
-
-			// Add markdown syntax with start and end markers
-			function addMarkdownSyntax(startSyntax, endSyntax = "") {
-				const textarea = document.getElementById("markdown-input");
-				const start = textarea.selectionStart;
-				const end = textarea.selectionEnd;
-				const text = textarea.value;
-				const selectedText = text.substring(start, end);
-				textarea.value =
-					text.substring(0, start) +
-					startSyntax +
-					selectedText +
-					endSyntax +
-					text.substring(end);
-				textarea.focus();
-				textarea.selectionStart = start + startSyntax.length;
-				textarea.selectionEnd =
-					end + startSyntax.length + selectedText.length;
-				updatePreview();
-			}
-
-			// Font and font size controls
-			function changeFont(font) {
-				document.getElementById("markdown-input").style.fontFamily =
-					font;
-			}
-			function changeFontSize(size) {
-				document.getElementById("markdown-input").style.fontSize = size;
-			}
-		</script>
 	</body>
+	<script>
+		// Update preview on input change
+		document
+			.getElementById("markdown-input")
+			.addEventListener("input", function () {
+				updatePreview();
+			});
+
+		// Update the preview
+		function updatePreview() {
+			const markdownText =
+				document.getElementById("markdown-input").value;
+			document.getElementById("markdown-preview").innerHTML =
+				marked.parse(markdownText);
+		}
+
+		// Add markdown syntax with start and end markers
+		function addMarkdownSyntax(startSyntax, endSyntax = "") {
+			const textarea = document.getElementById("markdown-input");
+			const start = textarea.selectionStart;
+			const end = textarea.selectionEnd;
+			const text = textarea.value;
+			const selectedText = text.substring(start, end);
+			textarea.value =
+				text.substring(0, start) +
+				startSyntax +
+				selectedText +
+				endSyntax +
+				text.substring(end);
+			textarea.focus();
+			textarea.selectionStart = start + startSyntax.length;
+			textarea.selectionEnd =
+				end + startSyntax.length + selectedText.length;
+			updatePreview();
+		}
+
+		// Font and font size controls
+		function changeFont(font) {
+			document.getElementById("markdown-input").style.fontFamily = font;
+		}
+		function changeFontSize(size) {
+			document.getElementById("markdown-input").style.fontSize = size;
+		}
+	</script>
+	<style>
+		/* Container */
+		.editor-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 20px;
+			max-width: 1200px;
+			margin: auto;
+		}
+
+		/* Toolbar styling */
+		.editor-toolbar {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 5px;
+			margin-bottom: 15px;
+			padding: 5px;
+			background-color: #f0f0f0;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			width: 100%;
+			box-sizing: border-box;
+		}
+
+		/* Dropdown menus in toolbar */
+		.toolbar-dropdown {
+			margin-right: 5px;
+		}
+
+		/* Textarea and preview styling */
+		#markdown-input,
+		#markdown-preview {
+			width: 100%;
+			min-height: 400px;
+			padding: 15px;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			box-sizing: border-box;
+			resize: vertical;
+			overflow: auto;
+			background-color: #fff;
+			font-family: Arial, sans-serif;
+			font-size: 1rem;
+			line-height: 1.6;
+		}
+
+		/* Preview style */
+		#markdown-preview {
+			background-color: #f9f9f9;
+			padding: 20px;
+			border-left: 3px solid #ddd;
+		}
+
+		/* Responsive layout for editor and preview */
+		.editor-content {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			width: 100%;
+		}
+
+		@media (min-width: 768px) {
+			.editor-content {
+				flex-direction: row;
+			}
+			#markdown-input,
+			#markdown-preview {
+				flex: 1;
+			}
+		}
+	</style>
 </html>
