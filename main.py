@@ -59,138 +59,113 @@ if os.getenv("SENTRY_DSN"):
     )
 app = Flask(__name__)
 
+import tools
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
 
 our_tools = [
     {
-        "name": "RGB to Hex and Hex to RGB Converter",
-        "description": "Converts RGB values to hex color codes and vice versa.",
-        "route": "rgb2hex",
-        "template": "hex2rgb.html",
-    },
-    {
-        "name": "JSON Editor",
-        "description": "Edit JSON data with a drag-and-drop interface.",
-        "route": "jsoneditor",
-        "template": "json_editor.html",
-    },
-    {
-        "name": "Markdown Editor",
-        "description": "Edit and preview markdown content.",
-        "route": "markdowneditor",
-        "template": "markdownEditor.html",
-    },
-    {
-        "name": "Meta Tag Generator",
-        "description": "Generate meta tags for your web pages.",
-        "route": "metatags",
-        "template": "metatags.html",
-    },
-    {
-        "name": "Image to Base64",
-        "description": "Convert an image to base64 encoded data.",
-        "route": "image2base64",
-        "template": "image2base64.html",
+        "name": "AI Color Palette Generator",
+        "url": "/ai_color_palette",
+        "description": "Generate a color palette based on a description.",
     },
     {
         "name": "Base64 to Image",
-        "description": "Convert base64 encoded data to an image.",
-        "route": "base642image",
-        "template": "base642image.html",
-    },
-    {
-        "name": "Hex to HSL and HSL to Hex Converter",
-        "description": "Converts hex color codes to HSL values and vice versa.",
-        "route": "hex2hsl",
-        "template": "hex2hsl.html",
+        "url": "/base_64_to_image",
+        "description": "Convert a base64 image to a file.",
     },
     {
         "name": "Diff Editor",
-        "description": "Generate a diff file between two text files.",
-        "route": "diffeditor",
-        "template": "diffeditor.html",
-    },
-    {
-        "name": "Regex Generator",
-        "description": "Generate a regex to match a given string.",
-        "route": "regexgenerator",
-        "template": "regexgenerator.html",
-    },
-    {
-        "name": "Color Palette Generator",
-        "description": "Generate a color palette based on a given color.",
-        "route": "palettegenerator",
-        "template": "palettegen.html",
-    },
-    {
-        "name": "UUID Generator",
-        "description": "Generate a UUID v1, v3, v4, or v5.",
-        "route": "uuidgenerator",
-        "template": "uuidgen.html",
+        "url": "/diff_editor",
+        "description": "Generate a diff between two files.",
     },
     {
         "name": "Foreground Color Helper",
-        "description": "Generate a foreground color based on a given background color.",
-        "route": "foreground",
-        "template": "foreground.html",
+        "url": "/foreground_helper",
+        "description": "Generate accessible foreground colors for a given background color.",
     },
     {
         "name": "Background Color Helper",
-        "description": "Generate a background color based on a given foreground color.",
-        "route": "background",
-        "template": "foreground.html",
+        "url": "/background_helper",
+        "description": "Generate accessible background colors for a given foreground color.",
     },
     {
-        "name": "JSON to YAML Converter",
-        "description": "Convert JSON data to YAML format and vice versa.",
-        "route": "json2yaml",
-        "template": "json2yaml.html",
+        "name": "Hex to HSL",
+        "url": "/hex_to_hsl",
+        "description": "Convert a hex color to HSL and vice versa.",
     },
     {
-        "name": "SVG to Image",
-        "description": "Convert an SVG file to an image with support for resizing.",
-        "route": "svg2image",
-        "template": "svg2image.html",
+        "name": "Hex to RGB",
+        "url": "/hex_to_rgb",
+        "description": "Convert a hex color to RGB and vice versa.",
     },
     {
-        "name": "Timestamp Converter",
-        "description": "Convert between Unix timestamps and human-readable dates.",
-        "route": "timestampconverter",
-        "template": "timestampconv.html",
+        "name": "Image to Color Palette",
+        "url": "/image_to_palette",
+        "description": "Generate a color palette from an image.",
+    },
+    {
+        "name": "Image to Base64",
+        "url": "/image_to_base64",
+        "description": "Convert an image to base64.",
+    },
+    {
+        "name": "JSON Editor",
+        "url": "/json_editor",
+        "description": "Edit and format JSON.",
+    },
+    {
+        "name": "JSON to YAML",
+        "url": "/json_to_yaml",
+        "description": "Convert JSON to YAML and vice versa.",
+    },
+    {
+        "name": "Markdown editor",
+        "url": "/markdown_editor",
+        "description": "Edit, format and view Markdown.",
+    },
+    {
+        "name": "Meta Tag Generator",
+        "url": "/meta_tag_generator",
+        "description": "Generate meta tags for your website.",
+    },
+    {
+        "name": "Color Palette Generator",
+        "url": "/palette_generator",
+        "description": "Generate a color palette.",
     },
     {
         "name": "QR Code Generator",
-        "description": "Generate a QR code for a given text.",
-        "route": "qrgenerator",
-        "template": "qrcodegen.html",
+        "url": "/qr_code_generator",
+        "description": "Generate a QR code.",
     },
     {
-        "name": "Image to Palette",
-        "description": "Generate a color palette from an image.",
-        "route": "image2palette",
-        "template": "im2palette.html",
+        "name": "AI Regex Generator",
+        "url": "/regex_generator",
+        "description": "Generate a regex using a description.",
     },
     {
-        "name": "AI Image Palette Generator",
-        "description": "Use AI to generate a color palette.",
-        "route": "aipalettegenerator",
-        "template": "aicolorpalette.html",
+        "name": "SVG to Image",
+        "url": "/svg_to_image",
+        "description": "Convert a SVG image to a PNG, WebP, or JPG.",
     },
+    {
+        "name": "Timestamp Converter",
+        "url": "/timestamp_converter",
+        "description": "Convert a timestamp to a readable format.",
+    },
+    {
+        "name": "UUID Generator",
+        "url": "/uuid_generator",
+        "description": "Generate a V1, V3, V4 or V5 UUID.",
+    }
 ]
-
 
 @app.route("/")
 def index():
     return render_template("index.html", tools=our_tools, hash=sha)
-
-@app.route('/tools/<tool_name>')
-def tool(tool_name):
-    for tool in our_tools:
-        if tool['route'] == tool_name:
-            return render_template(tool['template'], tool=tool, path=request.path)
-    return render_template('404.html')
 
 def extract_hex_codes(text):
     # Regular expression pattern for hex color codes

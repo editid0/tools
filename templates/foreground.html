@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>
-			{% if path == '/tools/foreground' %}Foreground color helper{% else
+			{% if path == '/foreground_helper' %}Foreground color helper{% else
 			%}Background color helper{% endif %}
 		</title>
 		<link
@@ -22,7 +22,7 @@
 		<div class="container">
 			<div class="box mt-2">
 				<h1 class="title has-text-centered">
-					{% if path == '/tools/foreground' %}Foreground color
+					{% if path == '/foreground_helper' %}Foreground color
 					helper{% else %}Background color helper{% endif %}
 				</h1>
 				<img
@@ -34,7 +34,7 @@
 					The foreground is black (#000000) and the background is
 					white (#FFFFFF)
 				</p>
-				{% if path == '/tools/foreground' %}
+				{% if path == '/foreground_helper' %}
 				<p class="has-text-centered">Background color (hex):</p>
 				{% else %}
 				<p class="has-text-centered">Foreground color (hex):</p>
@@ -153,7 +153,7 @@
 						canvas.width = 400;
 						canvas.height = 100;
 						var ctx = canvas.getContext("2d");
-						("{% if path == '/tools/foreground' %}");
+						("{% if path == '/foreground_helper' %}");
 						ctx.fillStyle = color;
 						ctx.fillRect(0, 0, 400, 100);
 						ctx.font = "48px arial";
@@ -199,7 +199,7 @@
 				this.classList.add("is-loading");
 				let hex = document.getElementById("hex").value;
 				let color = "#" + hex;
-				let fgbg = `{% if path == '/tools/foreground' %}background{% else %}foreground{% endif %}`;
+				let fgbg = `{% if path == '/foreground_helper' %}background{% else %}foreground{% endif %}`;
 				tryGen(hex, color, fgbg, 0);
 			});
 	</script>
