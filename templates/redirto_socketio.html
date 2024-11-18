@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    {{bulma}}
+</head>
+<body>
+    {% include 'nav.html' %}
+    <div class="container">
+        <div class="box mt-2 has-text-centered">
+            <h1 class="title">
+                You are about to be redirected.
+            </h1>
+            <p class="subtitle">
+                You are being redirected to our Socket.IO server.
+                Make sure you have JavaScript enabled.
+                Make sure the domain ends with <code>.modutools.com</code>.
+            </p>
+            <p>Redirecting in <code id="countdown">5</code></p>
+        </div>
+    </div>
+</body>
+<script>
+    let count = 5;
+    const timer = setInterval(() => {
+        count--;
+        document.getElementById("countdown").textContent = count;
+        if (count == 0) {
+            clearInterval(timer);
+            window.location.href = "https://socketio.modutools.com";
+        }
+    }, 1000);
+</script>
+</html>

@@ -6,3 +6,4 @@ pydantic
 humanize
 gitpython
 sentry-sdk[flask]
+flask-socketio
