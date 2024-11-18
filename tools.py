@@ -110,3 +110,6 @@ def lorem_ipsum_generator():
 def url_encode_decode():
     return render_template('urlencdec.html')
 
+@tools_blueprint.route('/hash_generator')
+def hash_generator():
+    return render_template('hasher.html')
