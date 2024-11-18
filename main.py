@@ -192,6 +192,11 @@ our_tools = [
         "name": "Lorem Ipsum Generator",
         "url": "/lorem_ipsum_generator",
         "description": "Generate Lorem Ipsum text.",
+    },
+    {
+        "name": "URL Encoder/Decoder",
+        "url": "/url_encoder_decoder",
+        "description": "Encode and decode strings using URL encoding.",
     }
 ]
 

@@ -105,3 +105,7 @@ def clipboard_to_image():
 @tools_blueprint.route('/lorem_ipsum_generator')
 def lorem_ipsum_generator():
     return render_template('loremipsum.html')
+
+@tools_blueprint.route('/url_encode_decode')
+def url_encode_decode():
+    return render_template('urlencdec.html')
