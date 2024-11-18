@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Encoder/Decoder</title>
+    {{bulma}}
+    {{analytics}}
+</head>
+<body>
+    {# adds the nav bar to the file #} {% include 'nav.html' %}
+    <div class="container">
+        <div class="box mt-2 has-text-centered">
+            <h1 class="title">URL Encoder/Decoder</h1>
+            <p class="subtitle">Encode or decode a URL</p>
+            <input class="input" type="text" id="url" placeholder="Enter text to encode/decode">
+            <button class="button is-success mt-3" id="encode">Encode</button>
+            <button class="button is-danger mt-3" id="decode">Decode</button>
+            <br>
+            <textarea id="result" class="textarea mt-3"></textarea>
+        </div>
+    </div>
+</body>
+<style>
+    #result {
+        margin-top: 20px;
+    }
+</style>
+<script>
+    document.getElementById('encode').addEventListener('click', () => {
+        const url = document.getElementById('url').value;
+        const encodedUrl = encodeURIComponent(url);
+        document.getElementById('result').textContent = `${encodedUrl}`;
+    });
+
+    document.getElementById('decode').addEventListener('click', () => {
+        const encodedUrl = document.getElementById('url').value;
+        const decodedUrl = decodeURIComponent(encodedUrl);
+        document.getElementById('result').textContent = `${decodedUrl}`;
+    });
+</script>
+</html>

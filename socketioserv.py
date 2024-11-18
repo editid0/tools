@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 from markupsafe import Markup
+import markupsafe
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', os.urandom(24))
@@ -25,9 +26,9 @@ def utility_processor():
 def handle_message(message):
     print('received message: ' + message)
     # sanitize message
-    message = message.replace('<', '&lt;').replace('>', '&gt;')
+    message = markupsafe.escape(message)
     # respond with message only to specific client
-    socketio.send(message, to=request.sid)
+    socketio.send(f'You said: {message}', to=request.sid)
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5739, debug=True)

@@ -182,6 +182,21 @@ our_tools = [
         "name": "Socket.IO Tester",
         "url": "/socketio",
         "description": "Test Socket.IO connections.",
+    },
+    {
+        "name": "Clipboard to Image",
+        "url": "/clipboard_to_image",
+        "description": "Save an image from your clipboard.",
+    },
+    {
+        "name": "Lorem Ipsum Generator",
+        "url": "/lorem_ipsum_generator",
+        "description": "Generate Lorem Ipsum text.",
+    },
+    {
+        "name": "URL Encoder/Decoder",
+        "url": "/url_encode_decode",
+        "description": "Encode and decode strings using URL encoding.",
     }
 ]
 

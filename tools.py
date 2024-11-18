@@ -97,3 +97,16 @@ def password_generator():
 @tools_blueprint.route("/socketio")
 def socketio():
     return render_template("redirto_socketio.html")
+
+@tools_blueprint.route("/clipboard_to_image")
+def clipboard_to_image():
+    return render_template("clipboard2file.html")
+
+@tools_blueprint.route('/lorem_ipsum_generator')
+def lorem_ipsum_generator():
+    return render_template('loremipsum.html')
+
+@tools_blueprint.route('/url_encode_decode')
+def url_encode_decode():
+    return render_template('urlencdec.html')
+
