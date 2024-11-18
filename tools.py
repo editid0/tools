@@ -97,3 +97,7 @@ def password_generator():
 @tools_blueprint.route("/socketio")
 def socketio():
     return render_template("redirto_socketio.html")
+
+@tools_blueprint.route("/clipboard_to_image")
+def clipboard_to_image():
+    return render_template("clipboard2file.html")

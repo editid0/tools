@@ -182,6 +182,11 @@ our_tools = [
         "name": "Socket.IO Tester",
         "url": "/socketio",
         "description": "Test Socket.IO connections.",
+    },
+    {
+        "name": "Clipboard to Image",
+        "url": "/clipboard_to_image",
+        "description": "Save an image from your clipboard.",
     }
 ]
 
