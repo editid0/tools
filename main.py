@@ -195,7 +195,7 @@ our_tools = [
     },
     {
         "name": "URL Encoder/Decoder",
-        "url": "/url_encoder_decoder",
+        "url": "/url_encode_decode",
         "description": "Encode and decode strings using URL encoding.",
     }
 ]
