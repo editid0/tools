@@ -109,3 +109,4 @@ def lorem_ipsum_generator():
 @tools_blueprint.route('/url_encode_decode')
 def url_encode_decode():
     return render_template('urlencdec.html')
+
