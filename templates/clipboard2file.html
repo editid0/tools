@@ -22,6 +22,16 @@
     document.addEventListener("paste", (event) => {
         const clipboardData = event.clipboardData;
         const items = clipboardData.items;
+        try {
+            const clipboardData = event.clipboardData;
+            if (!clipboardData || !clipboardData.items) {
+                alert("No content found in clipboard");
+                return;
+            }
+        } catch (error) {
+            alert("No content found in clipboard");
+            return;
+        }
         for (let i = 0; i < items.length; i++) {
             const item = items[i];
             if (item.kind === "file" && item.type.startsWith("image/")) {

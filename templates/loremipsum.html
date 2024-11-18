@@ -76,9 +76,8 @@
 			const textArea = document.createElement("textarea");
 			textArea.value = outputDiv.textContent;
 			document.body.appendChild(textArea);
-			textArea.select();
-			document.execCommand("copy");
-			document.body.removeChild(textArea);
+            navigator.clipboard.writeText(textArea.value);
+            textArea.remove();
 		});
 	</script>
 </html>
