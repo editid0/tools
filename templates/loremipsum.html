@@ -76,7 +76,11 @@
 			const textArea = document.createElement("textarea");
 			textArea.value = outputDiv.textContent;
 			document.body.appendChild(textArea);
-            navigator.clipboard.writeText(textArea.value);
+            navigator.clipboard.writeText(textArea.value)
+                .catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    alert('Failed to copy to clipboard');
+                });
             textArea.remove();
 		});
 	</script>
