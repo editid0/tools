@@ -101,3 +101,7 @@ def socketio():
 @tools_blueprint.route("/clipboard_to_image")
 def clipboard_to_image():
     return render_template("clipboard2file.html")
+
+@tools_blueprint.route('/lorem_ipsum_generator')
+def lorem_ipsum_generator():
+    return render_template('loremipsum.html')

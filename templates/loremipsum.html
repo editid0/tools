@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Lorem Ipsum Generator</title>
+		{{bulma}} {{analytics}}
+	</head>
+	<body>
+		<div class="container">
+			<div class="box mt-2 has-text-centered">
+				<h1 class="title">Lorem Ipsum Generator</h1>
+				<p>Enter the number of paragraphs you want to generate:</p>
+				<input
+					type="number"
+					id="paragraphs"
+					class="input column is-3 ml-auto mr-auto"
+					max="10"
+					min="1"
+				/>
+				<button class="button is-primary my-2" id="generate">
+					Generate
+				</button>
+				<div id="lorem-ipsum"></div>
+				<button id="copy" class="button is-primary">Copy</button>
+			</div>
+		</div>
+	</body>
+	<script>
+		const loremIpsumSentences = [
+			"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+			"Vivamus lacinia odio vitae vestibulum vestibulum.",
+			"Cras venenatis euismod malesuada.",
+			"Maecenas et eros et nisl scelerisque convallis.",
+			"Sed pulvinar turpis nec leo suscipit, vitae varius augue mollis.",
+			"Donec volutpat vehicula metus, non tempor risus laoreet a.",
+			"Curabitur non libero nec neque fermentum congue.",
+			"Proin ac justo a lacus vehicula malesuada.",
+			"Nulla facilisi. Praesent convallis magna a quam scelerisque, non luctus lectus fermentum.",
+			"Integer euismod sapien at magna facilisis, sed suscipit lorem hendrerit.",
+		];
+		function shuffleArray(array) {
+			// Shuffle using Fisher-Yates algorithm
+			for (let i = array.length - 1; i > 0; i--) {
+				const j = Math.floor(Math.random() * (i + 1));
+				[array[i], array[j]] = [array[j], array[i]];
+			}
+		}
+		function generateRandomParagraph() {
+			const sentenceCount = Math.floor(Math.random() * 5) + 3; // Random 3-7 sentences per paragraph
+			const sentences = [...loremIpsumSentences]; // Clone the sentences array
+			shuffleArray(sentences); // Shuffle sentences
+			return sentences.slice(0, sentenceCount).join(" ");
+		}
+		function generateLoremIpsum(paragraphCount) {
+			const paragraphs = [];
+			for (let i = 0; i < paragraphCount; i++) {
+				paragraphs.push(generateRandomParagraph());
+			}
+			return paragraphs.join("\n\n");
+		}
+		const generateButton = document.getElementById("generate");
+		const outputDiv = document.getElementById("lorem-ipsum");
+		const paragraphsInput = document.getElementById("paragraphs");
+		const copyButton = document.getElementById("copy");
+		generateButton.addEventListener("click", () => {
+			const count = parseInt(paragraphsInput.value, 10);
+			if (isNaN(count) || count < 1 || count > 10) {
+				outputDiv.textContent =
+					"Please enter a valid number between 1 and 10.";
+				return;
+			}
+			outputDiv.textContent = generateLoremIpsum(count);
+		});
+		copyButton.addEventListener("click", () => {
+			const textArea = document.createElement("textarea");
+			textArea.value = outputDiv.textContent;
+			document.body.appendChild(textArea);
+			textArea.select();
+			document.execCommand("copy");
+			document.body.removeChild(textArea);
+		});
+	</script>
+</html>

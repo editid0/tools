@@ -187,6 +187,11 @@ our_tools = [
         "name": "Clipboard to Image",
         "url": "/clipboard_to_image",
         "description": "Save an image from your clipboard.",
+    },
+    {
+        "name": "Lorem Ipsum Generator",
+        "url": "/lorem_ipsum_generator",
+        "description": "Generate Lorem Ipsum text.",
     }
 ]
 
