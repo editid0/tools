@@ -177,6 +177,11 @@ our_tools = [
         "name": "Password Generator",
         "url": "/password_generator",
         "description": "Generate a password.",
+    },
+    {
+        "name": "Socket.IO Tester",
+        "url": "/socketio",
+        "description": "Test Socket.IO connections.",
     }
 ]
 

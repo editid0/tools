@@ -93,3 +93,7 @@ def uuid_generator():
 @tools_blueprint.route('/password_generator')
 def password_generator():
     return render_template('passwordgen.html')
+
+@tools_blueprint.route("/socketio")
+def socketio():
+    return render_template("redirto_socketio.html")

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Socket.IO Tester</title>
+		{{bulma}} {{analytics}}
+		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.8.0/dist/socket.io.min.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="box mt-2 has-text-centered">
+				<h1 class="title">Socket.IO Tester</h1>
+                <h2 class="subtitle">If you are connected with polling, then websockets are being blocked.</h2>
+				<div class="field has-addons has-addons-centered">
+					<p class="control">
+						<input
+							class="input"
+							type="text"
+							id="message"
+							placeholder="Enter message"
+						/>
+					</p>
+					<p class="control">
+						<a class="button is-info" onclick="sendMessage()"
+							>Send</a
+						>
+					</p>
+				</div>
+                <p>Currently connected with: <span id="curcon">Nothing</span></p>
+				<div id="messages"></div>
+			</div>
+		</div>
+	</body>
+	<script>
+		const socket = io();
+        var startTime = 0;
+        function updateConnections() {
+            const curcon = document.getElementById("curcon");
+            curcon.innerText = socket.io.engine.transport.name;
+        }
+		function sendMessage() {
+			const message = document.getElementById("message").value;
+			startTime = performance.now();
+			socket.emit("message", message);
+			document.getElementById("message").value = "";
+            updateConnections();
+		}
+		socket.on("message", (message) => {
+			const responseTime = performance.now() - startTime;
+			document.getElementById(
+				"messages"
+			).innerHTML += `<p>Server responded in ${responseTime.toFixed(
+				2
+			)}ms: <code>${message}</code></p>`;
+		});
+        socket.on("connect", updateConnections);
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                sendMessage();
+            }
+        })
+	</script>
+</html>
