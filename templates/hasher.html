@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash Generator</title>
+    {{bulma}}
+    {{analytics}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js" integrity="sha512-a+SUDuwNzXDvz4XrIcXHuCf089/iJAoN4lmrXJg18XnduKK6YlDHNRalv4yd1N40OKI80tFidF+rqTFKGPoWFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <div class="container">
+        <div class="box mt-2 has-text-centered">
+            <h1 class="title">Hash Generator</h1>
+            <p class="subtitle">Generate a hash.</p>
+            <textarea name="input" id="input" class="textarea my-2"></textarea>
+            <div class="select">
+                <select name="algorithm" id="algo">
+                    <option value="md5">MD5</option>
+                    <option value="sha1">SHA-1</option>
+                    <option value="sha256">SHA-256</option>
+                    <option value="sha512">SHA-512</option>
+                </select>
+            </div>
+            <textarea name="output" id="output" class="textarea my-2"></textarea>
+        </div>
+    </div>
+</body>
+<script>
+    const input = document.getElementById('input')
+    const algo = document.getElementById('algo')
+    const output = document.getElementById('output')
+    function updateHash() {
+        if (algo.value == 'sha256') {
+            const hash = CryptoJS.SHA256(input.value);
+            return hash.toString(CryptoJS.enc.Hex);
+        } else if (algo.value == 'sha512') {
+            const hash = CryptoJS.SHA512(input.value);
+            return hash.toString(CryptoJS.enc.Hex)
+        } else if (algo.value == 'md5') {
+            const hash = CryptoJS.MD5(input.value)
+            return hash.toString(CryptoJS.enc.Hex)
+        } else if (algo.value == 'sha1') {
+            const hash = CryptoJS.SHA1(input.value)
+            return hash.toString(CryptoJS.enc.Hex)
+        }
+    }
+    input.addEventListener('input', function (){
+        var value = updateHash()
+        output.innerText = value
+    })
+    algo.addEventListener('change', function() {
+        var value = updateHash()
+        output.innerText = value
+    })
+</script>
+</html>

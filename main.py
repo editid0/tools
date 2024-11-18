@@ -197,6 +197,11 @@ our_tools = [
         "name": "URL Encoder/Decoder",
         "url": "/url_encode_decode",
         "description": "Encode and decode strings using URL encoding.",
+    },
+    {
+        "name": "Hash Generator",
+        "url": "/hash_generator",
+        "description": "Generate a hash for a string",
     }
 ]
 
