@@ -52,7 +52,7 @@ def image_to_base64():
 
 @tools_blueprint.route('/json_editor')
 def json_editor():
-    return render_template('jsoneditor.html')
+    return render_template('json_editor.html')
 
 @tools_blueprint.route('/json_to_yaml')
 def json_to_yaml():
@@ -60,7 +60,7 @@ def json_to_yaml():
 
 @tools_blueprint.route('/markdown_editor')
 def markdown_editor():
-    return render_template('markdowneditor.html')
+    return render_template('markdownEditor.html')
 
 @tools_blueprint.route('/meta_tag_generator')
 def meta_tag_generator():
@@ -84,7 +84,7 @@ def svg_to_image():
 
 @tools_blueprint.route('/timestamp_converter')
 def timestamp_converter():
-    return render_template('timestampconverter.html')
+    return render_template('timestampconv.html')
 
 @tools_blueprint.route('/uuid_generator')
 def uuid_generator():
@@ -110,6 +110,3 @@ def lorem_ipsum_generator():
 def url_encode_decode():
     return render_template('urlencdec.html')
 
-@tools_blueprint.route('/hash_generator')
-def hash_generator():
-    return render_template('hasher.html')
