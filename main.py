@@ -42,7 +42,10 @@ class Color(BaseModel):
     reason: str
     choices: list[str]
 
-DAILY_AI_LIMIT=os.getenv("DAILY_AI_LIMIT", 100) # This value is much lower on the server
+
+DAILY_AI_LIMIT = os.getenv(
+    "DAILY_AI_LIMIT", 100
+)  # This value is much lower on the server
 
 OPENAI_API_KEY = os.getenv(
     "OPENAI_API_KEY"
@@ -64,18 +67,31 @@ from tools import tools_blueprint
 
 app.register_blueprint(tools_blueprint)
 
+
 @app.context_processor
 def utility_processor():
     to_return = {}
     to_return["sha"] = sha
-    to_return["bulma"] = Markup('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">')
-    to_return["fontawesome"] = Markup('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />')
-    to_return['analytics'] = Markup('<script defer src="https://st.editid.uk/script.js" data-website-id="fd60c701-ca5b-4ddc-9a0d-5602adf865d5"></script>') if os.getenv("IS_PRODUCTION") else ''
+    to_return["bulma"] = Markup(
+        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">'
+    )
+    to_return["fontawesome"] = Markup(
+        '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />'
+    )
+    to_return["analytics"] = (
+        Markup(
+            '<script defer src="https://st.editid.uk/script.js" data-website-id="072a1296-3bf0-4db8-a5b0-e538f2e772bb"></script>'
+        )
+        if os.getenv("IS_PRODUCTION")
+        else ""
+    )
     return to_return
+
 
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
+
 
 our_tools = [
     {
@@ -202,12 +218,14 @@ our_tools = [
         "name": "Hash Generator",
         "url": "/hash_generator",
         "description": "Generate a hash for a string",
-    }
+    },
 ]
+
 
 @app.route("/")
 def index():
     return render_template("index.html", tools=our_tools, hash=sha)
+
 
 def extract_hex_codes(text):
     # Regular expression pattern for hex color codes
@@ -216,9 +234,10 @@ def extract_hex_codes(text):
     return re.findall(pattern, text)
 
 
-@app.route('/favicon.ico')
+@app.route("/favicon.ico")
 def favicon():
-    return app.send_static_file('favicon.ico')
+    return app.send_static_file("favicon.ico")
+
 
 @app.route("/color", methods=["POST", "GET"])
 def colorai():
