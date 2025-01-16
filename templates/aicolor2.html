@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>AI Color Palette</title>
+		{{bulma}} {{analytics}}
+	</head>
+	<body>
+		<div class="container">
+			<div class="box has-text-centered">
+				<h1 class="title">AI Color Palette</h1>
+				<h2 class="subtitle">
+					Enter a color scheme, color, or anything else. Leave blank
+					for random.
+				</h2>
+				<p id="remaining"></p>
+				<input
+					type="text"
+					id="theme"
+					placeholder="Blue"
+					class="input"
+					maxlength="100"
+				/>
+				<button class="button is-success mt-3" id="submit">
+					Generate
+				</button>
+			</div>
+		</div>
+	</body>
+</html>
