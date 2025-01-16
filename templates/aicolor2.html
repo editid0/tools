@@ -25,7 +25,75 @@
 				<button class="button is-success mt-3" id="submit">
 					Generate
 				</button>
+				<div id="colors">
+					<div
+						id="color1"
+						class="color"
+						style="background-color: red"
+					></div>
+				</div>
 			</div>
 		</div>
 	</body>
+	<script>
+		document.addEventListener("keypress", (event) => {
+			if (event.key === "Enter") {
+				document.getElementById("submit").click();
+			}
+		});
+		document
+			.getElementById("submit")
+			.addEventListener("click", function () {
+				let theme = document.getElementById("theme").value;
+				console.log(theme);
+				var xhr = new XMLHttpRequest();
+				xhr.open("POST", "/aiv2back", true);
+				xhr.setRequestHeader("Content-Type", "application/json");
+				xhr.send(JSON.stringify({ theme: theme }));
+				document.getElementById("theme").value = "";
+				document.getElementById("submit").classList.add("is-loading");
+				xhr.onload = function () {
+					if (xhr.status === 200) {
+						// clear the #colors div
+						document.getElementById("colors").innerHTML = "";
+						let colors = JSON.parse(xhr.responseText);
+						if (!colors.acceptable) {
+							document
+								.getElementById("theme")
+								.classList.add("is-danger");
+							setTimeout(() => {
+								document
+									.getElementById("theme")
+									.classList.remove("is-danger");
+							}, 3000);
+						}
+						for (let color of colors.colors) {
+							let div = document.createElement("div");
+							div.style.backgroundColor = color;
+							div.className = "color";
+							document.getElementById("colors").appendChild(div);
+						}
+					} else {
+						console.log("Error: " + xhr.status);
+					}
+					document
+						.getElementById("submit")
+						.classList.remove("is-loading");
+				};
+			});
+	</script>
+	<style>
+		.color {
+			width: 100px;
+			height: 100px;
+			display: inline-block;
+			margin: 5px;
+			border-radius: 10px;
+			margin-top: 10px;
+		}
+		#colors {
+			display: flex;
+			justify-content: center;
+		}
+	</style>
 </html>

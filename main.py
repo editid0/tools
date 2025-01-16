@@ -50,9 +50,13 @@ DAILY_AI_LIMIT = os.getenv(
 OPENAI_API_KEY = os.getenv(
     "OPENAI_API_KEY"
 )  # create a .env file and set OPENAI_API_KEY to '' if it's causing errors
+OPENAI_MODERATION = os.getenv("OPENAI_MODERATION")
 client = OpenAI(
     # This is the default and can be omitted
     api_key=OPENAI_API_KEY,
+)
+moderation_client = OpenAI(
+    api_key=OPENAI_MODERATION,
 )
 
 if os.getenv("SENTRY_DSN"):
@@ -631,6 +635,66 @@ def aipalette():
         "colors": colors,
         "remaining": remaining,
     }
+
+
+class PaletteGen2(BaseModel):
+    colors: list[str]
+
+
+def aiv2_backend(prompt) -> tuple[list[str], bool]:
+    print(f"{prompt=}")
+    # Moderate first:
+    response = moderation_client.moderations.create(
+        model="omni-moderation-latest",
+        input=[{"type": "text", "text": prompt}],
+    )
+    if response.results[0].flagged:
+        return [], False
+    messages = [
+        {
+            "role": "system",
+            "content": "Generate a color palette with the exact number of HEX values (between 1 and 8) that best fits the given theme or description. Choose colors that complement each other and reflect the mood, style, or purpose described. Only return the amount of colors needed, and make sure they are in HEX format.",
+        },
+        {
+            "role": "user",
+            "content": f"Theme: google",
+        },
+        {
+            "role": "assistant",
+            "content": "['#4285F4', '#EA4335', '#FBBC05', '#34A853']",
+        },
+        {
+            "role": "system",
+            "content": f"If the theme is coventry college, use the following colors: #009fe3, #81ba25, #0070ba, #cad400, this is important. Feel free to shuffle these ones in any order.",
+        },
+        {
+            "role": "user",
+            "content": f"Theme: {prompt}",
+        },
+    ]
+    response = client.beta.chat.completions.parse(
+        messages=messages,
+        model="gpt-4o-mini",
+        response_format=PaletteGen2,
+        store=True,
+    )
+    response = response.choices[0].message
+    res = response.parsed
+    return res, True
+
+
+@app.route("/aiv2back", methods=["POST"])
+def aiv2back():
+    data = request.get_json()
+    print(data)
+    if not data.get("theme"):
+        return {"colors": ["#90caff"], "acceptable": True}
+    color_array, acceptable = aiv2_backend(data.get("theme"))
+    print(f"{color_array=}, {acceptable=}")
+    if not acceptable:
+        return {"colors": ["#ff0000"], "acceptable": False}
+    print(color_array)
+    return {"colors": color_array.colors, "acceptable": True}
 
 
 if __name__ == "__main__":
