@@ -14,7 +14,7 @@ from markupsafe import Markup
 
 repo = git.Repo(search_parent_directories=True)
 sha = repo.head.object.hexsha[:7]
-
+full_sha = repo.head.object.hexsha
 
 # check if .env file exists
 if not os.path.exists(".env"):
@@ -50,9 +50,13 @@ DAILY_AI_LIMIT = os.getenv(
 OPENAI_API_KEY = os.getenv(
     "OPENAI_API_KEY"
 )  # create a .env file and set OPENAI_API_KEY to '' if it's causing errors
+OPENAI_MODERATION = os.getenv("OPENAI_MODERATION")
 client = OpenAI(
     # This is the default and can be omitted
     api_key=OPENAI_API_KEY,
+)
+moderation_client = OpenAI(
+    api_key=OPENAI_MODERATION,
 )
 
 if os.getenv("SENTRY_DSN"):
@@ -63,9 +67,10 @@ if os.getenv("SENTRY_DSN"):
     )
 app = Flask(__name__)
 
-from tools import tools_blueprint
+if __name__ == "__main__":
+    from tools import tools_blueprint
 
-app.register_blueprint(tools_blueprint)
+    app.register_blueprint(tools_blueprint)
 
 
 @app.context_processor
@@ -224,7 +229,7 @@ our_tools = [
 
 @app.route("/")
 def index():
-    return render_template("index.html", tools=our_tools, hash=sha)
+    return render_template("index.html", tools=our_tools, hash=sha, full_sha=full_sha)
 
 
 def extract_hex_codes(text):
@@ -631,6 +636,97 @@ def aipalette():
         "colors": colors,
         "remaining": remaining,
     }
+
+
+class PaletteGen2(BaseModel):
+    colors: list[str]
+
+
+def aiv2_backend(prompt) -> tuple[list[str], bool]:
+    # Moderate first:
+    response = moderation_client.moderations.create(
+        model="omni-moderation-latest",
+        input=[{"type": "text", "text": prompt}],
+    )
+    if response.results[0].flagged:
+        return [], False
+    messages = [
+        {
+            "role": "system",
+            "content": "Generate a color palette with the exact number of HEX values (between 1 and 8) that best fits the given theme or description. Choose colors that complement each other and reflect the mood, style, or purpose described. Only return the amount of colors needed, and make sure they are in HEX format.",
+        },
+        {
+            "role": "user",
+            "content": f"Theme: google",
+        },
+        {
+            "role": "assistant",
+            "content": "['#4285F4', '#EA4335', '#FBBC05', '#34A853']",
+        },
+        {
+            "role": "system",
+            "content": f"If the theme is coventry college, use the following colors: #009fe3, #81ba25, #0070ba, #cad400, this is important. Feel free to shuffle these ones in any order. If there is no theme, or it is random, generate a palette using a random color. If the theme is not coventry college, generate a palette using the provided theme. You do not have to give 4 colors, you can give less or more.",
+        },
+        {
+            "role": "user",
+            "content": f"Theme: {prompt}",
+        },
+    ]
+    response = client.beta.chat.completions.parse(
+        messages=messages,
+        model="gpt-4o-mini",
+        response_format=PaletteGen2,
+        store=True,
+    )
+    response = response.choices[0].message
+    res = response.parsed
+    return res, True
+
+
+@app.route("/aiv2back", methods=["POST"])
+def aiv2back():
+    post_data = request.get_json()
+    if "CF-Connecting-IP" not in request.headers:
+        ip = request.remote_addr
+    else:
+        ip = request.headers["CF-Connecting-IP"]
+    # hash the ip
+    ip_hash = hashlib.sha256(ip.encode()).hexdigest()
+    # check if the ip has been seen before in data.json
+    with open("data.json", "r") as f:
+        data = json.load(f)
+    today_string = datetime.now().strftime("%d-%m-%Y")
+    if today_string not in data:
+        data[today_string] = {}
+    if ip_hash in data[today_string]:
+        data[today_string][ip_hash] += 1
+    else:
+        data[today_string][ip_hash] = 1
+    with open("data.json", "w") as f:
+        json.dump(data, f, indent=4)
+    # check if the count is greater than DAILY_AI_LIMIT
+    if data[today_string][ip_hash] > DAILY_AI_LIMIT:
+        # create variable resets that is time until midnight of the next day
+        resets = (datetime.now() + timedelta(days=1)).replace(
+            hour=0, minute=0, second=0, microsecond=0
+        ) - datetime.now()
+        # convert to human readable format using humanize
+        resets = humanize.naturaldelta(resets, minimum_unit="seconds")
+        print("failsafe")
+        return {
+            "message": f"You have exceeded the limit of {DAILY_AI_LIMIT} requests per day. Please try again in {resets}.",
+            "remaining": 0,
+        }
+    else:
+        remaining = DAILY_AI_LIMIT - data[today_string][ip_hash]
+    if not post_data.get("theme"):
+        post_data["theme"] = "random"
+    if len(post_data.get("theme")) > 100:
+        return {"colors": ["#ff0000"], "acceptable": False, "remaining": remaining}
+    color_array, acceptable = aiv2_backend(post_data.get("theme"))
+    if not acceptable:
+        return {"colors": ["#ff0000"], "acceptable": False, "remaining": remaining}
+    return {"colors": color_array.colors, "acceptable": True, "remaining": remaining}
 
 
 if __name__ == "__main__":
