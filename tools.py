@@ -168,9 +168,7 @@ def aiv3():
     today_string = datetime.now().strftime("%d-%m-%Y")
     if today_string not in data:
         data[today_string] = {}
-    if ip_hash in data[today_string]:
-        pass
-    else:
+    if ip_hash not in data[today_string]:
         data[today_string][ip_hash] = 0
     with open("data.json", "w") as f:
         json.dump(data, f, indent=4)
