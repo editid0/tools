@@ -14,7 +14,7 @@ from markupsafe import Markup
 
 repo = git.Repo(search_parent_directories=True)
 sha = repo.head.object.hexsha[:7]
-
+full_sha = repo.head.object.hexsha
 
 # check if .env file exists
 if not os.path.exists(".env"):
@@ -67,9 +67,10 @@ if os.getenv("SENTRY_DSN"):
     )
 app = Flask(__name__)
 
-from tools import tools_blueprint
+if __name__ == "__main__":
+    from tools import tools_blueprint
 
-app.register_blueprint(tools_blueprint)
+    app.register_blueprint(tools_blueprint)
 
 
 @app.context_processor
@@ -228,7 +229,7 @@ our_tools = [
 
 @app.route("/")
 def index():
-    return render_template("index.html", tools=our_tools, hash=sha)
+    return render_template("index.html", tools=our_tools, hash=sha, full_sha=full_sha)
 
 
 def extract_hex_codes(text):
@@ -642,7 +643,6 @@ class PaletteGen2(BaseModel):
 
 
 def aiv2_backend(prompt) -> tuple[list[str], bool]:
-    print(f"{prompt=}")
     # Moderate first:
     response = moderation_client.moderations.create(
         model="omni-moderation-latest",
@@ -665,7 +665,7 @@ def aiv2_backend(prompt) -> tuple[list[str], bool]:
         },
         {
             "role": "system",
-            "content": f"If the theme is coventry college, use the following colors: #009fe3, #81ba25, #0070ba, #cad400, this is important. Feel free to shuffle these ones in any order.",
+            "content": f"If the theme is coventry college, use the following colors: #009fe3, #81ba25, #0070ba, #cad400, this is important. Feel free to shuffle these ones in any order. If there is no theme, or it is random, generate a palette using a random color. If the theme is not coventry college, generate a palette using the provided theme. You do not have to give 4 colors, you can give less or more.",
         },
         {
             "role": "user",
@@ -685,16 +685,48 @@ def aiv2_backend(prompt) -> tuple[list[str], bool]:
 
 @app.route("/aiv2back", methods=["POST"])
 def aiv2back():
-    data = request.get_json()
-    print(data)
-    if not data.get("theme"):
-        return {"colors": ["#90caff"], "acceptable": True}
-    color_array, acceptable = aiv2_backend(data.get("theme"))
-    print(f"{color_array=}, {acceptable=}")
+    post_data = request.get_json()
+    if "CF-Connecting-IP" not in request.headers:
+        ip = request.remote_addr
+    else:
+        ip = request.headers["CF-Connecting-IP"]
+    # hash the ip
+    ip_hash = hashlib.sha256(ip.encode()).hexdigest()
+    # check if the ip has been seen before in data.json
+    with open("data.json", "r") as f:
+        data = json.load(f)
+    today_string = datetime.now().strftime("%d-%m-%Y")
+    if today_string not in data:
+        data[today_string] = {}
+    if ip_hash in data[today_string]:
+        data[today_string][ip_hash] += 1
+    else:
+        data[today_string][ip_hash] = 1
+    with open("data.json", "w") as f:
+        json.dump(data, f, indent=4)
+    # check if the count is greater than DAILY_AI_LIMIT
+    if data[today_string][ip_hash] > DAILY_AI_LIMIT:
+        # create variable resets that is time until midnight of the next day
+        resets = (datetime.now() + timedelta(days=1)).replace(
+            hour=0, minute=0, second=0, microsecond=0
+        ) - datetime.now()
+        # convert to human readable format using humanize
+        resets = humanize.naturaldelta(resets, minimum_unit="seconds")
+        print("failsafe")
+        return {
+            "message": f"You have exceeded the limit of {DAILY_AI_LIMIT} requests per day. Please try again in {resets}.",
+            "remaining": 0,
+        }
+    else:
+        remaining = DAILY_AI_LIMIT - data[today_string][ip_hash]
+    if not post_data.get("theme"):
+        post_data["theme"] = "random"
+    if len(post_data.get("theme")) > 100:
+        return {"colors": ["#ff0000"], "acceptable": False, "remaining": remaining}
+    color_array, acceptable = aiv2_backend(post_data.get("theme"))
     if not acceptable:
-        return {"colors": ["#ff0000"], "acceptable": False}
-    print(color_array)
-    return {"colors": color_array.colors, "acceptable": True}
+        return {"colors": ["#ff0000"], "acceptable": False, "remaining": remaining}
+    return {"colors": color_array.colors, "acceptable": True, "remaining": remaining}
 
 
 if __name__ == "__main__":

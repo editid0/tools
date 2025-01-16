@@ -7,14 +7,15 @@
 		{{bulma}} {{analytics}}
 	</head>
 	<body>
+		{% include 'nav.html' %}
+		<div id="notif"></div>
 		<div class="container">
-			<div class="box has-text-centered">
+			<div class="box has-text-centered mt-6">
 				<h1 class="title">AI Color Palette</h1>
 				<h2 class="subtitle">
 					Enter a color scheme, color, or anything else. Leave blank
 					for random.
 				</h2>
-				<p id="remaining"></p>
 				<input
 					type="text"
 					id="theme"
@@ -25,6 +26,10 @@
 				<button class="button is-success mt-3" id="submit">
 					Generate
 				</button>
+				<p>Remaining: <span id="remaining">{{remaining}}</span></p>
+				{% if remaining == 0 %}
+				<p>{{message}}</p>
+				{% endif %}
 				<div id="colors">
 					<div
 						id="color1"
@@ -32,6 +37,10 @@
 						style="background-color: red"
 					></div>
 				</div>
+				<p>
+					Convert from RGB to hex
+					<a href="https://modu.tools/hex_to_rgb">here</a>.
+				</p>
 			</div>
 		</div>
 	</body>
@@ -56,7 +65,7 @@
 					if (xhr.status === 200) {
 						// clear the #colors div
 						document.getElementById("colors").innerHTML = "";
-						let colors = JSON.parse(xhr.responseText);
+						var colors = JSON.parse(xhr.responseText);
 						if (!colors.acceptable) {
 							document
 								.getElementById("theme")
@@ -79,8 +88,53 @@
 					document
 						.getElementById("submit")
 						.classList.remove("is-loading");
+					document.getElementById("remaining").innerText =
+						colors.remaining;
 				};
 			});
+		document.addEventListener("click", (event) => {
+			if (event.target.classList.contains("color")) {
+				navigator.clipboard.writeText(
+					event.target.style.backgroundColor
+				);
+				showNotification(
+					"Copied! " + event.target.style.backgroundColor
+				);
+			}
+		});
+		function showNotification(text) {
+			var parent = document.getElementById("notif");
+			var div = document.createElement("div");
+			var button = document.createElement("button");
+			button.className = "delete";
+			button.onclick = function () {
+				parent.removeChild(div);
+			};
+			div.appendChild(button);
+			div.className = "notification is-primary";
+			div.innerHTML = text;
+			parent.appendChild(div);
+			setTimeout(() => {
+				parent.removeChild(div);
+			}, 3000);
+		}
+		document.addEventListener("DOMContentLoaded", () => {
+			var inputbox = document.getElementById("theme");
+			inputbox.focus();
+			var options = [
+				"Blue",
+				"Google",
+				"Coventry College",
+				"Microsoft",
+				"A sunny beach",
+				"5 color blue palette",
+			];
+			setInterval(() => {
+				// change the placeholder text
+				inputbox.placeholder =
+					options[Math.floor(Math.random() * options.length)];
+			}, 2000);
+		});
 	</script>
 	<style>
 		.color {
@@ -90,10 +144,29 @@
 			margin: 5px;
 			border-radius: 10px;
 			margin-top: 10px;
+			cursor: copy;
+			transition: all 0.3s ease-in-out;
 		}
 		#colors {
 			display: flex;
 			justify-content: center;
+		}
+		.color:hover {
+			transform: scale(1.1);
+		}
+		#notif {
+			position: fixed;
+			top: 10%;
+			right: 25%;
+			width: 50%;
+			z-index: 100;
+			transition: all 0.3s ease-in-out;
+		}
+		#notif > div {
+			background-color: rgb(255, 255, 255, 0.5);
+		}
+		.notification {
+			backdrop-filter: blur(10px);
 		}
 	</style>
 </html>

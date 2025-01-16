@@ -10,14 +10,25 @@ if __name__ == "__main__":
     exit()
 
 # https://stackoverflow.com/a/59155127/15622854
+from datetime import datetime, timedelta
+import hashlib
+import json
+import os
+import dotenv
 from flask import Blueprint, render_template, request
+import humanize
 
 tools_blueprint = Blueprint("tools", __name__)
 
+dotenv.load_dotenv()
+DAILY_AI_LIMIT = os.getenv(
+    "DAILY_AI_LIMIT", 100
+)  # This value is much lower on the server
 
-@tools_blueprint.route("/ai_color_palette")
-def ai_color_palette():
-    return render_template("aicolorpalette.html")
+
+# @tools_blueprint.route("/ai_color_palette")
+# def ai_color_palette():
+#     return render_template("aicolorpalette.html")
 
 
 @tools_blueprint.route("/base_64_to_image")
@@ -140,9 +151,40 @@ def hash_generator():
     return render_template("hasher.html")
 
 
-@tools_blueprint.route("/aiv3")
+@tools_blueprint.route("/ai_color_palette")
 def aiv3():
     """
     Use chatgpt memory function to hardcode the coventry college colors
     """
-    return render_template("aicolor2.html")
+    if "CF-Connecting-IP" not in request.headers:
+        ip = request.remote_addr
+    else:
+        ip = request.headers["CF-Connecting-IP"]
+    # hash the ip
+    ip_hash = hashlib.sha256(ip.encode()).hexdigest()
+    # check if the ip has been seen before in data.json
+    with open("data.json", "r") as f:
+        data = json.load(f)
+    today_string = datetime.now().strftime("%d-%m-%Y")
+    if today_string not in data:
+        data[today_string] = {}
+    if ip_hash in data[today_string]:
+        pass
+    else:
+        data[today_string][ip_hash] = 0
+    with open("data.json", "w") as f:
+        json.dump(data, f, indent=4)
+    # check if the count is greater than DAILY_AI_LIMIT
+    if data[today_string][ip_hash] > DAILY_AI_LIMIT:
+        # create variable resets that is time until midnight of the next day
+        resets = (datetime.now() + timedelta(days=1)).replace(
+            hour=0, minute=0, second=0, microsecond=0
+        ) - datetime.now()
+        # convert to human readable format using humanize
+        resets = humanize.naturaldelta(resets, minimum_unit="seconds")
+        message = f"You have exceeded the limit of {DAILY_AI_LIMIT} requests per day. Please try again in {resets}."
+        remaining = 0
+    else:
+        remaining = DAILY_AI_LIMIT - data[today_string][ip_hash]
+        message = ""
+    return render_template("aicolor2.html", remaining=remaining, message=message)

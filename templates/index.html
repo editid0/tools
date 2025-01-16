@@ -4,8 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Tools</title>
-		{{bulma}}
-		{{analytics}}
+		{{bulma}} {{analytics}}
 	</head>
 	<body>
 		{# adds the nav bar to the file #} {% include 'nav.html' %}
@@ -13,7 +12,15 @@
 			<div class="title-container">
 				<h1 class="title">ModuTools</h1>
 				<h2 class="subtitle">Some of our favourites:</h2>
-				<p>Latest commit: {{ hash }}</p>
+				<p>
+					Latest commit:
+					<a
+						href="https://github.com/editid0/tools/commit/{{full_sha}}"
+						,
+						target="_blank"
+						>{{hash}}</a
+					>
+				</p>
 			</div>
 			<div class="grid is-col-min-8">
 				{% for tool in tools %}
