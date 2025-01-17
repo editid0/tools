@@ -50,13 +50,9 @@ DAILY_AI_LIMIT = os.getenv(
 OPENAI_API_KEY = os.getenv(
     "OPENAI_API_KEY"
 )  # create a .env file and set OPENAI_API_KEY to '' if it's causing errors
-OPENAI_MODERATION = os.getenv("OPENAI_MODERATION")
 client = OpenAI(
     # This is the default and can be omitted
     api_key=OPENAI_API_KEY,
-)
-moderation_client = OpenAI(
-    api_key=OPENAI_MODERATION,
 )
 
 if os.getenv("SENTRY_DSN"):
@@ -642,9 +638,9 @@ class PaletteGen2(BaseModel):
     colors: list[str]
 
 
-def aiv2_backend(prompt) -> tuple[list[str], bool]:
+def aiv2_backend(prompt, ip_hash) -> tuple[list[str], bool]:
     # Moderate first:
-    response = moderation_client.moderations.create(
+    response = client.moderations.create(
         model="omni-moderation-latest",
         input=[{"type": "text", "text": prompt}],
     )
@@ -677,6 +673,7 @@ def aiv2_backend(prompt) -> tuple[list[str], bool]:
         model="gpt-4o-mini",
         response_format=PaletteGen2,
         store=True,
+        metadata={"ip_hash": ip_hash},
     )
     response = response.choices[0].message
     res = response.parsed
@@ -723,7 +720,7 @@ def aiv2back():
         post_data["theme"] = "random"
     if len(post_data.get("theme")) > 100:
         return {"colors": ["#ff0000"], "acceptable": False, "remaining": remaining}
-    color_array, acceptable = aiv2_backend(post_data.get("theme"))
+    color_array, acceptable = aiv2_backend(post_data.get("theme"), str(ip_hash))
     if not acceptable:
         return {"colors": ["#ff0000"], "acceptable": False, "remaining": remaining}
     return {"colors": color_array.colors, "acceptable": True, "remaining": remaining}
