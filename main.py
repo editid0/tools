@@ -50,13 +50,9 @@ DAILY_AI_LIMIT = os.getenv(
 OPENAI_API_KEY = os.getenv(
     "OPENAI_API_KEY"
 )  # create a .env file and set OPENAI_API_KEY to '' if it's causing errors
-OPENAI_MODERATION = os.getenv("OPENAI_MODERATION")
 client = OpenAI(
     # This is the default and can be omitted
     api_key=OPENAI_API_KEY,
-)
-moderation_client = OpenAI(
-    api_key=OPENAI_MODERATION,
 )
 
 if os.getenv("SENTRY_DSN"):
@@ -644,7 +640,7 @@ class PaletteGen2(BaseModel):
 
 def aiv2_backend(prompt) -> tuple[list[str], bool]:
     # Moderate first:
-    response = moderation_client.moderations.create(
+    response = client.moderations.create(
         model="omni-moderation-latest",
         input=[{"type": "text", "text": prompt}],
     )
