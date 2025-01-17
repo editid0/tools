@@ -638,7 +638,7 @@ class PaletteGen2(BaseModel):
     colors: list[str]
 
 
-def aiv2_backend(prompt) -> tuple[list[str], bool]:
+def aiv2_backend(prompt, ip_hash) -> tuple[list[str], bool]:
     # Moderate first:
     response = client.moderations.create(
         model="omni-moderation-latest",
@@ -673,6 +673,7 @@ def aiv2_backend(prompt) -> tuple[list[str], bool]:
         model="gpt-4o-mini",
         response_format=PaletteGen2,
         store=True,
+        user=f"{ip_hash}",
     )
     response = response.choices[0].message
     res = response.parsed
@@ -719,7 +720,7 @@ def aiv2back():
         post_data["theme"] = "random"
     if len(post_data.get("theme")) > 100:
         return {"colors": ["#ff0000"], "acceptable": False, "remaining": remaining}
-    color_array, acceptable = aiv2_backend(post_data.get("theme"))
+    color_array, acceptable = aiv2_backend(post_data.get("theme"), str(ip_hash))
     if not acceptable:
         return {"colors": ["#ff0000"], "acceptable": False, "remaining": remaining}
     return {"colors": color_array.colors, "acceptable": True, "remaining": remaining}
