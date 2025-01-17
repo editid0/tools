@@ -673,7 +673,7 @@ def aiv2_backend(prompt, ip_hash) -> tuple[list[str], bool]:
         model="gpt-4o-mini",
         response_format=PaletteGen2,
         store=True,
-        user=f"{ip_hash}",
+        metadata={"ip_hash": ip_hash},
     )
     response = response.choices[0].message
     res = response.parsed
