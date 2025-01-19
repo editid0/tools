@@ -151,7 +151,12 @@
 			document.searchVisible = true;
 			document.getElementById("search").focus();
 			// clear the search field
-			document.getElementById("search").value = trigger;
+			document.getElementById("search").value = "";
+			setTimeout(() => {
+				if (!document.getElementById("search").value) {
+					document.getElementById("search").value = trigger;
+				} // This is because chrome is stupid and duplicates the first letter without this
+			}, 1);
 		}
 	}
 	function handleEnter() {
