@@ -1,62 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Tools</title>
-		{{bulma}} {{analytics}}
-	</head>
-	<body>
-		{# adds the nav bar to the file #} {% include 'nav.html' %}
-		<div class="container has-text-centered">
-			<div class="title-container">
-				<h1 class="title">ModuTools</h1>
-				<h2 class="subtitle">Some of our favourites:</h2>
-				<p>
-					Latest commit:
-					<a
-						href="https://github.com/editid0/tools/commit/{{full_sha}}"
-						,
-						target="_blank"
-						>{{hash}}</a
-					>
-				</p>
-			</div>
-			<div class="grid is-col-min-8">
-				{% for tool in tools %}
-				<div class="cell card">
-					<header class="card-header mb-1">
-						<p class="card-header-title">{{ tool['name'] }}</p>
-					</header>
-					<div class="card-content">
-						<p>{{ tool['description'] }}</p>
-					</div>
-					<!-- This is buttons -->
-					<div class="buttons card-footer-item mb-3">
-						<a
-							class="button is-primary is-fullwidth"
-							href="{{ tool['url'] }}"
-							target="_blank"
-							>Visit</a
-						>
-					</div>
-				</div>
-				{% endfor %}
-			</div>
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Tools</title>
+	{{bulma}} {{analytics}}
+</head>
+
+<body>
+	{# adds the nav bar to the file #} {% include 'nav.html' %}
+	<dialog id="searchdialog">
+		<p class="title has-text-centered has-text-black">Search</p>
+		<input type="search" name="search" id="search" class="input" />
+		<p>Press <code>escape</code> to dismiss, <code>enter</code> to search</p>
+	</dialog>
+	<div class="container has-text-centered">
+		<div class="title-container">
+			<h1 class="title">ModuTools</h1>
+			<h2 class="subtitle">Some of our favourites:</h2>
+			<p>
+				Latest commit:
+				<a href="https://github.com/editid0/tools/commit/{{full_sha}}" , target="_blank">{{hash}}</a>
+			</p>
 		</div>
-	</body>
-	<style>
-		.card {
-			height: 100%;
-			display: flex;
-			flex-direction: column;
-			justify-content: space-between;
+		<div class="grid is-col-min-8">
+			{% for tool in tools %}
+			<div class="cell card">
+				<header class="card-header mb-1">
+					<p class="card-header-title">{{ tool['name'] }}</p>
+				</header>
+				<div class="card-content">
+					<p>{{ tool['description'] }}</p>
+				</div>
+				<!-- This is buttons -->
+				<div class="buttons card-footer-item mb-3">
+					<a class="button is-primary is-fullwidth" href="{{ tool['url'] }}" target="_blank">Visit</a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</body>
+<style>
+	.card {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
+	.card-content {
+		flex-grow: 1;
+		/* This will push the button to the bottom */
+	}
+
+	.grid {
+		margin: 2rem;
+	}
+
+	dialog {
+		border: none;
+		border-radius: 5px;
+		background-color: white;
+		padding: 2rem;
+	}
+
+	dialog::backdrop {
+		background-color: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(5px);
+	}
+</style>
+<script>
+	document.searchVisible = false;
+	document.addEventListener("keypress", (e) => {
+		// detect if user pressed a key a-z
+		if ((e.key >= "a" && e.key <= "z") || e.key === "Enter" || e.key === " ") {
+			console.log(e.key);
+			showSearch(e.key);
+		} else {
+			console.log("different key");
+			console.log(e.key)
 		}
-		.card-content {
-			flex-grow: 1; /* This will push the button to the bottom */
+	})
+	function searchPage(to_search) {
+		// Remove previous highlights
+		removeHighlights();
+
+		if (!to_search.trim()) return false; // Exit if the search term is empty
+
+		// Use a recursive function to walk through the DOM and highlight matches
+		function highlightMatches(node) {
+			if (node.nodeType === Node.TEXT_NODE) {
+				// Only process text nodes
+				const text = node.textContent;
+				const regex = new RegExp(`(${to_search})`, 'gi'); // Case-insensitive match
+				if (regex.test(text)) {
+					const span = document.createElement("span");
+					span.innerHTML = text.replace(regex, `<mark>$1</mark>`); // Highlight matches
+					node.replaceWith(span);
+				}
+			} else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== "SCRIPT" && node.tagName !== "STYLE") {
+				// Process child nodes, excluding script and style tags
+				Array.from(node.childNodes).forEach(highlightMatches);
+			}
 		}
-		.grid {
-			margin: 2rem;
+
+		highlightMatches(document.body);
+		return true;
+	}
+	function removeHighlights() {
+		const highlights = document.querySelectorAll("mark");
+		highlights.forEach((mark) => {
+			const parent = mark.parentNode;
+			parent.replaceChild(document.createTextNode(mark.textContent), mark);
+			parent.normalize(); // Combine adjacent text nodes
+		});
+	}
+	function showSearch(trigger) {
+		if (!document.searchVisible) {
+			var dialog = document.getElementById("searchdialog");
+			dialog.showModal();
+			document.searchVisible = true;
+			document.getElementById("search").focus();
+			// clear the search field
+			document.getElementById("search").value = trigger;
 		}
-	</style>
+		if (trigger === "Enter") {
+			// search for the value
+			console.log("searching for " + document.getElementById("search").value);
+			var search = searchPage(document.getElementById("search").value);
+			if (search) {
+				hideSearch();
+			} else {
+				console.log("no results");
+				document.getElementById("search").classList.add("is-danger");
+				setTimeout(() => {
+					document.getElementById("search").classList.remove("is-danger");
+				}, 3000);
+				// clear the search field
+				document.getElementById("search").value = "";
+			}
+		}
+	}
+	function hideSearch() {
+		if (document.searchVisible) {
+			var dialog = document.getElementById("searchdialog");
+			dialog.close();
+			document.searchVisible = false;
+		}
+	}
+	document.getElementById("searchdialog").addEventListener("close", hideSearch);
+</script>
+
 </html>
