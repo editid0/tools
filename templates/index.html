@@ -79,7 +79,6 @@
 			if (e.key == "Enter") {
 				return;
 			}
-			console.log("valid")
 			showSearch(e.key);
 		}
 	})
@@ -92,8 +91,6 @@
 			}
 		} else if (e.keyCode == 13) {
 			handleEnter();
-		}else {
-			console.log(e.keyCode);
 		}
 	})
 	function removeHighlightFromElement(element) {
@@ -160,9 +157,7 @@
 		}
 	}
 	function handleEnter() {
-		console.log("Enter pressed");
 		if (!document.searchVisible) return;
-		console.log("Enter pressed");
 		// search for the value
 		var search = searchPage(document.getElementById("search").value);
 		removeHighlightFromElement(document.getElementById("searchdialog"));
