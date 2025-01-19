@@ -82,8 +82,10 @@
 	document.addEventListener("keydown", (e) => {
 		if (e.keyCode == 8) {
 			// backspace
-			hideSearch();
-			removeHighlights();
+			if (!document.searchVisible) {
+				hideSearch();
+				removeHighlights();
+			}
 		}
 	})
 	function searchPage(to_search) {
