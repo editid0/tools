@@ -76,11 +76,14 @@
 	document.addEventListener("keypress", (e) => {
 		// detect if user pressed a key a-z
 		if ((e.key >= "a" && e.key <= "z") || e.key === "Enter" || e.key === " ") {
-			console.log(e.key);
 			showSearch(e.key);
-		} else {
-			console.log("different key");
-			console.log(e.key)
+		}
+	})
+	document.addEventListener("keydown", (e) => {
+		if (e.keyCode == 8) {
+			// backspace
+			hideSearch();
+			removeHighlights();
 		}
 	})
 	function searchPage(to_search) {
@@ -128,12 +131,10 @@
 		}
 		if (trigger === "Enter") {
 			// search for the value
-			console.log("searching for " + document.getElementById("search").value);
 			var search = searchPage(document.getElementById("search").value);
 			if (search) {
 				hideSearch();
 			} else {
-				console.log("no results");
 				document.getElementById("search").classList.add("is-danger");
 				setTimeout(() => {
 					document.getElementById("search").classList.remove("is-danger");
