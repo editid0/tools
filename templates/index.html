@@ -88,6 +88,20 @@
 			}
 		}
 	})
+	function removeHighlightFromElement(element) {
+    if (!element || !(element instanceof HTMLElement)) {
+        console.error("Invalid element provided.");
+        return;
+    }
+
+    // Select all <mark> elements within the provided element
+    const highlights = element.querySelectorAll("mark");
+    highlights.forEach((mark) => {
+        const parent = mark.parentNode;
+        parent.replaceChild(document.createTextNode(mark.textContent), mark);
+        parent.normalize(); // Combine adjacent text nodes
+    });
+}
 	function searchPage(to_search) {
 		// Remove previous highlights
 		removeHighlights();
