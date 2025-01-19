@@ -148,6 +148,7 @@
 		if (trigger === "Enter") {
 			// search for the value
 			var search = searchPage(document.getElementById("search").value);
+			removeHighlightFromElement(document.getElementById("search"));
 			if (search) {
 				hideSearch();
 			} else {
