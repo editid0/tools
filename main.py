@@ -174,11 +174,6 @@ our_tools = [
         "description": "Generate a regex using a description.",
     },
     {
-        "name": "SVG to Image",
-        "url": "/svg_to_image",
-        "description": "Convert a SVG image to a PNG, WebP, or JPG.",
-    },
-    {
         "name": "Timestamp Converter",
         "url": "/timestamp_converter",
         "description": "Convert a timestamp to a readable format.",

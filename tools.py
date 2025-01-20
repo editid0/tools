@@ -125,9 +125,9 @@ def regex_generator():
     return render_template("regexgenerator.html")
 
 
-@tools_blueprint.route("/svg_to_image")
-def svg_to_image():
-    return render_template("svg2image.html")
+# @tools_blueprint.route("/svg_to_image")
+# def svg_to_image():
+#     return render_template("svg2image.html")
 
 
 @tools_blueprint.route("/timestamp_converter")
