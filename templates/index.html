@@ -23,7 +23,7 @@
 				Latest commit:
 				<a href="https://github.com/editid0/tools/commit/{{full_sha}}" , target="_blank">{{hash}}</a>
 			</p>
-			<p>Start typing to search</p>
+			<p id="searchprompt">Start typing to search</p>
 		</div>
 		<div class="grid is-col-min-8">
 			{% for tool in tools %}
@@ -70,6 +70,9 @@
 	dialog::backdrop {
 		background-color: rgba(0, 0, 0, 0.5);
 		backdrop-filter: blur(5px);
+	}
+	#searchprompt {
+		cursor: pointer;
 	}
 </style>
 <script>
@@ -180,6 +183,9 @@
 			document.searchVisible = false;
 		}
 	}
+	document.getElementById("searchprompt").addEventListener("click", () => {
+		showSearch("");
+	});
 	document.getElementById("searchdialog").addEventListener("close", hideSearch);
 </script>
 
