@@ -75,10 +75,11 @@
 	document.searchVisible = false;
 	document.addEventListener("keypress", (e) => {
 		// detect if user pressed a key a-z
-		if ((e.key >= "a" && e.key <= "z") || e.key === " ") {
+		if ((e.key >= "a" && e.key <= "z") || (e.key >= "A" && e.key <= "Z") || e.key === " ") {
+			if (e.key == "Enter") {
+				return;
+			}
 			showSearch(e.key);
-		} else if (e.key === "Enter") {
-			handleEnter();
 		}
 	})
 	document.addEventListener("keydown", (e) => {
@@ -88,6 +89,8 @@
 				hideSearch();
 				removeHighlights();
 			}
+		} else if (e.keyCode == 13) {
+			handleEnter();
 		}
 	})
 	function removeHighlightFromElement(element) {
@@ -145,7 +148,12 @@
 			document.searchVisible = true;
 			document.getElementById("search").focus();
 			// clear the search field
-			document.getElementById("search").value = trigger;
+			document.getElementById("search").value = "";
+			setTimeout(() => {
+				if (!document.getElementById("search").value) {
+					document.getElementById("search").value = trigger;
+				} // This is because chrome is stupid and duplicates the first letter without this
+			}, 1);
 		}
 	}
 	function handleEnter() {
