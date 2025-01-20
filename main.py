@@ -661,7 +661,7 @@ def aiv2_backend(prompt, ip_hash) -> tuple[list[str], bool]:
         },
         {
             "role": "system",
-            "content": f"If the theme is coventry college, use the following colors: #009fe3, #81ba25, #0070ba, #cad400, this is important. Feel free to shuffle these ones in any order. If there is no theme, or it is random, generate a palette using a random color. If the theme is not coventry college, generate a palette using the provided theme. You do not have to give 4 colors, you can give less or more.",
+            "content": f"If the theme is coventry college, use the following colors: #009fe3, #81ba25, #0070ba, #cad400, this is important. Feel free to shuffle these ones in any order. If there is no theme, or it is random, generate a palette using a random color. If the theme is not coventry college, generate a palette using the provided theme. You do not have to give 4 colors, you can give less or more. Do not return coventry college colors unless the theme is coventry college.",
         },
         {
             "role": "user",

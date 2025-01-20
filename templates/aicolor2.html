@@ -77,10 +77,7 @@
 							}, 3000);
 						}
 						for (let color of colors.colors) {
-							let div = document.createElement("div");
-							div.style.backgroundColor = color;
-							div.className = "color";
-							document.getElementById("colors").appendChild(div);
+							makeSquare(color);
 						}
 					} else {
 						console.log("Error: " + xhr.status);
@@ -135,6 +132,17 @@
 					options[Math.floor(Math.random() * options.length)];
 			}, 2000);
 		});
+		function makeSquare(color) {
+			let div = document.createElement("div");
+			let innerdiv = document.createElement("div");
+			innerdiv.style.backgroundColor = color;
+			innerdiv.className = "color";
+			let p = document.createElement("p");
+			p.innerText = color;
+			div.appendChild(innerdiv);
+			div.appendChild(p);
+			document.getElementById("colors").appendChild(div);
+		}
 	</script>
 	<style>
 		.color {
