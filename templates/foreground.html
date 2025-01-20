@@ -131,6 +131,7 @@
 					if (!data.choices) {
 						tryGen(hex, color, fgbg, depth + 1);
 					}
+					console.log(data);
 					document.getElementById("response").innerHTML = data.reason;
 					if (data.remaining != null) {
 						document.getElementById(
@@ -139,6 +140,7 @@
 					}
 					document.getElementById("options").innerHTML = "";
 					for (var i = 0; i < data.choices.length; i++) {
+						console.log(data.choices[i]);
 						// create a canvas which will be used to display the color, set the background to the color specified using hex, and add text with color from choice
 						var parent = document.createElement("div");
 						parent.className = "box responsebox has-text-centered";
@@ -151,12 +153,15 @@
 						ctx.fillRect(0, 0, 400, 100);
 						ctx.font = "48px arial";
 						ctx.fillStyle = data.choices[i];
+						console.log(`Set text color to ${data.choices[i]}`);
 						("{% else %}");
 						ctx.fillStyle = data.choices[i];
 						ctx.fillRect(0, 0, 400, 100);
 						ctx.font = "48px arial";
 						ctx.fillStyle = color;
+						console.log(`Set text color to ${color}`);
 						("{% endif %}");
+						console.log("Path is {{path}}");
 						ctx.fillText(data.choices[i], 10, 58);
 						parent.appendChild(canvas);
 						document.getElementById("options").appendChild(parent);
@@ -213,7 +218,7 @@
 		#demo {
 			display: flex;
 			justify-content: center;
-			max-width: 400px;
+			max-width: calc(max(40vh, 40vw));
 			margin-left: auto;
 			margin-right: auto;
 		}
