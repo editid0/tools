@@ -21,10 +21,14 @@
                     <option value="sha1">SHA-1</option>
                     <option value="sha256">SHA-256</option>
                     <option value="sha512">SHA-512</option>
+                    <option value="hmac">HMAC SHA-256</option>
                 </select>
             </div>
             <textarea name="output" id="output" class="textarea my-2"></textarea>
         </div>
+    </div>
+    <div class="box mt-2 has-text-centered">
+        <p>For algorithms that require a key, the key is "secret"</p>
     </div>
 </body>
 <script>
@@ -43,6 +47,9 @@
             return hash.toString(CryptoJS.enc.Hex)
         } else if (algo.value == 'sha1') {
             const hash = CryptoJS.SHA1(input.value)
+            return hash.toString(CryptoJS.enc.Hex)
+        } else if (algo.value == 'hmac') {
+            const hash = CryptoJS.HmacSHA256(input.value, 'secret')
             return hash.toString(CryptoJS.enc.Hex)
         }
     }
