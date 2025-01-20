@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 import hashlib
+import io
 import json
-from flask import Flask, render_template, request
+from flask import Flask, Response, render_template, request
 import requests, re
 import dotenv
 import os
@@ -12,6 +13,7 @@ import humanize
 import git
 from markupsafe import Markup
 from thefuzz import fuzz
+from PIL import Image, ImageDraw, ImageFont
 
 repo = git.Repo(search_parent_directories=True)
 sha = repo.head.object.hexsha[:7]
@@ -239,6 +241,16 @@ def extract_hex_codes(text):
 @app.route("/favicon.ico")
 def favicon():
     return app.send_static_file("favicon.ico")
+
+
+@app.route("/color/<foreground>/<background>")
+def color_generator(foreground, background):
+    im = Image.new("RGB", (400, 100), background)
+    d = ImageDraw.Draw(im)
+    d.text((0, 0), foreground, fill=foreground, font=ImageFont.load_default(size=70))
+    b = io.BytesIO()
+    im.save(b, "PNG")
+    return Response(b.getvalue(), mimetype="image/png")
 
 
 @app.route("/color", methods=["POST", "GET"])
