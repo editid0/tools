@@ -134,11 +134,6 @@ our_tools = [
         "description": "Convert a hex color to RGB and vice versa.",
     },
     {
-        "name": "Image to Color Palette",
-        "url": "/image_to_palette",
-        "description": "Generate a color palette from an image.",
-    },
-    {
         "name": "Image to Base64",
         "url": "/image_to_base64",
         "description": "Convert an image to base64.",

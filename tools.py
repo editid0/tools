@@ -61,9 +61,9 @@ def hex_to_rgb():
     return render_template("hex2rgb.html")
 
 
-@tools_blueprint.route("/image_to_palette")
-def image_to_palette():
-    return render_template("im2palette.html")
+# @tools_blueprint.route("/image_to_palette")
+# def image_to_palette():
+#     return render_template("im2palette.html")
 
 
 @tools_blueprint.route("/image_to_base64")
