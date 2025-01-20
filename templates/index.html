@@ -12,7 +12,7 @@
 	{# adds the nav bar to the file #} {% include 'nav.html' %}
 	<dialog id="searchdialog">
 		<p class="title has-text-centered has-text-black">Search</p>
-		<input type="search" name="search" id="search" class="input" />
+		<input type="search" name="search" id="search" class="input" maxlength="50"/>
 		<p>Press <code>escape</code> to dismiss, <code>enter</code> to search</p>
 	</dialog>
 	<div class="container has-text-centered">
@@ -23,6 +23,7 @@
 				Latest commit:
 				<a href="https://github.com/editid0/tools/commit/{{full_sha}}" , target="_blank">{{hash}}</a>
 			</p>
+			<p>Start typing to search</p>
 		</div>
 		<div class="grid is-col-min-8">
 			{% for tool in tools %}
