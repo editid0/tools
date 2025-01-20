@@ -12,11 +12,13 @@ if __name__ == "__main__":
 # https://stackoverflow.com/a/59155127/15622854
 from datetime import datetime, timedelta
 import hashlib
+import io
 import json
 import os
 import dotenv
-from flask import Blueprint, render_template, request
+from flask import Blueprint, Response, render_template, request
 import humanize
+import qrcode
 
 tools_blueprint = Blueprint("tools", __name__)
 
@@ -99,6 +101,23 @@ def palette_generator():
 @tools_blueprint.route("/qr_code_generator")
 def qr_code_generator():
     return render_template("qrcodegen.html")
+
+@tools_blueprint.route("/qr_code_generator/generate", methods=["GET"])
+def qr_code_generator_generate():
+    data = request.args
+    text = data.get("text", 'No text provided')
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_H,
+        box_size=10,
+        border=1,
+    )
+    qr.add_data(text)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    bts = io.BytesIO()
+    img.save(bts, format="PNG")
+    return Response(bts.getvalue(), mimetype="image/png")
 
 
 @tools_blueprint.route("/regex_generator")
