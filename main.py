@@ -245,6 +245,8 @@ def favicon():
 
 @app.route("/color/<foreground>/<background>")
 def color_generator(foreground, background):
+    if len(foreground) not in [4, 7] or len(background) not in [4, 7]:
+        return {"reason": "Invalid color", "choices": []}
     im = Image.new("RGB", (400, 100), background)
     d = ImageDraw.Draw(im)
     d.text((0, 0), foreground, fill=foreground, font=ImageFont.load_default(size=70))
