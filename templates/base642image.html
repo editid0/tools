@@ -60,8 +60,12 @@
 				createImageFromBase64(this.value);
 			});
 		document.getElementById("save").addEventListener("click", function () {
-			document.getElementById("b64im").download = "image.png";
-			document.getElementById("b64im").click();
+			// save the image
+			const img = document.getElementById("b64im");
+			const link = document.createElement("a");
+			link.href = img.src;
+			link.download = "image.png";
+			link.click();
 		});
 	</script>
 	<style>
@@ -70,6 +74,11 @@
 			justify-content: center;
 			border: 1px solid #ccc;
 			display: none;
+			margin-left: auto;
+			margin-right: auto;
+			max-width: calc(max(40vh, 40vw));
+			padding: 1rem;
+			border-radius: 5px;
 		}
 	</style>
 </html>
