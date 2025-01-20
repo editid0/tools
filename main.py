@@ -535,6 +535,10 @@ def regexai():
                 "test_cases": [],
                 "message": res.refusal,
             }
+        try:
+            tool_calls2 = tool_calls2
+        except NameError:
+            tool_calls2 = None
         return {
             "regex": res.regexs,
             "test_cases": res.test_cases,
