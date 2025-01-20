@@ -11,6 +11,7 @@ from pydantic import BaseModel
 import humanize
 import git
 from markupsafe import Markup
+from thefuzz import fuzz
 
 repo = git.Repo(search_parent_directories=True)
 sha = repo.head.object.hexsha[:7]
@@ -639,6 +640,20 @@ class PaletteGen2(BaseModel):
 
 
 def aiv2_backend(prompt, ip_hash) -> tuple[list[str], bool]:
+    possible = [
+        "coventry college",
+        "coventry",
+        "cov col",
+        "cov college",
+        "cov",
+        "cov coll",
+        "coventry col",
+        "coventry coll",
+        "city college",
+        "cov city college",
+    ]
+    if any(fuzz.ratio(prompt.lower(), p) > 80 for p in possible):
+        return ["#009fe3", "#81ba25", "#0070ba", "#cad400"], True
     # Moderate first:
     response = client.moderations.create(
         model="omni-moderation-latest",
@@ -649,19 +664,7 @@ def aiv2_backend(prompt, ip_hash) -> tuple[list[str], bool]:
     messages = [
         {
             "role": "system",
-            "content": "Generate a color palette with the exact number of HEX values (between 1 and 8) that best fits the given theme or description. Choose colors that complement each other and reflect the mood, style, or purpose described. Only return the amount of colors needed, and make sure they are in HEX format.",
-        },
-        {
-            "role": "user",
-            "content": f"Theme: google",
-        },
-        {
-            "role": "assistant",
-            "content": "['#4285F4', '#EA4335', '#FBBC05', '#34A853']",
-        },
-        {
-            "role": "system",
-            "content": f"If the theme is coventry college, use the following colors: #009fe3, #81ba25, #0070ba, #cad400, this is important. Feel free to shuffle these ones in any order. If there is no theme, or it is random, generate a palette using a random color. If the theme is not coventry college, generate a palette using the provided theme. You do not have to give 4 colors, you can give less or more.",
+            "content": "Generate a color palette with the exact number of HEX values (between 1 and 8) that best fits the given theme or description. Choose colors that complement each other and reflect the mood, style, or purpose described. Only return the amount of colors needed, and make sure they are in HEX format, no matter what, include the # at the start. As an example, google would return 4 colors, youtube would return 3 colors, and facebook would return 1 color.",
         },
         {
             "role": "user",
@@ -676,7 +679,7 @@ def aiv2_backend(prompt, ip_hash) -> tuple[list[str], bool]:
         metadata={"ip_hash": ip_hash},
     )
     response = response.choices[0].message
-    res = response.parsed
+    res = response.parsed.colors
     return res, True
 
 
@@ -723,7 +726,7 @@ def aiv2back():
     color_array, acceptable = aiv2_backend(post_data.get("theme"), str(ip_hash))
     if not acceptable:
         return {"colors": ["#ff0000"], "acceptable": False, "remaining": remaining}
-    return {"colors": color_array.colors, "acceptable": True, "remaining": remaining}
+    return {"colors": color_array, "acceptable": True, "remaining": remaining}
 
 
 if __name__ == "__main__":
