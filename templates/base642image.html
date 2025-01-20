@@ -23,7 +23,6 @@
 					<img src="" alt="Base64 Image" id="b64im" />
 				</div>
 				<div class="buttons is-centered mt-2">
-					<button class="button is-primary" id="copy">Copy</button>
 					<button class="button is-is-info" id="save">Save</button>
 				</div>
 			</div>
@@ -60,9 +59,6 @@
 			.addEventListener("input", function () {
 				createImageFromBase64(this.value);
 			});
-		document.getElementById("copy").addEventListener("click", function () {
-			document.getElementById("b64im").click();
-		});
 		document.getElementById("save").addEventListener("click", function () {
 			document.getElementById("b64im").download = "image.png";
 			document.getElementById("b64im").click();
