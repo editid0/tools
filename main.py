@@ -653,7 +653,7 @@ def aiv2_backend(prompt, ip_hash) -> tuple[list[str], bool]:
         "cov city college",
     ]
     if any(fuzz.ratio(prompt.lower(), p) > 80 for p in possible):
-        return ["#009fe3", "#81ba25", "#0070ba", "#cad400"], True
+        return ["#0070ba", "#009fe3", "#81ba25", "#cad400"], True
     # Moderate first:
     response = client.moderations.create(
         model="omni-moderation-latest",
