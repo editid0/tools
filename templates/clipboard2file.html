@@ -15,6 +15,7 @@
             <p class="subtitle">Save an image from your clipboard to your computer</p>
             <p>Paste to begin.</p>
             <p id="controls"><code></code></p>
+            <input type="text" class="input" id="mobile" placeholder="Paste here" style="display: none;"/>
         </div>
     </div>
 </body>
@@ -67,7 +68,11 @@
             controls.innerHTML = '<code>⌘(Command)+V</code>';
         } else if (isWin) {
             controls.innerHTML = '<code>Ctrl+V</code>';
+        } else {
+            document.getElementById("mobile").style.display = "block";
+            controls.innerHTML = "<code>Paste in the text box below</code>";
         }
     })
+
 </script>
 </html>

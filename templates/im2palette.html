@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Image to Palette</title>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.6.0/color-thief.min.js" integrity="sha512-Qsp00gBIzIqLPECogMy5bQ6uOsMig9lc37A8qEHMvSze65UK21DHONbfSTY09zE9V8C0tQN+ldPU6w0wlBSfcA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 		{{bulma}}
 		{{analytics}}
 		{{fontawesome}}
@@ -114,9 +114,11 @@
 			palettediv.style.display = "block";
 			im.src = confirm_im.src;
 			palette_colors.innerHTML = "";
-			var palette = colorThief.getPalette(confirm_im, parseInt(palettecount.value));
-			for (var i = 0; i < palette.length; i++) {
-				var color = palette[i];
+			console.log(palettecount.value);
+			var pal_values = colorThief.getPalette(document.getElementById("im"), 5);
+			console.log(pal_values);
+			for (var i = 0; i < pal_values.length; i++) {
+				var color = pal_values[i];
 				var div = document.createElement("div");
 				div.className = "column is-one-fifth palette-color";
 				div.style.backgroundColor = "rgb(" + color.join(",") + ")";

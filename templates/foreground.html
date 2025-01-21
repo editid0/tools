@@ -142,23 +142,13 @@
 						// create a canvas which will be used to display the color, set the background to the color specified using hex, and add text with color from choice
 						var parent = document.createElement("div");
 						parent.className = "box responsebox has-text-centered";
-						var canvas = document.createElement("canvas");
-						canvas.width = 400;
-						canvas.height = 100;
-						var ctx = canvas.getContext("2d");
-						("{% if path == '/foreground_helper' %}");
-						ctx.fillStyle = color;
-						ctx.fillRect(0, 0, 400, 100);
-						ctx.font = "48px arial";
-						ctx.fillStyle = data.choices[i];
-						("{% else %}");
-						ctx.fillStyle = data.choices[i];
-						ctx.fillRect(0, 0, 400, 100);
-						ctx.font = "48px arial";
-						ctx.fillStyle = color;
-						("{% endif %}");
-						ctx.fillText(data.choices[i], 10, 58);
-						parent.appendChild(canvas);
+						var image = document.createElement("img");
+						'{% if path == "/foreground_helper" %}'
+						image.src = `/color/${encodeURIComponent(data.choices[i])}/${encodeURIComponent(color)}`;
+						'{% else %}'
+						image.src = `/color/${encodeURIComponent(color)}/${encodeURIComponent(data.choices[i])}`;
+						'{% endif %}'
+						parent.appendChild(image);
 						document.getElementById("options").appendChild(parent);
 						var buttons_div = document.createElement("div");
 						buttons_div.className = "buttons is-centered";
@@ -213,7 +203,7 @@
 		#demo {
 			display: flex;
 			justify-content: center;
-			max-width: 400px;
+			max-width: calc(max(40vh, 40vw));
 			margin-left: auto;
 			margin-right: auto;
 		}

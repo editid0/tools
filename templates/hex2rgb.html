@@ -220,6 +220,8 @@
 				document.getElementById("hex").classList.remove("is-danger");
 			} catch (error) {
 				document.getElementById("hex").classList.add("is-danger");
+				var rgb = { r: 0, g: 0, b: 0 };
+				setCanvasBackground(document.getElementById("preview"), "000000");
 			}
 			if (isNaN(rgb.a)) {
 				document.getElementById("rgb").value =
