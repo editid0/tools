@@ -116,12 +116,12 @@ our_tools = [
     {
         "name": "Foreground Colour Helper",
         "url": "/foreground_helper",
-        "description": "Generate accessible foreground colours for a given background colour.",
+        "description": "Generate accessible foreground colours for a given background colour using AI.",
     },
     {
         "name": "Background Colour Helper",
         "url": "/background_helper",
-        "description": "Generate accessible background colours for a given foreground colour.",
+        "description": "Generate accessible background colours for a given foreground colour using AI.",
     },
     {
         "name": "Hex to HSL",

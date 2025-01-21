@@ -30,7 +30,7 @@
 				{% if path == '/foreground_helper' %}
 				<p class="has-text-centered">Background color (hex):</p>
 				{% else %}
-				<p class="has-text-centered">Foreground color (hex):</p>
+				<p class="has-text-centered">Text color (hex):</p>
 				{% endif %}
 				<div class="field has-addons has-addons-centered">
 					<p class="control">
@@ -144,9 +144,9 @@
 						parent.className = "box responsebox has-text-centered";
 						var image = document.createElement("img");
 						'{% if path == "/foreground_helper" %}'
-						image.src = `/color/${encodeURIComponent(data.choices[i])}/${encodeURIComponent(color)}`;
+						image.src = `/color/${encodeURIComponent(data.choices[i])}/${encodeURIComponent(color)}/${encodeURIComponent(data.choices[i])}`;
 						'{% else %}'
-						image.src = `/color/${encodeURIComponent(color)}/${encodeURIComponent(data.choices[i])}`;
+						image.src = `/color/${encodeURIComponent(color)}/${encodeURIComponent(data.choices[i])}/${encodeURIComponent(data.choices[i])}`;
 						'{% endif %}'
 						parent.appendChild(image);
 						document.getElementById("options").appendChild(parent);
