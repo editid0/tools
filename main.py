@@ -64,7 +64,7 @@ if os.getenv("SENTRY_DSN"):
     sentry_sdk.init(
         dsn=os.getenv("SENTRY_DSN"),
     )
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 
 if __name__ == "__main__":
     from tools import tools_blueprint
@@ -224,6 +224,13 @@ our_tools = [
 def index():
     return render_template("index.html", tools=our_tools, hash=sha, full_sha=full_sha)
 
+@app.route("/robots.txt")
+def robots():
+    return app.send_static_file("robots.txt")
+
+@app.route("/sitemap.xml")
+def sitemap():
+    return app.send_static_file("sitemap.xml")
 
 def extract_hex_codes(text):
     # Regular expression pattern for hex color codes
