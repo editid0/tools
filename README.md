@@ -94,41 +94,47 @@ python3 main.py
    If you have any new feature recommendations, feel free drop them in Discussions/Ideas on Github.
 
 ## Compatibility
+
 The tools on this list aren't guaranteed to be available, and the compatibility isn't guaranteed either, the tools were tested on 21/01/2025.
 
 | Tool                        | Firefox | Chrome |
 | --------------------------- | ------- | ------ |
-| AI colour palette generator | ✅       | ✅      |
-| Base 64 to image            | ✅       | ✅      |
-| Diff editor                 | ✅       | ✅      |
-| Foreground colour helper    | ✅       | ✅      |
-| Background colour helper    | ✅       | ✅      |
-| Hex to HSL                  | ✅       | ✅      |
-| Hex to RGB                  | ✅       | ✅      |
-| Image to base 64            | ✅       | ✅      |
-| JSON editor                 | ✅       | ✅      |
-| JSON to YAML                | ✅       | ✅      |
-| Markdown editor             | ✅       | ✅      |
-| Meta tag generator          | ✅       | ✅      |
-| Colour palette generator    | ✅       | ✅      |
-| QR code generator           | 🆗 1    | ✅      |
-| AI regex generator          | ✅       | ✅      |
-| Timestamp converter         | ✅       | ✅      |
-| UUID generator              | ✅       | ✅      |
-| Password generator          | ✅       | ✅      |
-| Socket.IO tester            | ✅       | ✅      |
-| Clipboard to image          | ❌2      | ✅      |
-| Lorem ipsum generator       | ✅       | ✅      |
-| URL encode/decode           | ✅       | 🆗3    |
-| Hash generator              | ✅       | ✅      |
+| AI colour palette generator | ✅      | ✅     |
+| Base 64 to image            | ✅      | ✅     |
+| Diff editor                 | ✅      | ✅     |
+| Foreground colour helper    | ✅      | ✅     |
+| Background colour helper    | ✅      | ✅     |
+| Hex to HSL                  | ✅      | ✅     |
+| Hex to RGB                  | ✅      | ✅     |
+| Image to base 64            | ✅      | ✅     |
+| JSON editor                 | ✅      | ✅     |
+| JSON to YAML                | ✅      | ✅     |
+| Markdown editor             | ✅      | ✅     |
+| Meta tag generator          | ✅      | ✅     |
+| Colour palette generator    | ✅      | ✅     |
+| QR code generator           | 🆗 1    | ✅     |
+| AI regex generator          | ✅      | ✅     |
+| Timestamp converter         | ✅      | ✅     |
+| UUID generator              | ✅      | ✅     |
+| Password generator          | ✅      | ✅     |
+| Socket.IO tester            | ✅      | ✅     |
+| Clipboard to image          | ❌2     | ✅     |
+| Lorem ipsum generator       | ✅      | ✅     |
+| URL encode/decode           | ✅      | 🆗3    |
+| Hash generator              | ✅      | ✅     |
 
 ### Notes
+
 The issues below will be added to the roadmap and fixed as soon as possible, and this page will be updated when they are fixed.
+
 > #### 1
+>
 > It doesn't render the QR codes on the client, but if you press "Generate", it will render it on the server and send it as an image.
 
 > #### 2
+>
 > It seems that the data doesn't correctly save, resulting in a blank image file.
 
 > #### 3
+>
 > Encoding text to URL strings works fine, but decoding doesn't seem to work.
