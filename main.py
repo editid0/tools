@@ -102,6 +102,7 @@ our_tools = [
         "name": "AI Colour Palette Generator",
         "url": "/ai_color_palette",
         "description": "Generate a colour palette based on a description.",
+        "ai": True,
     },
     {
         "name": "Base64 to Image",
@@ -117,11 +118,13 @@ our_tools = [
         "name": "Foreground Colour Helper",
         "url": "/foreground_helper",
         "description": "Generate accessible foreground colours for a given background colour using AI.",
+        "ai": True,
     },
     {
         "name": "Background Colour Helper",
         "url": "/background_helper",
         "description": "Generate accessible background colours for a given foreground colour using AI.",
+        "ai": True,
     },
     {
         "name": "Hex to HSL",
@@ -172,6 +175,7 @@ our_tools = [
         "name": "AI Regex Generator",
         "url": "/regex_generator",
         "description": "Generate a regex using a description.",
+        "ai": True,
     },
     {
         "name": "Timestamp Converter",

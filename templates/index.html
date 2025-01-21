@@ -27,7 +27,7 @@
 		</div>
 		<div class="grid is-col-min-8">
 			{% for tool in tools %}
-			<div class="cell card">
+			<div class="cell card" data-ai="{{tool['ai'] | default('False')}}">
 				<header class="card-header mb-1">
 					<p class="card-header-title">{{ tool['name'] }}</p>
 				</header>
@@ -73,6 +73,18 @@
 	}
 	#searchprompt {
 		cursor: pointer;
+	}
+	.card[data-ai="True"] {
+		/* border: 2px dashed #ff3860; */
+		/* animation: aiglow 4s infinite linear; */
+	}
+	@keyframes aiglow {
+		0%, 100% {
+			box-shadow: 0 0 10px 5px #ff386050;
+		}
+		50% {
+			box-shadow: 0 0 10px 5px #f351d8, 0 0 20px 10px #3867ff;
+		}
 	}
 </style>
 <script>
