@@ -4,8 +4,17 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Tools</title>
+	<title>ModuTools - Tools for developers and designers</title>
 	{{bulma}} {{analytics}}
+	<meta name="description" content="ModuTools is a collection of tools designed for developers, by developers.">
+	<meta name="keywords" content="tools, developer, modutools, ai, regex generator">
+	<link rel="canonical" href="https://modutools.com/">
+	<meta property="og:url" content="https://modutools.com/">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="ModuTools - Tools for developers and designers">
+	<meta property="og:description" content="ModuTools is a collection of tools designed for developers, by developers.">
+	<meta property="og:image" content="https://modutools.com/static/logo-small.png">
+	<meta property="og:image:type" content="image/png">
 </head>
 
 <body>
@@ -27,7 +36,7 @@
 		</div>
 		<div class="grid is-col-min-8">
 			{% for tool in tools %}
-			<div class="cell card">
+			<div class="cell card" data-ai="{{tool['ai'] | default('False')}}">
 				<header class="card-header mb-1">
 					<p class="card-header-title">{{ tool['name'] }}</p>
 				</header>
@@ -73,6 +82,18 @@
 	}
 	#searchprompt {
 		cursor: pointer;
+	}
+	.card[data-ai="True"] {
+		/* border: 2px dashed #ff3860; */
+		/* animation: aiglow 4s infinite linear; */
+	}
+	@keyframes aiglow {
+		0%, 100% {
+			box-shadow: 0 0 10px 5px #ff386050;
+		}
+		50% {
+			box-shadow: 0 0 10px 5px #f351d8, 0 0 20px 10px #3867ff;
+		}
 	}
 </style>
 <script>

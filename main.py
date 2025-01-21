@@ -64,7 +64,7 @@ if os.getenv("SENTRY_DSN"):
     sentry_sdk.init(
         dsn=os.getenv("SENTRY_DSN"),
     )
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 
 if __name__ == "__main__":
     from tools import tools_blueprint
@@ -102,6 +102,7 @@ our_tools = [
         "name": "AI Colour Palette Generator",
         "url": "/ai_color_palette",
         "description": "Generate a colour palette based on a description.",
+        "ai": True,
     },
     {
         "name": "Base64 to Image",
@@ -116,12 +117,14 @@ our_tools = [
     {
         "name": "Foreground Colour Helper",
         "url": "/foreground_helper",
-        "description": "Generate accessible foreground colours for a given background colour.",
+        "description": "Generate accessible foreground colours for a given background colour using AI.",
+        "ai": True,
     },
     {
         "name": "Background Colour Helper",
         "url": "/background_helper",
-        "description": "Generate accessible background colours for a given foreground colour.",
+        "description": "Generate accessible background colours for a given foreground colour using AI.",
+        "ai": True,
     },
     {
         "name": "Hex to HSL",
@@ -172,6 +175,7 @@ our_tools = [
         "name": "AI Regex Generator",
         "url": "/regex_generator",
         "description": "Generate a regex using a description.",
+        "ai": True,
     },
     {
         "name": "Timestamp Converter",
@@ -220,6 +224,13 @@ our_tools = [
 def index():
     return render_template("index.html", tools=our_tools, hash=sha, full_sha=full_sha)
 
+@app.route("/robots.txt")
+def robots():
+    return app.send_static_file("robots.txt")
+
+@app.route("/sitemap.xml")
+def sitemap():
+    return app.send_static_file("sitemap.xml")
 
 def extract_hex_codes(text):
     # Regular expression pattern for hex color codes
@@ -233,14 +244,19 @@ def favicon():
     return app.send_static_file("favicon.ico")
 
 
-@app.route("/color/<foreground>/<background>")
-def color_generator(foreground, background):
+@app.route("/color/<foreground>/<background>/<text>")
+def color_generator(foreground, background, text):
     if not re.match(r"^#[0-9a-fA-F]{6}$", foreground):
         foreground = "#000000"
         background = "#ffffff"
+    if not re.match(r"^#[0-9a-fA-F]{6}$", background):
+        background = "#ffffff"
+        foreground = "#000000"
+    if not re.match(r"^#[0-9a-fA-F]{6}$", text):
+        text = "#ffffff"
     im = Image.new("RGB", (400, 100), background)
     d = ImageDraw.Draw(im)
-    d.text((0, 0), foreground, fill=foreground, font=ImageFont.load_default(size=70))
+    d.text((0, 0), text, fill=foreground, font=ImageFont.load_default(size=70))
     b = io.BytesIO()
     im.save(b, "PNG")
     return Response(b.getvalue(), mimetype="image/png")
