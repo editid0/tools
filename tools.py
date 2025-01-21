@@ -16,7 +16,7 @@ import io
 import json
 import os
 import dotenv
-from flask import Blueprint, Response, render_template, request
+from flask import Blueprint, Response, jsonify, render_template, request
 import humanize
 import qrcode
 
@@ -105,7 +105,19 @@ def qr_code_generator():
 @tools_blueprint.route("/qr_code_generator/generate", methods=["GET"])
 def qr_code_generator_generate():
     data = request.args
-    text = data.get("text", 'No text provided')
+    text = data.get("text", '').strip()
+
+    # Validate input
+    if not text:
+        return jsonify({"error": "No text provided"}), 400
+
+    # Limit text length (QR codes typically have practical limits around 2000-4000 characters)
+    if len(text) > 2000:
+        return jsonify({"error": "Text too long. Maximum 2000 characters allowed"}), 400
+
+    # Basic sanitization - remove control characters but keep newlines
+    text = ''.join(char for char in text if char == '\n' or (char.isprintable() and ord(char) < 0xFFFF))
+
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_H,

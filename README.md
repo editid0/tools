@@ -91,7 +91,7 @@ python3 main.py
    Feel free to report any bugs to the Issues section on github.
 
 2. Features:
-   If you have any new feature recommendations, feel free drop them in Discussions/Ideas on Github.
+   If you have any new feature recommendations, feel free to drop them in Discussions/Ideas on Github.
 
 ## Compatibility
 The tools on this list aren't guaranteed to be available, and the compatibility isn't guaranteed either, the tools were tested on 21/01/2025.
