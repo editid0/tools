@@ -1,81 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>QR Code Generator</title>
-		{{bulma}}
-		{{analytics}}
-		<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-	</head>
-	<body>
-		{# adds the nav bar to the file #} {% include 'nav.html' %}
-		<div class="container">
-			<div class="box mt-2 has-text-centered">
-				<h1 class="title">QR Code Generator</h1>
-				<p id="errormsg" class="has-text-centered"></p>
-				<input
-					type="text"
-					name="qrinput"
-					id="qrinput"
-					class="input"
-					value="Demo"
-					maxlength="2000"
-				/>
-				<div class="buttons is-centered mt-2">
-					<button id="gen" class="button is-success">Generate</button>
-				</div>
-				<div id="qrcode"></div>
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>QR Code Generator</title>
+	{{bulma}}
+	{{analytics}}
+	<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+
+<body>
+	{# adds the nav bar to the file #} {% include 'nav.html' %}
+	<div class="container">
+		<div class="box mt-2 has-text-centered">
+			<h1 class="title">QR Code Generator</h1>
+			<p id="errormsg" class="has-text-centered"></p>
+			<input type="text" name="qrinput" id="qrinput" class="input" value="Demo" maxlength="2000" />
+			<div class="buttons is-centered mt-2">
+				<button id="gen" class="button is-success">Generate</button>
 			</div>
+			<div id="qrcode"></div>
 		</div>
-	</body>
-	<script>
-		const qrinput = document.getElementById("qrinput");
-		const qrcode = document.getElementById("qrcode");
-		const gen = document.getElementById("gen");
-		const errormsg = document.getElementById("errormsg");
-		// on load
-		document.addEventListener("DOMContentLoaded", () => {
-			// trigger input event
-			qrinput.dispatchEvent(new Event("input"));
-		});
-		function generateQRCode() {
-			qrinput.style.width =
-				document.getElementById("qrinput").scrollWidth + 5 + "px";
-			errormsg.textContent = "";
-			qrcode.textContent = "";
-			if (qrinput.value.length > 2000) {
-				errormsg.textContent = "Please enter less than 2000 characters";
-				return;
+	</div>
+</body>
+<script>
+	const qrinput = document.getElementById("qrinput");
+	const qrcode = document.getElementById("qrcode");
+	const gen = document.getElementById("gen");
+	const errormsg = document.getElementById("errormsg");
+	// on load
+	document.addEventListener("DOMContentLoaded", () => {
+		// trigger input event
+		qrinput.dispatchEvent(new Event("input"));
+	});
+	function generateQRCode() {
+		errormsg.textContent = "";
+		qrcode.textContent = "";
+		if (qrinput.value.length > 2000) {
+			errormsg.textContent = "Please enter less than 2000 characters";
+			return;
+		}
+		if (qrinput.value.length > 0) {
+			try {
+				new QRCode(qrcode, {
+					text: qrinput.value,
+				});
+			} catch (error) {
+				errormsg.textContent =
+					"Failed to generate QR code: " + error.message;
 			}
-			if (qrinput.value.length > 0) {
-				try {
-					new QRCode(qrcode, {
-						text: qrinput.value,
-					});
-				} catch (error) {
-					errormsg.textContent =
-						"Failed to generate QR code: " + error.message;
-				}
-			} else {
-				errormsg.textContent = "Please enter some text";
-			}
+		} else {
+			errormsg.textContent = "Please enter some text";
 		}
-		qrinput.addEventListener("input", generateQRCode);
-		gen.addEventListener("click", () => {
-			generateQRCode();
-		});
-	</script>
-	<style>
-		#qrcode > img {
-			margin: 0 auto;
-			display: block;
-			max-width: 100%;
+	}
+	function generateQRCodeOnServer() {
+		errormsg.textContent = "";
+		qrcode.textContent = "";
+		if (qrinput.value.length > 2000) {
+			errormsg.textContent = "Please enter less than 2000 characters";
+			return;
 		}
-		#qrinput {
-			width: 30%;
-			min-width: 30%;
-			max-width: 100%;
+		if (qrinput.value.length > 0) {
+			// append the qr code image to the qrcode div
+			var img = document.createElement("img");
+			img.src = "/qr_code_generator/generate?text=" + encodeURIComponent(qrinput.value);
+			qrcode.appendChild(img);
+		} else {
+			errormsg.textContent = "Please enter some text";
 		}
-	</style>
+	}
+	qrinput.addEventListener("input", generateQRCode);
+	gen.addEventListener("click", () => {
+		generateQRCodeOnServer();
+	});
+</script>
+<style>
+	#qrcode>img {
+		margin: 0 auto;
+		display: block;
+		max-width: 100%;
+	}
+
+	#qrinput {
+		width: 30%;
+		min-width: 30%;
+		max-width: 100%;
+	}
+</style>
+
 </html>

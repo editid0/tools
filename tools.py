@@ -12,11 +12,13 @@ if __name__ == "__main__":
 # https://stackoverflow.com/a/59155127/15622854
 from datetime import datetime, timedelta
 import hashlib
+import io
 import json
 import os
 import dotenv
-from flask import Blueprint, render_template, request
+from flask import Blueprint, Response, jsonify, render_template, request
 import humanize
+import qrcode
 
 tools_blueprint = Blueprint("tools", __name__)
 
@@ -61,9 +63,9 @@ def hex_to_rgb():
     return render_template("hex2rgb.html")
 
 
-@tools_blueprint.route("/image_to_palette")
-def image_to_palette():
-    return render_template("im2palette.html")
+# @tools_blueprint.route("/image_to_palette")
+# def image_to_palette():
+#     return render_template("im2palette.html")
 
 
 @tools_blueprint.route("/image_to_base64")
@@ -100,15 +102,44 @@ def palette_generator():
 def qr_code_generator():
     return render_template("qrcodegen.html")
 
+@tools_blueprint.route("/qr_code_generator/generate", methods=["GET"])
+def qr_code_generator_generate():
+    data = request.args
+    text = data.get("text", '').strip()
+
+    # Validate input
+    if not text:
+        return jsonify({"error": "No text provided"}), 400
+
+    # Limit text length (QR codes typically have practical limits around 2000-4000 characters)
+    if len(text) > 2000:
+        return jsonify({"error": "Text too long. Maximum 2000 characters allowed"}), 400
+
+    # Basic sanitization - remove control characters but keep newlines
+    text = ''.join(char for char in text if char == '\n' or (char.isprintable() and ord(char) < 0xFFFF))
+
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_H,
+        box_size=10,
+        border=1,
+    )
+    qr.add_data(text)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    bts = io.BytesIO()
+    img.save(bts, format="PNG")
+    return Response(bts.getvalue(), mimetype="image/png")
+
 
 @tools_blueprint.route("/regex_generator")
 def regex_generator():
     return render_template("regexgenerator.html")
 
 
-@tools_blueprint.route("/svg_to_image")
-def svg_to_image():
-    return render_template("svg2image.html")
+# @tools_blueprint.route("/svg_to_image")
+# def svg_to_image():
+#     return render_template("svg2image.html")
 
 
 @tools_blueprint.route("/timestamp_converter")

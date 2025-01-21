@@ -8,3 +8,5 @@ gitpython
 sentry-sdk[flask]
 flask-socketio
 thefuzz
+qrcode
+pillow

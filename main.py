@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 import hashlib
+import io
 import json
-from flask import Flask, render_template, request
+from flask import Flask, Response, render_template, request
 import requests, re
 import dotenv
 import os
@@ -12,6 +13,7 @@ import humanize
 import git
 from markupsafe import Markup
 from thefuzz import fuzz
+from PIL import Image, ImageDraw, ImageFont
 
 repo = git.Repo(search_parent_directories=True)
 sha = repo.head.object.hexsha[:7]
@@ -97,9 +99,9 @@ def page_not_found(e):
 
 our_tools = [
     {
-        "name": "AI Color Palette Generator",
+        "name": "AI Colour Palette Generator",
         "url": "/ai_color_palette",
-        "description": "Generate a color palette based on a description.",
+        "description": "Generate a colour palette based on a description.",
     },
     {
         "name": "Base64 to Image",
@@ -112,29 +114,24 @@ our_tools = [
         "description": "Generate a diff between two files.",
     },
     {
-        "name": "Foreground Color Helper",
+        "name": "Foreground Colour Helper",
         "url": "/foreground_helper",
-        "description": "Generate accessible foreground colors for a given background color.",
+        "description": "Generate accessible foreground colours for a given background colour.",
     },
     {
-        "name": "Background Color Helper",
+        "name": "Background Colour Helper",
         "url": "/background_helper",
-        "description": "Generate accessible background colors for a given foreground color.",
+        "description": "Generate accessible background colours for a given foreground colour.",
     },
     {
         "name": "Hex to HSL",
         "url": "/hex_to_hsl",
-        "description": "Convert a hex color to HSL and vice versa.",
+        "description": "Convert a hex colour to HSL and vice versa.",
     },
     {
         "name": "Hex to RGB",
         "url": "/hex_to_rgb",
-        "description": "Convert a hex color to RGB and vice versa.",
-    },
-    {
-        "name": "Image to Color Palette",
-        "url": "/image_to_palette",
-        "description": "Generate a color palette from an image.",
+        "description": "Convert a hex colour to RGB and vice versa.",
     },
     {
         "name": "Image to Base64",
@@ -162,9 +159,9 @@ our_tools = [
         "description": "Generate meta tags for your website.",
     },
     {
-        "name": "Color Palette Generator",
+        "name": "Colour Palette Generator",
         "url": "/palette_generator",
-        "description": "Generate a color palette.",
+        "description": "Generate a colour palette.",
     },
     {
         "name": "QR Code Generator",
@@ -175,11 +172,6 @@ our_tools = [
         "name": "AI Regex Generator",
         "url": "/regex_generator",
         "description": "Generate a regex using a description.",
-    },
-    {
-        "name": "SVG to Image",
-        "url": "/svg_to_image",
-        "description": "Convert a SVG image to a PNG, WebP, or JPG.",
     },
     {
         "name": "Timestamp Converter",
@@ -239,6 +231,19 @@ def extract_hex_codes(text):
 @app.route("/favicon.ico")
 def favicon():
     return app.send_static_file("favicon.ico")
+
+
+@app.route("/color/<foreground>/<background>")
+def color_generator(foreground, background):
+    if not re.match(r"^#[0-9a-fA-F]{6}$", foreground):
+        foreground = "#000000"
+        background = "#ffffff"
+    im = Image.new("RGB", (400, 100), background)
+    d = ImageDraw.Draw(im)
+    d.text((0, 0), foreground, fill=foreground, font=ImageFont.load_default(size=70))
+    b = io.BytesIO()
+    im.save(b, "PNG")
+    return Response(b.getvalue(), mimetype="image/png")
 
 
 @app.route("/color", methods=["POST", "GET"])
@@ -525,6 +530,10 @@ def regexai():
                 "test_cases": [],
                 "message": res.refusal,
             }
+        try:
+            tool_calls2 = tool_calls2
+        except NameError:
+            tool_calls2 = None
         return {
             "regex": res.regexs,
             "test_cases": res.test_cases,
