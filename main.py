@@ -233,14 +233,19 @@ def favicon():
     return app.send_static_file("favicon.ico")
 
 
-@app.route("/color/<foreground>/<background>")
-def color_generator(foreground, background):
+@app.route("/color/<foreground>/<background>/<text>")
+def color_generator(foreground, background, text):
     if not re.match(r"^#[0-9a-fA-F]{6}$", foreground):
         foreground = "#000000"
         background = "#ffffff"
+    if not re.match(r"^#[0-9a-fA-F]{6}$", background):
+        background = "#ffffff"
+        foreground = "#000000"
+    if not re.match(r"^#[0-9a-fA-F]{6}$", text):
+        text = "#ffffff"
     im = Image.new("RGB", (400, 100), background)
     d = ImageDraw.Draw(im)
-    d.text((0, 0), foreground, fill=foreground, font=ImageFont.load_default(size=70))
+    d.text((0, 0), text, fill=foreground, font=ImageFont.load_default(size=70))
     b = io.BytesIO()
     im.save(b, "PNG")
     return Response(b.getvalue(), mimetype="image/png")
