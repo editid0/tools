@@ -99,9 +99,9 @@ def page_not_found(e):
 
 our_tools = [
     {
-        "name": "AI Color Palette Generator",
+        "name": "AI Colour Palette Generator",
         "url": "/ai_color_palette",
-        "description": "Generate a color palette based on a description.",
+        "description": "Generate a colour palette based on a description.",
     },
     {
         "name": "Base64 to Image",
@@ -114,24 +114,24 @@ our_tools = [
         "description": "Generate a diff between two files.",
     },
     {
-        "name": "Foreground Color Helper",
+        "name": "Foreground Colour Helper",
         "url": "/foreground_helper",
-        "description": "Generate accessible foreground colors for a given background color.",
+        "description": "Generate accessible foreground colours for a given background colour.",
     },
     {
-        "name": "Background Color Helper",
+        "name": "Background Colour Helper",
         "url": "/background_helper",
-        "description": "Generate accessible background colors for a given foreground color.",
+        "description": "Generate accessible background colours for a given foreground colour.",
     },
     {
         "name": "Hex to HSL",
         "url": "/hex_to_hsl",
-        "description": "Convert a hex color to HSL and vice versa.",
+        "description": "Convert a hex colour to HSL and vice versa.",
     },
     {
         "name": "Hex to RGB",
         "url": "/hex_to_rgb",
-        "description": "Convert a hex color to RGB and vice versa.",
+        "description": "Convert a hex colour to RGB and vice versa.",
     },
     {
         "name": "Image to Base64",
@@ -159,9 +159,9 @@ our_tools = [
         "description": "Generate meta tags for your website.",
     },
     {
-        "name": "Color Palette Generator",
+        "name": "Colour Palette Generator",
         "url": "/palette_generator",
-        "description": "Generate a color palette.",
+        "description": "Generate a colour palette.",
     },
     {
         "name": "QR Code Generator",
