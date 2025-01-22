@@ -320,7 +320,7 @@ def regexai():
             "regex": res.regexs,
             "test_cases": res.test_cases,
             "message": "",
-            "tool": True if tool_calls else False,
+            "tool": bool(tool_calls),
             "tool2": True if tool_calls2 else False,
             "remaining": remaining,
         }
