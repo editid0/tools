@@ -12,7 +12,8 @@
 	<meta property="og:url" content="https://modutools.com/">
 	<meta property="og:type" content="website">
 	<meta property="og:title" content="ModuTools - Tools for developers and designers">
-	<meta property="og:description" content="ModuTools is a collection of tools designed for developers, by developers.">
+	<meta property="og:description"
+		content="ModuTools is a collection of tools designed for developers, by developers.">
 	<meta property="og:image" content="https://modutools.com/static/logo-small.png">
 	<meta property="og:image:type" content="image/png">
 </head>
@@ -21,31 +22,28 @@
 	{# adds the nav bar to the file #} {% include 'nav.html' %}
 	<dialog id="searchdialog">
 		<p class="title has-text-centered has-text-black">Search</p>
-		<input type="search" name="search" id="search" class="input" maxlength="50"/>
+		<input type="search" name="search" id="search" class="input" maxlength="50" />
 		<p>Press <code>escape</code> to dismiss, <code>enter</code> to search</p>
 	</dialog>
 	<div class="container has-text-centered">
 		<div class="title-container">
 			<h1 class="title">ModuTools</h1>
-			<h2 class="subtitle">Some of our favourites:</h2>
+			<h2 class="subtitle">Our tools:</h2>
 			<p>
 				Latest commit:
 				<a href="https://github.com/editid0/tools/commit/{{full_sha}}" , target="_blank">{{hash}}</a>
 			</p>
 			<p id="searchprompt">Start typing to search</p>
 		</div>
-		<div class="grid is-col-min-8">
+		<div class="custom-grid">
 			{% for tool in tools %}
-			<div class="cell card" data-ai="{{tool['ai'] | default('False')}}">
-				<header class="card-header mb-1">
-					<p class="card-header-title">{{ tool['name'] }}</p>
-				</header>
+			<div class="custom-card" data-ai="{{tool['ai'] | default('False')}}">
+				<p class="card-title">{{ tool['name'] }}</p>
 				<div class="card-content">
 					<p>{{ tool['description'] }}</p>
 				</div>
-				<!-- This is buttons -->
 				<div class="buttons card-footer-item mb-3">
-					<a class="button is-primary is-fullwidth" href="{{ tool['url'] }}" target="_self">Visit</a>
+					<a class="button is-fullwidth button-out" href="{{ tool['url'] }}" target="_self">Visit</a>
 				</div>
 			</div>
 			{% endfor %}
@@ -53,11 +51,68 @@
 	</div>
 </body>
 <style>
-	.card {
+	@media (prefers-color-scheme: dark) {
+		.custom-card {
+			background-color: #272727;
+		}
+
+		.custom-card:hover {
+			background-color: #333;
+		}
+
+		.custom-card .card-title {
+			color: white;
+		}
+
+		.custom-card .button-out {
+			background-color: #ffffff;
+			color: black;
+		}
+	}
+
+	@media (prefers-color-scheme: light) {
+		.custom-card {
+			background-color: #dfdfdf;
+		}
+
+		.custom-card:hover {
+			background-color: #cacaca;
+		}
+
+		.custom-card .card-title {
+			color: black;
+		}
+
+		.custom-card .button-out {
+			background-color: white;
+			color: black;
+		}
+	}
+
+	.custom-card {
 		height: 100%;
+		/* border: 1px solid red; */
+		max-width: 300px;
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
+		border-radius: 5px;
+		padding: 1rem;
+		transition: all 0.3s ease-in-out;
+	}
+
+	.custom-card:hover {
+		transform: scale(1.02);
+	}
+
+	.custom-card .card-title {
+		font-size: 1.5rem;
+		font-weight: bold;
+	}
+
+	.custom-card .card-content {
+		flex-grow: 1;
+		margin-top: 1rem;
+		margin-bottom: 1rem;
 	}
 
 	.card-content {
@@ -65,8 +120,11 @@
 		/* This will push the button to the bottom */
 	}
 
-	.grid {
-		margin: 2rem;
+	.custom-grid {
+		margin-top: 2rem;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+		gap: 1rem;
 	}
 
 	dialog {
@@ -80,20 +138,14 @@
 		background-color: rgba(0, 0, 0, 0.5);
 		backdrop-filter: blur(5px);
 	}
+
 	#searchprompt {
 		cursor: pointer;
 	}
-	.card[data-ai="True"] {
-		/* border: 2px dashed #ff3860; */
-		/* animation: aiglow 4s infinite linear; */
-	}
-	@keyframes aiglow {
-		0%, 100% {
-			box-shadow: 0 0 10px 5px #ff386050;
-		}
-		50% {
-			box-shadow: 0 0 10px 5px #f351d8, 0 0 20px 10px #3867ff;
-		}
+
+	.custom-card[data-ai="True"] .button-out {
+		background-image: linear-gradient(90deg, #6D6DEE, #7D66EE, #8D62F2, #AB5DF3, #B458DC, #C154CA, #D14EBE, #D74D9D);
+		color: white;
 	}
 </style>
 <script>
