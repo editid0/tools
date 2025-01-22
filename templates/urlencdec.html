@@ -28,23 +28,37 @@
 				<textarea id="result" class="textarea mt-3" readonly></textarea>
 			</div>
 		</div>
-	</body>
-	<style>
-		#result {
-			margin-top: 20px;
-		}
-	</style>
-	<script>
-		document.getElementById("encode").addEventListener("click", () => {
-			const url = document.getElementById("url").value;
-			const encodedUrl = encodeURIComponent(url);
-			document.getElementById("result").textContent = `${encodedUrl}`;
-		});
+		<style>
+			#result {
+				margin-top: 20px;
+			}
+		</style>
+		<script>
+			document.getElementById("encode").addEventListener("click", () => {
+				const url = document.getElementById("url").value;
+				try {
+					const encodedUrl = encodeURIComponent(url);
+					document.getElementById(
+						"result"
+					).textContent = `${encodedUrl}`;
+				} catch (error) {
+					document.getElementById("result").textContent =
+						"Invalid content";
+				}
+			});
 
-		document.getElementById("decode").addEventListener("click", () => {
-			const encodedUrl = document.getElementById("url").value;
-			const decodedUrl = decodeURIComponent(encodedUrl);
-			document.getElementById("result").textContent = `${decodedUrl}`;
-		});
-	</script>
+			document.getElementById("decode").addEventListener("click", () => {
+				const encodedUrl = document.getElementById("url").value;
+				try {
+					const decodedUrl = decodeURIComponent(encodedUrl);
+					document.getElementById(
+						"result"
+					).textContent = `${decodedUrl}`;
+				} catch (error) {
+					document.getElementById("result").textContent =
+						"Invalid content";
+				}
+			});
+		</script>
+	</body>
 </html>
