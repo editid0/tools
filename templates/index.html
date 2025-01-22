@@ -49,6 +49,12 @@
 			{% endfor %}
 		</div>
 	</div>
+	<footer class="footer has-text-centered">
+		<p>ModuTools is a collection of tools designed for developers, by developers.</p>
+		<p>© {{year|escape}} ModuTools</p>
+		<p>Made by {{creators|escape}}</p>
+		<p>Visit our <a href="{{repo|escape}}" target="_blank">GitHub</a></p>
+	</footer>
 </body>
 <style>
 	@media (prefers-color-scheme: dark) {
@@ -128,6 +134,7 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 		gap: 1rem;
+		margin-bottom: 2rem;
 	}
 
 	dialog {
