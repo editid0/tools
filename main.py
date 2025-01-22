@@ -64,6 +64,7 @@ if os.getenv("SENTRY_DSN"):
     sentry_sdk.init(
         dsn=os.getenv("SENTRY_DSN"),
     )
+CREATORS = os.getenv("CREATORS", "editid")
 app = Flask(__name__, static_folder="static")
 
 if __name__ == "__main__":
@@ -89,6 +90,8 @@ def utility_processor():
         if os.getenv("IS_PRODUCTION")
         else ""
     )
+    to_return['year'] = datetime.now().year
+    to_return['creators'] = CREATORS
     return to_return
 
 
