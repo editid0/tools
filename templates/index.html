@@ -337,9 +337,7 @@
 		document.addEventListener("click", dialogClickHandler);
 		function dialogClickHandler(e) {
 			if (e.target.tagName !== "DIALOG") return;
-
 			const rect = e.target.getBoundingClientRect();
-
 			const clickedInDialog =
 				rect.top <= e.clientY &&
 				e.clientY <= rect.top + rect.height &&
