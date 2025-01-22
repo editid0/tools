@@ -31,21 +31,21 @@ Tools is created using Python and HTML, CSS is done using Bulma Framework. Tools
 
 ### Built With
 
--   [Python](https://www.python.org/doc/)
--   HTML
--   [Bulma](https://bulma.io/documentation/)
--   [Font Awesome](https://fontawesome.com/)
--   [Umami](https://umami.is/)
--   [JSDiff](https://github.com/kpdecker/jsdiff)
--   [Highlight.js](https://highlightjs.org/)
--   [Color-Thief](https://github.com/lokesh/color-thief)
--   [JSON Editor](https://github.com/josdejong/jsoneditor)
--   [JS-YAML](https://www.npmjs.com/package/js-yaml)
--   [Marked](https://www.npmjs.com/package/marked)
--   [github-markdown-css](https://github.com/sindresorhus/github-markdown-css)
--   [uuid](https://www.npmjs.com/package/uuid)
--   [QRCode.js](https://davidshimjs.github.io/qrcodejs/)
--   [chroma.js](https://gka.github.io/chroma.js/)
+- [Python](https://www.python.org/doc/)
+- HTML
+- [Bulma](https://bulma.io/documentation/)
+- [Font Awesome](https://fontawesome.com/)
+- [Umami](https://umami.is/)
+- [JSDiff](https://github.com/kpdecker/jsdiff)
+- [Highlight.js](https://highlightjs.org/)
+- [Color-Thief](https://github.com/lokesh/color-thief)
+- [JSON Editor](https://github.com/josdejong/jsoneditor)
+- [JS-YAML](https://www.npmjs.com/package/js-yaml)
+- [Marked](https://www.npmjs.com/package/marked)
+- [github-markdown-css](https://github.com/sindresorhus/github-markdown-css)
+- [uuid](https://www.npmjs.com/package/uuid)
+- [QRCode.js](https://davidshimjs.github.io/qrcodejs/)
+- [chroma.js](https://gka.github.io/chroma.js/)
 
 <!-- Add more if needed -->
 
