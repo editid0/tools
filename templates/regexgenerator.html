@@ -4,8 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Regex Generator</title>
-		{{bulma}}
-		{{analytics}}
+		{{bulma}} {{analytics}}
 	</head>
 	<body>
 		{# adds the nav bar to the file #} {% include 'nav.html' %}
@@ -25,11 +24,20 @@
 		</div>
 	</body>
 	<style>
+		@media (prefers-color-scheme: dark) {
+			#regex {
+				color: #fff;
+			}
+		}
+		@media (prefers-color-scheme: light) {
+			#regex {
+				color: #000;
+			}
+		}
 		#regex {
 			border: none;
 			border-bottom: 2px dashed #ccc;
 			background-color: transparent;
-			color: #fff;
 		}
 	</style>
 	<script>

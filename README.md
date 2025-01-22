@@ -120,7 +120,7 @@ The tools on this list aren't guaranteed to be available, and the compatibility 
 | Socket.IO tester            | ✅      | ✅     |
 | Clipboard to image          | ❌2     | ✅     |
 | Lorem ipsum generator       | ✅      | ✅     |
-| URL encode/decode           | ✅      | 🆗3    |
+| URL encode/decode           | ✅      | ✅     |
 | Hash generator              | ✅      | ✅     |
 
 ### Notes

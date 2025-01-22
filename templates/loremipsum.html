@@ -58,7 +58,12 @@
 			for (let i = 0; i < paragraphCount; i++) {
 				paragraphs.push(generateRandomParagraph());
 			}
-			return paragraphs.join("\n\n");
+			let loremIpsumText = paragraphs.join("\n\n");
+			let formattedParagraphs = loremIpsumText
+				.split("\n")
+				.map((paragraph) => `<p>${paragraph}</p>`)
+				.join("");
+			return formattedParagraphs;
 		}
 		const generateButton = document.getElementById("generate");
 		const outputDiv = document.getElementById("lorem-ipsum");
@@ -71,18 +76,17 @@
 					"Please enter a valid number between 1 and 10.";
 				return;
 			}
-			outputDiv.textContent = generateLoremIpsum(count);
+			outputDiv.innerHTML = generateLoremIpsum(count);
 		});
 		copyButton.addEventListener("click", () => {
 			const textArea = document.createElement("textarea");
 			textArea.value = outputDiv.textContent;
 			document.body.appendChild(textArea);
-            navigator.clipboard.writeText(textArea.value)
-                .catch(err => {
-                    console.error('Failed to copy text: ', err);
-                    alert('Failed to copy to clipboard');
-                });
-            textArea.remove();
+			navigator.clipboard.writeText(textArea.value).catch((err) => {
+				console.error("Failed to copy text: ", err);
+				alert("Failed to copy to clipboard");
+			});
+			textArea.remove();
 		});
 	</script>
 </html>
