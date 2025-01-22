@@ -439,7 +439,7 @@ def aiv2back():
         post_data["theme"] = "random"
     if len(post_data.get("theme")) > 100:
         return {"colors": ["#ff0000"], "acceptable": False, "remaining": remaining}
-    color_array, acceptable = aiv2_backend(post_data.get("theme"), str(ip_hash))
+    color_array, acceptable = aiv2_backend(post_data.get("theme"), ip_hash)
     if not acceptable:
         return {"colors": ["#ff0000"], "acceptable": False, "remaining": remaining}
     return {"colors": color_array, "acceptable": True, "remaining": remaining}
