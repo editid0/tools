@@ -217,3 +217,7 @@ def aiv3():
         remaining = DAILY_AI_LIMIT - data[today_string][ip_hash]
         message = ""
     return render_template("aicolor2.html", remaining=remaining, message=message)
+
+@tools_blueprint.route("/contrast_checker")
+def contrast_checker():
+    return render_template("contrastchecker.html")
