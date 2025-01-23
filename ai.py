@@ -117,29 +117,7 @@ def colorai():
         print(choices)
         return {"reason": res["reason"], "choices": choices, "remaining": remaining}
     except openai.LengthFinishReasonError as e:
-        return {
-    except openai.OpenAIError as e:
-        # Handle other OpenAI-specific errors
-        return {
-            "reason": f"OpenAI API error: {str(e)}",
-            "choices": ["#000000"],
-            "remaining": remaining
-        }
-    except json.JSONDecodeError as e:
-        # Handle JSON parsing errors
-        return {
-            "reason": "Invalid response format from AI",
-            "choices": ["#000000"],
-            "remaining": remaining
-        }
-                "reason": "Too many attempts. Please try again.",
-                "choices": ["#000000"],
-            }
-        else:
-            return {
-                "reason": "Something went wrong. Please try again.",
-                "choices": ["#000000"],
-            }
+        return {"reason": "Something went wrong. Please try again.","choices": ["#000000"],}
         
 # ------------------------------
 # 
