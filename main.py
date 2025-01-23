@@ -194,6 +194,11 @@ our_tools = [
         "url": "/hash_generator",
         "description": "Generate a hash for a string",
     },
+    {
+        "name": "Colour Contrast Checker",
+        "url": "/contrast_checker",
+        "description": "Check the contrast between two colours.",
+    }
 ]
 
 
