@@ -41,8 +41,9 @@ app = Flask(__name__, static_folder="static")
 
 if __name__ == "__main__":
     from tools import tools_blueprint
-
+    from ai import ai_blueprint
     app.register_blueprint(tools_blueprint)
+    app.register_blueprint(ai_blueprint)
 
 
 @app.context_processor
