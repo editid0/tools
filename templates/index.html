@@ -60,7 +60,7 @@
 						>{{hash}}</a
 					>
 				</p>
-				<p id="searchprompt">Start typing to search</p>
+				<p id="searchprompt" data-umami-event="search">Start typing to search</p>
 			</div>
 			<div class="custom-grid">
 				{% for tool in tools %}
@@ -201,6 +201,8 @@
 
 		#searchprompt {
 			cursor: pointer;
+			width: fit-content;
+			margin: 0 auto;
 		}
 
 		.custom-card[data-ai="True"] .button-out {
