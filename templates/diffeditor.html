@@ -15,9 +15,11 @@
 			href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/hybrid.min.css"
 		/>
 		<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
-		{{bulma}}
-		{{fontawesome}}
-		{{analytics}}
+		{{bulma}} {{fontawesome}} {{analytics}}
+		<meta
+			name="description"
+			content="Generate a diff file from two texts. Supports file uploads."
+		/>
 	</head>
 	<body>
 		{# adds the nav bar to the file #} {% include 'nav.html' %}
@@ -105,7 +107,7 @@
 				</div>
 			</div>
 		</div>
-		<br>
+		<br />
 		<pre><code id="preview" class="language-diff"></code></pre>
 		<script>
 			function generateDiff() {

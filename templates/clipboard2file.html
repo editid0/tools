@@ -1,78 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clipboard to Image</title>
-    {{bulma}}
-    {{analytics}}
-</head>
-<body>
-    {# adds the nav bar to the file #} {% include 'nav.html' %}
-    <div class="container">
-        <div class="box mt-2 has-text-centered">
-            <h1 class="title">Clipboard to Image</h1>
-            <p class="subtitle">Save an image from your clipboard to your computer</p>
-            <p>Paste to begin.</p>
-            <p id="controls"><code></code></p>
-            <input type="text" class="input" id="mobile" placeholder="Paste here" style="display: none;"/>
-        </div>
-    </div>
-</body>
-<script>
-    document.addEventListener("paste", (event) => {
-        const clipboardData = event.clipboardData;
-        const items = clipboardData.items;
-        try {
-            const clipboardData = event.clipboardData;
-            if (!clipboardData || !clipboardData.items) {
-                alert("No content found in clipboard");
-                return;
-            }
-        } catch (error) {
-            alert("No content found in clipboard");
-            return;
-        }
-        for (let i = 0; i < items.length; i++) {
-            const item = items[i];
-            if (item.kind === "file" && item.type.startsWith("image/")) {
-                const file = item.getAsFile();
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const image = new Image();
-                    image.src = e.target.result;
-                    image.onload = function () {
-                        const canvas = document.createElement("canvas");
-                        canvas.width = image.width;
-                        canvas.height = image.height;
-                        const ctx = canvas.getContext("2d");
-                        ctx.drawImage(image, 0, 0);
-                        const dataUrl = canvas.toDataURL("image/png");
-                        const a = document.createElement("a");
-                        a.href = dataUrl;
-                        a.download = "clipboard.png";
-                        a.click();
-                    };
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-    });
-    // on page load, set the controls depending on the OS, paste, for mac or windows
-    document.addEventListener("DOMContentLoaded", function () {
-        const controls = document.getElementById("controls");
-        const os = navigator.platform;
-        const isMac = os === "MacIntel";
-        const isWin = os === "Win32";
-        if (isMac) {
-            controls.innerHTML = '<code>⌘(Command)+V</code>';
-        } else if (isWin) {
-            controls.innerHTML = '<code>Ctrl+V</code>';
-        } else {
-            document.getElementById("mobile").style.display = "block";
-            controls.innerHTML = "<code>Paste in the text box below</code>";
-        }
-    })
-
-</script>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Clipboard to Image</title>
+		{{bulma}} {{analytics}}
+		<meta
+			name="description"
+			content="Paste an image and save it to your computer"
+		/>
+	</head>
+	<body>
+		{# adds the nav bar to the file #} {% include 'nav.html' %}
+		<div class="container">
+			<div class="box mt-2 has-text-centered">
+				<h1 class="title">Clipboard to Image</h1>
+				<p class="subtitle">
+					Save an image from your clipboard to your computer
+				</p>
+				<p>Paste to begin.</p>
+				<p id="controls"><code></code></p>
+				<input
+					type="text"
+					class="input"
+					id="mobile"
+					placeholder="Paste here"
+					style="display: none"
+				/>
+			</div>
+		</div>
+	</body>
+	<script>
+		document.addEventListener("paste", (event) => {
+			const clipboardData = event.clipboardData;
+			const items = clipboardData.items;
+			try {
+				const clipboardData = event.clipboardData;
+				if (!clipboardData || !clipboardData.items) {
+					alert("No content found in clipboard");
+					return;
+				}
+			} catch (error) {
+				alert("No content found in clipboard");
+				return;
+			}
+			for (let i = 0; i < items.length; i++) {
+				const item = items[i];
+				if (item.kind === "file" && item.type.startsWith("image/")) {
+					const file = item.getAsFile();
+					const reader = new FileReader();
+					reader.onload = function (e) {
+						const image = new Image();
+						image.src = e.target.result;
+						image.onload = function () {
+							const canvas = document.createElement("canvas");
+							canvas.width = image.width;
+							canvas.height = image.height;
+							const ctx = canvas.getContext("2d");
+							ctx.drawImage(image, 0, 0);
+							const dataUrl = canvas.toDataURL("image/png");
+							const a = document.createElement("a");
+							a.href = dataUrl;
+							a.download = "clipboard.png";
+							a.click();
+						};
+					};
+					reader.readAsDataURL(file);
+				}
+			}
+		});
+		// on page load, set the controls depending on the OS, paste, for mac or windows
+		document.addEventListener("DOMContentLoaded", function () {
+			const controls = document.getElementById("controls");
+			const os = navigator.platform;
+			const isMac = os === "MacIntel";
+			const isWin = os === "Win32";
+			if (isMac) {
+				controls.innerHTML = "<code>⌘(Command)+V</code>";
+			} else if (isWin) {
+				controls.innerHTML = "<code>Ctrl+V</code>";
+			} else {
+				document.getElementById("mobile").style.display = "block";
+				controls.innerHTML = "<code>Paste in the text box below</code>";
+			}
+		});
+	</script>
 </html>

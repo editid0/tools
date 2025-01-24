@@ -4,9 +4,11 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Image to Base64</title>
-		{{bulma}}
-		{{analytics}}
-		{{fontawesome}}
+		{{bulma}} {{analytics}} {{fontawesome}}
+		<meta
+			name="description"
+			content="Convert an image to a base64 string."
+		/>
 	</head>
 
 	<body>
@@ -123,7 +125,9 @@
 				});
 			});
 		document.getElementById("copy").addEventListener("click", function () {
-			navigator.clipboard.writeText(document.getElementById("base64").innerHTML);
+			navigator.clipboard.writeText(
+				document.getElementById("base64").innerHTML
+			);
 		});
 		document.getElementById("save").addEventListener("click", function () {
 			outputToFile(document.getElementById("base64").innerHTML, "txt");
