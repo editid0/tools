@@ -118,7 +118,7 @@ The tools on this list aren't guaranteed to be available, and the compatibility 
 | UUID generator              | ✅      | ✅     |
 | Password generator          | ✅      | ✅     |
 | Socket.IO tester            | ✅      | ✅     |
-| Clipboard to image          | ❌2     | ✅     |
+| Clipboard to image          | ✅      | ✅     |
 | Lorem ipsum generator       | ✅      | ✅     |
 | URL encode/decode           | ✅      | ✅     |
 | Hash generator              | ✅      | ✅     |
@@ -130,10 +130,6 @@ The issues below will be added to the roadmap and fixed as soon as possible, and
 > #### 1
 >
 > It doesn't render the QR codes on the client, but if you press "Generate", it will render it on the server and send it as an image.
-
-> #### 2
->
-> It seems that the data doesn't correctly save, resulting in a blank image file.
 
 > #### 3
 >
