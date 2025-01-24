@@ -4,8 +4,11 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Hex to RGB and RGB to Hex converter</title>
-		{{bulma}}
-		{{analytics}}
+		{{bulma}} {{analytics}}
+		<meta
+			name="description"
+			content="Hex to RGB and RGB to Hex converter."
+		/>
 	</head>
 	<body>
 		{# adds the nav bar to the file #} {% include 'nav.html' %}
@@ -221,7 +224,10 @@
 			} catch (error) {
 				document.getElementById("hex").classList.add("is-danger");
 				var rgb = { r: 0, g: 0, b: 0 };
-				setCanvasBackground(document.getElementById("preview"), "000000");
+				setCanvasBackground(
+					document.getElementById("preview"),
+					"000000"
+				);
 			}
 			if (isNaN(rgb.a)) {
 				document.getElementById("rgb").value =

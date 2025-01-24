@@ -1,178 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Colour Contrast Checker</title>
+		{{bulma}} {{analytics}}
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+			integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+		<meta
+			name="description"
+			content="Check the contrast of two colours for accessibility."
+		/>
+	</head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colour Contrast Checker</title>
-    {{bulma}}
-    {{analytics}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
+	<body>
+		{% include 'nav.html' %}
+		<div class="container">
+			<div class="box mt-2 has-text-centered">
+				<h1 class="title">Colour Contrast Checker</h1>
+				<p class="subtitle">Check the contrast of two colours.</p>
+				<p class="mb-2">
+					A contrast ratio of 1 means the colours are the same, 21 is
+					a perfect contrast ratio, 7 is the WCAG AAA standard for
+					regular text.
+				</p>
+				<div class="field">
+					<label for="color1" class="label"
+						>Colour 1 (Text Colour)</label
+					>
+					<div class="control">
+						<input
+							type="color"
+							name="color1"
+							id="color1"
+							class="input"
+						/>
+						<p id="colour1"></p>
+					</div>
+				</div>
+				<div class="field">
+					<label for="color2" class="label"
+						>Colour 2 (Background Colour)</label
+					>
+					<div class="control">
+						<input
+							type="color"
+							name="color2"
+							id="color2"
+							class="input"
+						/>
+						<p id="colour2"></p>
+					</div>
+				</div>
+				<div class="field">
+					<div class="control">
+						<button class="button is-primary" id="check">
+							Check Contrast
+						</button>
+					</div>
+				</div>
+				<p id="contrast" class="subtitle is-3">
+					Check contrast to begin
+				</p>
+				<div class="field" id="requirements"></div>
+				<div class="field">
+					<h2 class="subtitle">Demo</h2>
+					<canvas id="canvas" width="400" height="100"></canvas>
+				</div>
+			</div>
+		</div>
+	</body>
+	<style>
+		.control {
+			max-width: 200px;
+			margin: 0 auto;
+		}
+		.fa-check {
+			color: green;
+		}
+		.fa-x {
+			color: red;
+		}
+		#canvas {
+			max-width: 100%;
+		}
+	</style>
+	<script>
+		document.getElementById("check").addEventListener("click", function () {
+			let color1 = document.getElementById("color1").value;
+			let color2 = document.getElementById("color2").value;
+			let contrast = getContrastRatio(color1, color2);
+			document.getElementById(
+				"contrast"
+			).textContent = `Contrast Ratio: ${contrast}`;
+			renderCanvas(color1, color2);
+			showTests(contrast);
+		});
 
-<body>
-    {% include 'nav.html' %}
-    <div class="container">
-        <div class="box mt-2 has-text-centered">
-            <h1 class="title">Colour Contrast Checker</h1>
-            <p class="subtitle">Check the contrast of two colours.</p>
-            <p class="mb-2">A contrast ratio of 1 means the colours are the same, 21 is a perfect contrast ratio, 7 is the WCAG AAA standard for regular text.</p>
-            <div class="field">
-                <label for="color1" class="label">Colour 1 (Text Colour)</label>
-                <div class="control">
-                    <input type="color" name="color1" id="color1" class="input">
-                    <p id="colour1"></p>
-                </div>
-            </div>
-            <div class="field">
-                <label for="color2" class="label">Colour 2 (Background Colour)</label>
-                <div class="control">
-                    <input type="color" name="color2" id="color2" class="input">
-                    <p id="colour2"></p>
-                </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <button class="button is-primary" id="check">Check Contrast</button>
-                </div>
-            </div>
-            <p id="contrast" class="subtitle is-3">Check contrast to begin</p>
-            <div class="field" id="requirements"></div>
-            <div class="field">
-                <h2 class="subtitle">Demo</h2>
-                <canvas id="canvas" width="400" height="100"></canvas>
-            </div>
-        </div>
-    </div>
-</body>
-<style>
-    .control {
-        max-width: 200px;
-        margin: 0 auto;
-    }
-    .fa-check {
-        color: green;
-    }
-    .fa-x {
-        color: red;
-    }
-    #canvas {
-        max-width: 100%;
-    }
-</style>
-<script>
-    document.getElementById("check").addEventListener("click", function () {
-        let color1 = document.getElementById("color1").value;
-        let color2 = document.getElementById("color2").value;
-        let contrast = getContrastRatio(color1, color2);
-        document.getElementById("contrast").textContent = `Contrast Ratio: ${contrast}`;
-        renderCanvas(color1, color2);
-        showTests(contrast);
-    });
+		function getContrastRatio(hex1, hex2) {
+			// Convert hex to RGB
+			const getRGB = (hex) => {
+				hex = hex.replace("#", "");
+				return {
+					r: parseInt(hex.substring(0, 2), 16),
+					g: parseInt(hex.substring(2, 4), 16),
+					b: parseInt(hex.substring(4, 6), 16),
+				};
+			};
 
-    function getContrastRatio(hex1, hex2) {
-        // Convert hex to RGB
-        const getRGB = (hex) => {
-            hex = hex.replace('#', '');
-            return {
-                r: parseInt(hex.substring(0, 2), 16),
-                g: parseInt(hex.substring(2, 4), 16),
-                b: parseInt(hex.substring(4, 6), 16)
-            };
-        };
+			// Calculate relative luminance
+			const getLuminance = (r, g, b) => {
+				let [rs, gs, bs] = [r / 255, g / 255, b / 255].map(
+					(component) => {
+						return component <= 0.03928
+							? component / 12.92
+							: Math.pow((component + 0.055) / 1.055, 2.4);
+					}
+				);
+				return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+			};
 
-        // Calculate relative luminance
-        const getLuminance = (r, g, b) => {
-            let [rs, gs, bs] = [r / 255, g / 255, b / 255].map(component => {
-                return component <= 0.03928
-                    ? component / 12.92
-                    : Math.pow((component + 0.055) / 1.055, 2.4);
-            });
-            return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
-        };
+			// Get RGB values for both colors
+			const color1 = getRGB(hex1);
+			const color2 = getRGB(hex2);
 
-        // Get RGB values for both colors
-        const color1 = getRGB(hex1);
-        const color2 = getRGB(hex2);
+			// Calculate luminance for both colors
+			const l1 = getLuminance(color1.r, color1.g, color1.b);
+			const l2 = getLuminance(color2.r, color2.g, color2.b);
 
-        // Calculate luminance for both colors
-        const l1 = getLuminance(color1.r, color1.g, color1.b);
-        const l2 = getLuminance(color2.r, color2.g, color2.b);
+			// Calculate contrast ratio
+			const lighter = Math.max(l1, l2);
+			const darker = Math.min(l1, l2);
+			const ratio = (lighter + 0.05) / (darker + 0.05);
 
-        // Calculate contrast ratio
-        const lighter = Math.max(l1, l2);
-        const darker = Math.min(l1, l2);
-        const ratio = (lighter + 0.05) / (darker + 0.05);
+			return ratio.toFixed(2);
+		}
+		var color1 = document.getElementById("color1");
+		var color2 = document.getElementById("color2");
+		var colour1 = document.getElementById("colour1");
+		var colour2 = document.getElementById("colour2");
 
-        return ratio.toFixed(2);
-    }
-    var color1 = document.getElementById("color1");
-    var color2 = document.getElementById("color2");
-    var colour1 = document.getElementById("colour1");
-    var colour2 = document.getElementById("colour2");
+		color1.addEventListener("input", function () {
+			colour1.textContent = color1.value;
+		});
 
-    color1.addEventListener("input", function () {
-        colour1.textContent = color1.value;
-    });
-
-    color2.addEventListener("input", function () {
-        colour2.textContent = color2.value;
-    });
-    document.addEventListener("DOMContentLoaded", function () {
-        colour1.textContent = color1.value;
-        colour2.textContent = color2.value;
-    })
-    function renderCanvas(color1, color2) {
-        // Use color2 as the background color, color1 as the text color
-        var canvas = document.getElementById("canvas");
-        var ctx = canvas.getContext("2d");
-        ctx.fillStyle = color2;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = color1;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.font = "24px sans-serif";
-        ctx.fillText("Contrast Checker", canvas.width / 2, canvas.height / 3);
-        ctx.fillText(`modu.tools/contrast_checker`, canvas.width / 2, 2*canvas.height / 3);
-    }
-    function showTests(ratio) {
-        var requirements = document.getElementById("requirements");
-        requirements.innerHTML = "";
-        // make a div for AA
-        var aaDiv = document.createElement("div");
-        // make a div for AAA
-        var aaaDiv = document.createElement("div");
-        // make a div for large text for each
-        var aaLargeDiv = document.createElement("div");
-        var aaaLargeDiv = document.createElement("div");
-        // make a div for small text for each
-        var aaRegularDiv = document.createElement("div");
-        var aaaRegularDiv = document.createElement("div");
-        // Add the "level" class to each div
-        // aaLargeDiv.classList.add("level");
-        // aaaLargeDiv.classList.add("level");
-        // aaRegularDiv.classList.add("level");
-        // aaaRegularDiv.classList.add("level");
-        // Add text and the pass/fail icon to each div
-        aaLargeDiv.innerHTML = `<i class="fa-solid fa-${ratio >= 3 ? "check" : "x"}"></i> AA Large Text`;
-        aaaLargeDiv.innerHTML = `<i class="fas fa-${ratio >= 4.5 ? "check" : "x"}"></i> AAA Large Text`;
-        aaRegularDiv.innerHTML = `<i class="fas fa-${ratio >= 4.5 ? "check" : "x"}"></i> AA Regular Text`;
-        aaaRegularDiv.innerHTML = `<i class="fas fa-${ratio >= 7 ? "check" : "x"}"></i> AAA Regular Text`;
-        // Add description text
-        var aaDesc = document.createElement("p");
-        aaDesc.textContent = "AA (Basic) requires a contrast ratio of at least 3:1 for large text and 4.5:1 for regular text.";
-        var aaaDesc = document.createElement("p");
-        aaaDesc.textContent = "AAA (Enhanced) requires a contrast ratio of at least 4.5:1 for large text and 7:1 for regular text.";
-        // Append the divs to the parent div
-        aaDiv.appendChild(aaDesc);
-        aaDiv.appendChild(aaLargeDiv);
-        aaDiv.appendChild(aaRegularDiv);
-        aaaDiv.appendChild(aaaDesc);
-        aaaDiv.appendChild(aaaLargeDiv);
-        aaaDiv.appendChild(aaaRegularDiv);
-        requirements.appendChild(aaDiv);
-        requirements.appendChild(aaaDiv);
-    }
-</script>
-
+		color2.addEventListener("input", function () {
+			colour2.textContent = color2.value;
+		});
+		document.addEventListener("DOMContentLoaded", function () {
+			colour1.textContent = color1.value;
+			colour2.textContent = color2.value;
+		});
+		function renderCanvas(color1, color2) {
+			// Use color2 as the background color, color1 as the text color
+			var canvas = document.getElementById("canvas");
+			var ctx = canvas.getContext("2d");
+			ctx.fillStyle = color2;
+			ctx.fillRect(0, 0, canvas.width, canvas.height);
+			ctx.fillStyle = color1;
+			ctx.textAlign = "center";
+			ctx.textBaseline = "middle";
+			ctx.font = "24px sans-serif";
+			ctx.fillText(
+				"Contrast Checker",
+				canvas.width / 2,
+				canvas.height / 3
+			);
+			ctx.fillText(
+				`modu.tools/contrast_checker`,
+				canvas.width / 2,
+				(2 * canvas.height) / 3
+			);
+		}
+		function showTests(ratio) {
+			var requirements = document.getElementById("requirements");
+			requirements.innerHTML = "";
+			// make a div for AA
+			var aaDiv = document.createElement("div");
+			// make a div for AAA
+			var aaaDiv = document.createElement("div");
+			// make a div for large text for each
+			var aaLargeDiv = document.createElement("div");
+			var aaaLargeDiv = document.createElement("div");
+			// make a div for small text for each
+			var aaRegularDiv = document.createElement("div");
+			var aaaRegularDiv = document.createElement("div");
+			// Add the "level" class to each div
+			// aaLargeDiv.classList.add("level");
+			// aaaLargeDiv.classList.add("level");
+			// aaRegularDiv.classList.add("level");
+			// aaaRegularDiv.classList.add("level");
+			// Add text and the pass/fail icon to each div
+			aaLargeDiv.innerHTML = `<i class="fa-solid fa-${
+				ratio >= 3 ? "check" : "x"
+			}"></i> AA Large Text`;
+			aaaLargeDiv.innerHTML = `<i class="fas fa-${
+				ratio >= 4.5 ? "check" : "x"
+			}"></i> AAA Large Text`;
+			aaRegularDiv.innerHTML = `<i class="fas fa-${
+				ratio >= 4.5 ? "check" : "x"
+			}"></i> AA Regular Text`;
+			aaaRegularDiv.innerHTML = `<i class="fas fa-${
+				ratio >= 7 ? "check" : "x"
+			}"></i> AAA Regular Text`;
+			// Add description text
+			var aaDesc = document.createElement("p");
+			aaDesc.textContent =
+				"AA (Basic) requires a contrast ratio of at least 3:1 for large text and 4.5:1 for regular text.";
+			var aaaDesc = document.createElement("p");
+			aaaDesc.textContent =
+				"AAA (Enhanced) requires a contrast ratio of at least 4.5:1 for large text and 7:1 for regular text.";
+			// Append the divs to the parent div
+			aaDiv.appendChild(aaDesc);
+			aaDiv.appendChild(aaLargeDiv);
+			aaDiv.appendChild(aaRegularDiv);
+			aaaDiv.appendChild(aaaDesc);
+			aaaDiv.appendChild(aaaLargeDiv);
+			aaaDiv.appendChild(aaaRegularDiv);
+			requirements.appendChild(aaDiv);
+			requirements.appendChild(aaaDiv);
+		}
+	</script>
 </html>
