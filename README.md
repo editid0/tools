@@ -130,7 +130,3 @@ The issues below will be added to the roadmap and fixed as soon as possible, and
 > #### 1
 >
 > It doesn't render the QR codes on the client, but if you press "Generate", it will render it on the server and send it as an image.
-
-> #### 2
->
-> Encoding text to URL strings works fine, but decoding doesn't seem to work.
