@@ -102,10 +102,11 @@ def palette_generator():
 def qr_code_generator():
     return render_template("qrcodegen.html")
 
+
 @tools_blueprint.route("/qr_code_generator/generate", methods=["GET"])
 def qr_code_generator_generate():
     data = request.args
-    text = data.get("text", '').strip()
+    text = data.get("text", "").strip()
 
     # Validate input
     if not text:
@@ -116,7 +117,11 @@ def qr_code_generator_generate():
         return jsonify({"error": "Text too long. Maximum 2000 characters allowed"}), 400
 
     # Basic sanitization - remove control characters but keep newlines
-    text = ''.join(char for char in text if char == '\n' or (char.isprintable() and ord(char) < 0xFFFF))
+    text = "".join(
+        char
+        for char in text
+        if char == "\n" or (char.isprintable() and ord(char) < 0xFFFF)
+    )
 
     qr = qrcode.QRCode(
         version=1,
@@ -154,7 +159,7 @@ def uuid_generator():
 
 @tools_blueprint.route("/password_generator")
 def password_generator():
-    return render_template("passwordgen.html")
+    return render_template("passwordgenerator.html")
 
 
 @tools_blueprint.route("/socketio")
@@ -217,6 +222,7 @@ def aiv3():
         remaining = DAILY_AI_LIMIT - data[today_string][ip_hash]
         message = ""
     return render_template("aicolor2.html", remaining=remaining, message=message)
+
 
 @tools_blueprint.route("/contrast_checker")
 def contrast_checker():
