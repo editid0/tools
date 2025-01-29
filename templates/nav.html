@@ -69,6 +69,8 @@
 </nav>
 <script>
 	document.addEventListener("DOMContentLoaded", () => {
+		// document.getElementsByClassName("navbar")[0].style.backgroundColor =
+		// 	"rgba(90, 90, 90, 0.9)";
 		// Get all "navbar-burger" elements
 		const $navbarBurgers = Array.prototype.slice.call(
 			document.querySelectorAll(".navbar-burger"),
@@ -93,6 +95,21 @@
 	@media screen and (max-width: 1024px) {
 		.navbar i {
 			margin-right: 0.5rem;
+		}
+	}
+	.navbar {
+		position: sticky;
+		top: 0;
+		backdrop-filter: blur(5px);
+	}
+	@media (prefers-color-scheme: dark) {
+		.navbar {
+			--bulma-navbar-background-color: hsl(221, 14%, 9%, 0.9);
+		}
+	}
+	@media (prefers-color-scheme: light) {
+		.navbar {
+			--bulma-navbar-background-color: hsl(221, 14%, 100%, 0.9);
 		}
 	}
 </style>
