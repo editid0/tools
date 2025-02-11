@@ -64,7 +64,7 @@ def utility_processor():
             posthog.init('phc_1eKoeJ4POr45EQp8vXzF8pR8tNrkomALsHUucX58Lgj', {
                 api_host: 'https://eu.i.posthog.com',
                 person_profiles: 'always', // or 'always' to create profiles for anonymous users as well
-                persistence: 'localStorage',
+                persistence: 'cookie',
                 opt_out_capturing_by_default: true
             })
             </script>
