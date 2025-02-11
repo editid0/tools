@@ -75,7 +75,6 @@
     })
     document.getElementById('deny_cookies').addEventListener('click', function() {
         try {
-            posthog.opt_out_capturing()
             document.getElementById('cookiebanner').style.display = 'none';
             localStorage.setItem('cookies_enabled', '2')
             posthog.set_config({ persistence: 'memory' });
