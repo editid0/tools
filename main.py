@@ -66,7 +66,6 @@ def utility_processor():
                 api_host: 'https://eu.i.posthog.com',
                 person_profiles: 'always', // or 'always' to create profiles for anonymous users as well
                 persistence: 'cookie',
-                opt_out_capturing_by_default: true
             })
             </script>
             '''.replace('[POSTHOG]', POSTHOG)
