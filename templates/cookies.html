@@ -1,0 +1,86 @@
+<div id="cookiebanner">
+    <p id="cookietext">We use cookies to monitor analytics for our site. Click 'accept' to agree to the use of cookies,
+        and 'deny' to deny the use of cookies. By default you are not allowing cookies.</p>
+    <div class="buttons is-centered">
+        <button class="button" id="accept_cookies">
+            Accept
+        </button>
+        <button class="button" id="deny_cookies">
+            Deny
+        </button>
+    </div>
+</div>
+<style>
+    #cookiebanner {
+        width: 100vw;
+        overflow: hidden;
+        position: fixed;
+        bottom: 0;
+        z-index: 5;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(7px);
+        height: fit-content;
+        color: black;
+        font-size: large;
+        padding-top: 1rem;
+        padding-bottom: 0.5rem;
+        display: none;
+    }
+
+    #cookiebanner .button {
+        border: none;
+    }
+
+    #cookiebanner .buttons {
+        margin-top: .5rem;
+    }
+
+    #accept_cookies {
+        background-color: #43B929;
+        color: black;
+    }
+
+    #deny_cookies {
+        background-color: #BF3100;
+        color: white;
+    }
+
+    #cookietext {
+        color: white;
+        font-weight: 600;
+    }
+</style>
+<script>
+    window.addEventListener("pageshow", (event) => {
+        if (!localStorage.getItem('cookies_enabled')) {
+            document.getElementById('cookiebanner').style.display = 'block';
+        } else {
+            if (localStorage.getItem('cookies_enabled') == '1') {
+                posthog.set_config({ persistence: 'localStorage+cookie' });
+            } else if (localStorage.getItem('cookies_enabled') == '2') {
+                posthog.set_config({ persistence: 'memory' });
+            }
+        }
+    });
+    document.getElementById('accept_cookies').addEventListener('click', function() {
+        try {
+            posthog.opt_in_capturing()
+            document.getElementById('cookiebanner').style.display = 'none';
+            localStorage.setItem('cookies_enabled', '1')
+            posthog.set_config({ persistence: 'localStorage+cookie' });
+        } catch {
+            console.log('Error enabling cookies')
+        }
+    })
+    document.getElementById('deny_cookies').addEventListener('click', function() {
+        try {
+            posthog.opt_out_capturing()
+            document.getElementById('cookiebanner').style.display = 'none';
+            localStorage.setItem('cookies_enabled', '2')
+            posthog.set_config({ persistence: 'memory' });
+        } catch {
+            console.log('Error disabling cookies.')
+        }
+    })
+</script>
