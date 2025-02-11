@@ -1,0 +1,52 @@
+<div id="cookiebanner">
+    <p id="cookietext">We use cookies to monitor analytics for our site. Click 'accept' to agree to the use of cookies, and 'deny' to deny the use of cookies.</p>
+    <div class="buttons is-centered">
+        <button class="button" id="accept_cookies">
+            Accept
+        </button>
+        <button class="button" id="deny_cookies">
+            Deny
+        </button>
+    </div>
+</div>
+<style>
+    #cookiebanner {
+        width: 100vw;
+        overflow: hidden;
+        position: fixed;
+        bottom: 0;
+        z-index: 5;
+        text-align: center;
+        background-color: rgba(46, 46, 46, 0.7);
+        backdrop-filter: blur(7px);
+        height: fit-content;
+        color: black;
+        font-size: large;
+        padding-top: 1rem;
+        padding-bottom: 0.5rem;
+    }
+    #cookiebanner .button {
+        border: none;
+    }
+    #cookiebanner .buttons {
+        margin-top: .5rem;
+    }
+    #accept_cookies {
+        background-color: #43B929;
+        color: black;
+    }
+    #deny_cookies {
+        background-color: #BF3100;
+        color: white;
+    }
+    #cookietext {
+        color: white;
+    }
+</style>
+<script>
+    window.addEventListener("pageshow", (event) => {
+        if (localStorage.getItem('cookies') == true) {
+
+        }
+});
+</script>
